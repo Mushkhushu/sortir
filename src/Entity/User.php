@@ -50,7 +50,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(length: 20, nullable: true)]
     private ?string $phoneNumber = null;
 
-    #[ORM\Column(length: 180, type: Types::STRING, unique: true)]
+    #[ORM\Column(type: Types::STRING, length: 180, unique: true)]
     #[Assert\NotBlank(message: 'Veuillez renseigner votre adresse mail.')]
     #[Assert\Email(message: 'Veuillez renseigner une adresse mail valide')]
     private ?string $mail = null;
