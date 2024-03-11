@@ -9,22 +9,21 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Validator\Constraints as Assert;
+
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 #[ORM\Table(name: '`users`')]
 #[ORM\UniqueConstraint(name: 'UNIQ_IDENTIFIER_USERNAME', fields: ['username'])]
-#[UniqueEntity(fields: ['pseudo'], message: 'Ce pseudo est déjà pris', errorPath: 'pseudo')]
+#[UniqueEntity(fields: ['username'], message: 'Ce pseudo est déjà pris', errorPath: 'pseudo')]
 #[UniqueEntity(fields: ['mail'], message: 'Ce mail est déjà pris', errorPath: 'mail')]
-
 class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
     #[ORM\Id]
     #[ORM\GeneratedValue(strategy: 'AUTO')]
-   #[ORM\Column(name: 'id', type: Types::INTEGER, nullable: false, options: ['unsigned' => true])]
+    #[ORM\Column(name: 'id', type: Types::INTEGER, nullable: false, options: ['unsigned' => true])]
     private ?int $id = null;
     #[Assert\Length(max: 50, maxMessage: "Le pseudo doit faire moins de {{ limit }} caractères.")]
     #[Assert\Length(min: 3, minMessage: "Le pseudo doit faire plus de {{ limit }} caractères.")]
     #[ORM\Column(name: 'username', type: Types::STRING, length: 50, unique: true, nullable: true)]
-
     private ?string $username = null;
 
     /**
@@ -51,10 +50,13 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(length: 20, nullable: true)]
     private ?string $phoneNumber = null;
 
-    #[ORM\Column(length: 180,type: Types::STRING, unique: true)]
+    #[ORM\Column(length: 180, type: Types::STRING, unique: true)]
     #[Assert\NotBlank(message: 'Veuillez renseigner votre adresse mail.')]
     #[Assert\Email(message: 'Veuillez renseigner une adresse mail valide')]
     private ?string $mail = null;
+
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $picture = null;
 
     public function getId(): ?int
     {
@@ -80,13 +82,13 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      */
     public function getUserIdentifier(): string
     {
-        return (string) $this->username;
+        return (string)$this->username;
     }
 
     /**
+     * @return list<string>
      * @see UserInterface
      *
-     * @return list<string>
      */
     public function getRoles(): array
     {
@@ -175,6 +177,18 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setMail(string $mail): static
     {
         $this->mail = $mail;
+
+        return $this;
+    }
+
+    public function getPicture(): ?string
+    {
+        return $this->picture;
+    }
+
+    public function setPicture(?string $picture): static
+    {
+        $this->picture = $picture;
 
         return $this;
     }
