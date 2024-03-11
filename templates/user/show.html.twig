@@ -3,41 +3,55 @@
 {% block title %}User{% endblock %}
 
 {% block body %}
-    <h1>User</h1>
+<main class="d-flex">
+    {%  block sidebar %}
+        {{ parent() }}
+    {% endblock %}
+    <div class="container">
+    {% for group, messages in app.flashes %}
+        {% for message in messages %}
+            <div class="alert alert-{{ group }}" role="alert">{{ message }}</div>
+        {% endfor %}
+    {% endfor %}
 
-    <table class="table">
-        <tbody>
-        <tr>
+    <h1>{{ user.username }} Profile</h1>
+        <table class="table">
+            <tbody>
+            <tr>
                 <th>Username</th>
                 <td>{{ user.username }}</td>
             </tr>
-
             <tr>
-                <th>FirstName</th>
-                <td>{{ user.firstName }}</td>
+                <th>First Name</th>
+                <td>{% if user.firstName is empty %}aucun prénom renseigné{% else %}{{ user.firstName }}{% endif %}</td>
             </tr>
             <tr>
-                <th>LastName</th>
-                <td>{{ user.lastName }}</td>
+                <th>Last Name</th>
+                <td>{% if user.lastName is empty %}aucun nom renseigné{% else %}{{ user.lastName }}{% endif %}</td>
             </tr>
             <tr>
-                <th>PhoneNumber</th>
-                <td>{{ user.phoneNumber }}</td>
+                <th>Phone Number</th>
+                <td>{% if user.phoneNumber is empty %}aucun téléphone renseigné{% else %}{{ user.phoneNumber }}{% endif %}</td>
             </tr>
             <tr>
-                <th>Mail</th>
-                <td>{{ user.mail }}</td>
+                <th>Email</th>
+                <td>{% if user.mail is empty %}aucun email renseigné{% else %}{{ user.mail }}{% endif %}</td>
             </tr>
             <tr>
                 <th>Picture</th>
-                <td>{{ user.picture }}</td>
+                <td>
+                    {% if user.picture is empty %}
+                        aucun avatar renseigné
+                    {% else %}
+                        <img src="{{ asset(picture_dir ~ '/' ~ app.user.picture) }}" alt="default-avatar" width="55" height="55"/>
+                    {% endif %}
+                </td>
             </tr>
-        </tbody>
-    </table>
-
-    <a href="{{ path('app_user_index') }}">back to list</a>
-
-    <a href="{{ path('app_user_edit', {'id': user.id}) }}">edit</a>
-
-    {{ include('user/_delete_form.html.twig') }}
+            </tbody>
+        </table>
+        <a href="{{ path('user_index') }}" class="btn btn-primary">Back to List</a>
+        <a href="{{ path('user_edit', {'id': user.id}) }}" class="btn btn-secondary">Edit</a>
+        {{ include('user/_delete_form.html.twig') }}
+    </div>
+</main>
 {% endblock %}
