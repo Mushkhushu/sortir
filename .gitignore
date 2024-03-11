@@ -15,8 +15,6 @@
 ###< phpunit/phpunit ###
 
 ###> symfony/phpunit-bridge ###
-.phpunit.result.cache
-/phpunit.xml
 ###< symfony/phpunit-bridge ###
 
 ###> symfony/asset-mapper ###
@@ -145,12 +143,10 @@ fabric.properties
 # Reference: https://phpunit.de/
 
 # Generated files
-.phpunit.result.cache
 .phpunit.cache
 
 # PHPUnit
 /app/phpunit.xml
-/phpunit.xml
 
 # Build data
 /build/
@@ -187,7 +183,6 @@ fabric.properties
 /bin/*
 !bin/console
 !bin/symfony_requirements
-/vendor/
 
 # Assets and user uploads
 /web/bundles/
