@@ -3,11 +3,23 @@
 {% block title %}Edit Sorties{% endblock %}
 
 {% block body %}
-    <h1>Edit Sorties</h1>
+    <main class="d-flex">
+        {% block sidebar %}
+            {{ parent() }}
+        {% endblock %}
+        <div class="container">
+            {% for group, messages in app.flashes %}
+                {% for message in messages %}
+                    <div class="alert alert-{{ group }}" role="alert">{{ message }}</div>
+                {% endfor %}
+            {% endfor %}
+            <h1>Edit Sorties</h1>
 
-    {{ include('sorties/form.html.twig', {'button_label': 'Update'}) }}
+            {{ include('sorties/form.html.twig', {'button_label': 'Update'}) }}
 
-    <a href="{{ path('sorties/index') }}">back to list</a>
+            <a href="{{ path('sorties/index') }}">back to list</a>
 
-    {{ include('sorties/delete_form.html.twig') }}
+            {{ include('sorties/delete_form.html.twig') }}
+        </div>
+    </main>
 {% endblock %}

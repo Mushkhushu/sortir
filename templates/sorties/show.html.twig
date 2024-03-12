@@ -3,10 +3,19 @@
 {% block title %}Sorties{% endblock %}
 
 {% block body %}
-    <h1>Sorties</h1>
+    {% block sidebar %}
+        {{ parent() }}
+    {% endblock %}
+    <div class="container">
+        {% for group, messages in app.flashes %}
+            {% for message in messages %}
+                <div class="alert alert-{{ group }}" role="alert">{{ message }}</div>
+            {% endfor %}
+        {% endfor %}
+        <h1>Sorties</h1>
 
-    <table class="table">
-        <tbody>
+        <table class="table">
+            <tbody>
             <tr>
                 <th>Id</th>
                 <td>{{ sorty.id }}</td>
@@ -40,12 +49,14 @@
                 <th>DateLimite</th>
                 <td>{{ sorty.dateLimite ? sorty.dateLimite|date('Y-m-d') : '' }}</td>
             </tr>
-        </tbody>
-    </table>
+            </tbody>
+        </table>
 
-    <a href="{{ path('sorties/index') }}">back to list</a>
+        <a href="{{ path('sorties/index') }}">back to list</a>
 
-    <a href="{{ path('sorties/edit', {'id': sorty.id}) }}">edit</a>
+        <a href="{{ path('sorties/edit', {'id': sorty.id}) }}">edit</a>
 
-    {{ include('sorties/delete_form.html.twig') }}
+        {{ include('sorties/delete_form.html.twig') }}
+    </div>
+    </main>
 {% endblock %}

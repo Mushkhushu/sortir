@@ -3,7 +3,18 @@
 {% block title %}Sorties index{% endblock %}
 
 {% block body %}
-    <h1>Sorties index</h1>
+<main class="d-flex">
+    {%  block sidebar %}
+        {{ parent() }}
+    {% endblock %}
+    <div class="container">
+        {% for group, messages in app.flashes %}
+            {% for message in messages %}
+                <div class="alert alert-{{ group }}" role="alert">{{ message }}</div>
+            {% endfor %}
+        {% endfor %}
+
+        <h1>Sorties index</h1>
 
     <table class="table">
         <thead>
@@ -46,5 +57,6 @@
     </table>
 
     <a href="{{ path('sorties/new') }}">Create new</a>
-
+    </div>
+</main>
 {% endblock %}
