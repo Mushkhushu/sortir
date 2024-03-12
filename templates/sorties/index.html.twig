@@ -48,6 +48,7 @@
                         <td>
                             <a href="{{ path('sorties/show', {'id': sorty.id}) }}" class="btn btn-primary">Show</a>
                             <a href="{{ path('register_to_sortie', {'id': sorty.id}) }}" class="btn btn-primary">Register</a>
+                            <a href="{{ path('unsubscribe_to_sortie', {'id': sorty.id}) }}" class="btn btn-primary">unsubscribe</a>
                         </td>
                     </tr>
                 {% else %}

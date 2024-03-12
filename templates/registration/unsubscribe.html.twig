@@ -1,0 +1,15 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}unsubscribe{% endblock %}
+
+{% block body %}
+    <main class="d-flex">
+        {% block sidebar %}
+            {{ parent() }}
+        {% endblock %}
+        <form method="post" action="{{ path('participants/delete', {'id': sorty.id}) }}" onsubmit="return confirm('Are you sure you want to unsubscribe this sorties?');">
+            <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ sorty.id) }}">
+            <button class="btn">Unsubscribe</button>
+        </form>
+    </main>
+{% endblock %}

@@ -49,5 +49,22 @@ class SubscriptionController extends AbstractController
         // Rediriger vers la page des sorties
         $this->addFlash('success', 'vous avez été ajouté à la sortie');
         return $this->redirectToRoute('sorties/show', ['id' => $id]);
+
     }
-}
+    #[Route('/unsubscribe/{id}', name: 'unsubscribe_to_sortie')]
+    public function unsubscribeToSortie(EntityManagerInterface $entityManager, SortiesRepository $sortiesRepository, Security $security, Request $request, int $id): Response
+    {
+        $user = $security->getUser();
+        $sortie = $sortiesRepository->find($id);
+        if (!$user instanceof User) {
+            throw new \LogicException('L\'utilisateur connecté n\'est pas une instance de la classe User.');
+        }
+
+        $sortie->removeParticipant($user);
+        $entityManager->flush();
+        $this->addFlash('success', 'vous avez été viré à la sortie');
+        return $this->redirectToRoute('sorties/show', ['id' => $id]);
+        }
+    }
+
+

@@ -42,8 +42,8 @@
                         <td><img src="{{ asset(picture_dir ~ '/'  ~ app.user.picture) }}" alt="default-avatar" width="55" height="55"/></td>
                     {% endif %}
                         <td>
-                        <a href="{{ path('user_show', {'id': user.id}) }}" class="btn btn-primary">Show</a>
-                        <a href="{{ path('user_edit', {'id': user.id}) }}" class="btn btn-secondary">Edit</a>
+                        <a href="{{ path('user/show', {'id': user.id}) }}" class="btn btn-primary">Show</a>
+                        <a href="{{ path('user/edit', {'id': user.id}) }}" class="btn btn-secondary">Edit</a>
                     </td>
                 </tr>
             {% else %}
@@ -54,7 +54,7 @@
             </tbody>
         </table>
 
-        <a href="{{ path('user_new') }}" class="btn btn-success">Create New</a>
+        <a href="{{ path('user/new') }}" class="btn btn-success">Create New</a>
     </div>
 </main>
 {% endblock %}
