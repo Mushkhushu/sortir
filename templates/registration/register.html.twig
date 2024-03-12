@@ -3,17 +3,33 @@
 {% block title %}Register{% endblock %}
 
 {% block body %}
-    <h1>Register</h1>
+    <main class="d-flex">
+        {% block sidebar %}
+            {{ parent() }}
+        {% endblock %}
+        <div class="container">
+            <h1>Inscription</h1>
+            {{ form_errors(registrationForm) }}
+            {{ form_start(registrationForm) }}
+            <div class="mb-3">
+                {{ form_label(registrationForm.username) }}
+                {{ form_widget(registrationForm.username, {'attr': {'class': 'form-control'}}) }}
+            </div>
+            <div class="mb-3">
+                {{ form_label(registrationForm.mail) }}
+                {{ form_widget(registrationForm.mail, {'attr': {'class': 'form-control'}}) }}
+            </div>
+            <div class="mb-3">
+                {{ form_label(registrationForm.plainPassword, 'Password') }}
+                {{ form_widget(registrationForm.plainPassword, {'attr': {'class': 'form-control'}}) }}
+            </div>
+            <div class="mb-3 form-check">
+                {{ form_widget(registrationForm.agreeTerms) }}
+                {{ form_label(registrationForm.agreeTerms, 'Agree to terms', {'label_attr': {'class': 'form-check-label'}}) }}
+            </div>
 
-    {{ form_errors(registrationForm) }}
-
-    {{ form_start(registrationForm) }}
-        {{ form_row(registrationForm.username) }}
-        {{ form_row(registrationForm.plainPassword, {
-            label: 'Password'
-        }) }}
-        {{ form_row(registrationForm.agreeTerms) }}
-
-        <button type="submit" class="btn">Register</button>
-    {{ form_end(registrationForm) }}
+            <button type="submit" class="btn btn-primary">Inscription</button>
+            {{ form_end(registrationForm) }}
+        </div>
+    </main>
 {% endblock %}
