@@ -5,7 +5,7 @@
 {% block body %}
     <h1>Create new Sorties</h1>
 
-    {{ include('sorties/_form.html.twig') }}
+    {{ include('sorties/form.html.twig') }}
 
-    <a href="{{ path('app_sorties_index') }}">back to list</a>
+    <a href="{{ path('sorties/index') }}">back to list</a>
 {% endblock %}

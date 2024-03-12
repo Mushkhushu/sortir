@@ -16,7 +16,7 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
 #[IsGranted('ROLE_USER')]
 class SortiesController extends AbstractController
 {
-    #[Route('/', name: 'app_sorties_index', methods: ['GET'])]
+    #[Route('/', name: 'sorties/index', methods: ['GET'])]
     public function index(SortiesRepository $sortiesRepository): Response
     {
 
@@ -27,7 +27,7 @@ class SortiesController extends AbstractController
 
     }
 
-    #[Route('/new', name: 'app_sorties_new', methods: ['GET', 'POST'])]
+    #[Route('/new', name: 'sorties/new', methods: ['GET', 'POST'])]
     public function new(Request $request, EntityManagerInterface $entityManager): Response
     {
         $sorty = new Sorties();
@@ -38,7 +38,7 @@ class SortiesController extends AbstractController
             $entityManager->persist($sorty);
             $entityManager->flush();
 
-            return $this->redirectToRoute('app_sorties_index', [], Response::HTTP_SEE_OTHER);
+            return $this->redirectToRoute('sorties/index', [], Response::HTTP_SEE_OTHER);
         }
 
         return $this->render('sorties/new.html.twig', [
@@ -47,7 +47,7 @@ class SortiesController extends AbstractController
         ]);
     }
 
-    #[Route('/{id}', name: 'app_sorties_show', methods: ['GET'])]
+    #[Route('/{id}', name: 'sorties/show', methods: ['GET'])]
     public function show(Sorties $sorty): Response
     {
         return $this->render('sorties/show.html.twig', [
@@ -55,7 +55,7 @@ class SortiesController extends AbstractController
         ]);
     }
 
-    #[Route('/{id}/edit', name: 'app_sorties_edit', methods: ['GET', 'POST'])]
+    #[Route('/{id}/edit', name: 'sorties/edit', methods: ['GET', 'POST'])]
     public function edit(Request $request, Sorties $sorty, EntityManagerInterface $entityManager): Response
     {
         $form = $this->createForm(SortiesType::class, $sorty);
@@ -64,7 +64,7 @@ class SortiesController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager->flush();
 
-            return $this->redirectToRoute('app_sorties_index', [], Response::HTTP_SEE_OTHER);
+            return $this->redirectToRoute('sorties/index', [], Response::HTTP_SEE_OTHER);
         }
 
         return $this->render('sorties/edit.html.twig', [
@@ -73,7 +73,7 @@ class SortiesController extends AbstractController
         ]);
     }
 
-    #[Route('/{id}', name: 'app_sorties_delete', methods: ['POST'])]
+    #[Route('/{id}', name: 'sorties/delete', methods: ['POST'])]
     public function delete(Request $request, Sorties $sorty, EntityManagerInterface $entityManager): Response
     {
         if ($this->isCsrfTokenValid('delete'.$sorty->getId(), $request->request->get('_token'))) {
@@ -81,6 +81,6 @@ class SortiesController extends AbstractController
             $entityManager->flush();
         }
 
-        return $this->redirectToRoute('app_sorties_index', [], Response::HTTP_SEE_OTHER);
+        return $this->redirectToRoute('sorties/index', [], Response::HTTP_SEE_OTHER);
     }
 }
