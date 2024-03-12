@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\SortiesRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use phpDocumentor\Reflection\Types\Integer;
@@ -35,6 +37,18 @@ class Sorties
 
     #[ORM\Column(type: Types::DATE_IMMUTABLE)]
     private ?\DateTimeImmutable $dateLimite = null;
+
+    #[ORM\ManyToOne(inversedBy: 'createdEvents')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?User $organizator = null;
+
+    #[ORM\ManyToMany(targetEntity: User::class, mappedBy: 'participatingEvents')]
+    private Collection $participants;
+
+    public function __construct()
+    {
+        $this->participants = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -123,6 +137,45 @@ class Sorties
     public function setDateLimite(\DateTimeImmutable $dateLimite): static
     {
         $this->dateLimite = $dateLimite;
+
+        return $this;
+    }
+
+    public function getOrganizator(): ?User
+    {
+        return $this->organizator;
+    }
+
+    public function setOrganizator(?User $organizator): static
+    {
+        $this->organizator = $organizator;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, User>
+     */
+    public function getParticipants(): Collection
+    {
+        return $this->participants;
+    }
+
+    public function addParticipant(User $participant): static
+    {
+        if (!$this->participants->contains($participant)) {
+            $this->participants->add($participant);
+            $participant->addParticipatingEvent($this);
+        }
+
+        return $this;
+    }
+
+    public function removeParticipant(User $participant): static
+    {
+        if ($this->participants->removeElement($participant)) {
+            $participant->removeParticipatingEvent($this);
+        }
 
         return $this;
     }
