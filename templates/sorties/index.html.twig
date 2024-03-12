@@ -33,8 +33,8 @@
                 <td>{{ sorty.note }}</td>
                 <td>{{ sorty.dateLimite ? sorty.dateLimite|date('Y-m-d') : '' }}</td>
                 <td>
-                    <a href="{{ path('app_sorties_show', {'id': sorty.id}) }}">show</a>
-                    <a href="{{ path('app_sorties_edit', {'id': sorty.id}) }}">edit</a>
+                    <a href="{{ path('sorties/show', {'id': sorty.id}) }}">show</a>
+
                 </td>
             </tr>
         {% else %}
@@ -45,5 +45,6 @@
         </tbody>
     </table>
 
-    <a href="{{ path('app_sorties_new') }}">Create new</a>
+    <a href="{{ path('sorties/new') }}">Create new</a>
+
 {% endblock %}
