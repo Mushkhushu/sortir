@@ -17,7 +17,7 @@
 <nav class="navbar navbar-expand-lg navbar-light bg-dark-subtle">
     <div class="container">
         <a class="navbar-brand" href="{{ url('home_home') }}">
-            <img src="{{ asset('images/logo.png') }}" alt="logo" width="30" height="30">
+            <img src="{{ asset('images/favicon.png') }}" alt="logo" width="30" height="30">
         </a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
                 aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
@@ -62,7 +62,7 @@
                         {% if app.user.picture is not empty %}
                             <img src="{{ asset(picture_dir ~ '/'  ~ app.user.picture) }}" alt="#" width="55" height="55" class="rounded-circle"/>
                         {% else %}
-                            <img src="#" alt="default-avatar" width="55" height="55" class="rounded-circle"/>
+                            <img src="{{ asset('images/default-avatar.png') }}" alt="default-avatar" width="55" height="55" class="rounded-circle"/>
                         {% endif %}
                     </a>
                     <p class="ms-2 fw-bold">{{ app.user.username }}</p>
