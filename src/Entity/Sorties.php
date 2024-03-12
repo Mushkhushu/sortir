@@ -50,6 +50,21 @@ class Sorties
     #[ORM\JoinColumn(nullable: false)]
     private ?Etat $etat = null;
 
+    #[ORM\Column(length: 255)]
+    private ?string $ville = null;
+
+    #[ORM\Column]
+    private ?int $CodePostal = 0;
+
+    #[ORM\Column]
+    private ?int $Longitude = 0;
+
+    #[ORM\Column]
+    private ?int $latitude = 0;
+
+    #[ORM\Column(length: 255)]
+    private ?string $Rue = null;
+
     public function __construct()
     {
         $this->participants = new ArrayCollection();
@@ -192,6 +207,67 @@ class Sorties
     public function setEtat(?Etat $etat): static
     {
         $this->etat = $etat;
+
+        return $this;
+    }
+
+    public function getVille(): ?string
+    {
+
+        return $this->ville;
+    }
+
+    public function setVille(string $ville): static
+    {
+        $this->ville = $ville;
+
+        return $this;
+    }
+
+    public function getCodePostal(): ?int
+    {
+        return $this->CodePostal;
+    }
+
+    public function setCodePostal(int $CodePostal): static
+    {
+        $this->CodePostal = $CodePostal;
+
+        return $this;
+    }
+
+    public function getLongitude(): ?int
+    {
+        return $this->Longitude;
+    }
+
+    public function setLongitude(int $Longitude): static
+    {
+        $this->Longitude = $Longitude;
+
+        return $this;
+    }
+
+    public function getLatitude(): ?int
+    {
+        return $this->latitude;
+    }
+
+    public function setLatitude(int $latitude): static
+    {
+        $this->latitude = $latitude;
+
+        return $this;
+    }
+
+    public function getRue(): ?string
+    {
+        return $this->Rue;
+    }
+
+    public function setRue(string $Rue): static
+    {
+        $this->Rue = $Rue;
 
         return $this;
     }

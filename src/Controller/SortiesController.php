@@ -2,6 +2,9 @@
 
 namespace App\Controller;
 
+
+
+use App\Entity\Etat;
 use App\Entity\Sorties;
 use App\Form\SortiesType;
 use App\Repository\SortiesRepository;
@@ -12,6 +15,8 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
+use Geocoder\Query\GeocodeQuery;
+use Geoname\Query\GeonameQuery;
 
 #[Route('/sorties')]
 #[IsGranted('ROLE_USER')]
@@ -37,6 +42,8 @@ class SortiesController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $sorty->setOrganizator($security->getUser());
+            $etat = $entityManager->getRepository(Etat::class)->find(1);
+            $sorty->setEtat($etat);
             $entityManager->persist($sorty);
             $entityManager->flush();
 
@@ -84,4 +91,5 @@ class SortiesController extends AbstractController
         }
         return $this->redirectToRoute('sorties/index', [], Response::HTTP_SEE_OTHER);
     }
+
 }

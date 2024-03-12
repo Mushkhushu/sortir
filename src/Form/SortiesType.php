@@ -8,6 +8,7 @@ use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Translation\TranslatableMessage;
 
 class SortiesType extends AbstractType
 {
@@ -20,7 +21,12 @@ class SortiesType extends AbstractType
             ])
 
             ->add('duree')
-            ->add('lieu')
+            ->add('ville')
+            ->add('CodePostal')
+            ->add('Longitude')
+            ->add('latitude')
+
+            ->add('Rue')
             ->add('nbrPersonne')
             ->add('note', TextareaType::class)
             ->add('dateLimite', null, [
