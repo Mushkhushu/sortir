@@ -60,10 +60,10 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $picture = null;
 
-    #[ORM\OneToMany(targetEntity: sorties::class, mappedBy: 'organizator')]
+    #[ORM\OneToMany(targetEntity: Sorties::class, mappedBy: 'organizator')]
     private Collection $createdEvents;
 
-    #[ORM\ManyToMany(targetEntity: sorties::class, inversedBy: 'participants')]
+    #[ORM\ManyToMany(targetEntity: Sorties::class, inversedBy: 'participants')]
     private Collection $participatingEvents;
 
     public function __construct()
@@ -208,14 +208,14 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     }
 
     /**
-     * @return Collection<int, sorties>
+     * @return Collection<int, Sorties>
      */
     public function getCreatedEvents(): Collection
     {
         return $this->createdEvents;
     }
 
-    public function addCreatedEvent(sorties $createdEvent): static
+    public function addCreatedEvent(Sorties $createdEvent): static
     {
         if (!$this->createdEvents->contains($createdEvent)) {
             $this->createdEvents->add($createdEvent);
@@ -225,7 +225,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
-    public function removeCreatedEvent(sorties $createdEvent): static
+    public function removeCreatedEvent(Sorties $createdEvent): static
     {
         if ($this->createdEvents->removeElement($createdEvent)) {
             // set the owning side to null (unless already changed)
@@ -238,14 +238,14 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     }
 
     /**
-     * @return Collection<int, sorties>
+     * @return Collection<int, Sorties>
      */
     public function getParticipatingEvents(): Collection
     {
         return $this->participatingEvents;
     }
 
-    public function addParticipatingEvent(sorties $participatingEvent): static
+    public function addParticipatingEvent(Sorties $participatingEvent): static
     {
         if (!$this->participatingEvents->contains($participatingEvent)) {
             $this->participatingEvents->add($participatingEvent);
@@ -254,7 +254,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
-    public function removeParticipatingEvent(sorties $participatingEvent): static
+    public function removeParticipatingEvent(Sorties $participatingEvent): static
     {
         $this->participatingEvents->removeElement($participatingEvent);
 
