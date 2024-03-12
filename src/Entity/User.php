@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\UserRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
@@ -57,6 +59,18 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $picture = null;
+
+    #[ORM\OneToMany(targetEntity: sorties::class, mappedBy: 'organizator')]
+    private Collection $createdEvents;
+
+    #[ORM\ManyToMany(targetEntity: sorties::class, inversedBy: 'participants')]
+    private Collection $participatingEvents;
+
+    public function __construct()
+    {
+        $this->createdEvents = new ArrayCollection();
+        $this->participatingEvents = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -189,6 +203,60 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setPicture(?string $picture): static
     {
         $this->picture = $picture;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, sorties>
+     */
+    public function getCreatedEvents(): Collection
+    {
+        return $this->createdEvents;
+    }
+
+    public function addCreatedEvent(sorties $createdEvent): static
+    {
+        if (!$this->createdEvents->contains($createdEvent)) {
+            $this->createdEvents->add($createdEvent);
+            $createdEvent->setOrganizator($this);
+        }
+
+        return $this;
+    }
+
+    public function removeCreatedEvent(sorties $createdEvent): static
+    {
+        if ($this->createdEvents->removeElement($createdEvent)) {
+            // set the owning side to null (unless already changed)
+            if ($createdEvent->getOrganizator() === $this) {
+                $createdEvent->setOrganizator(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, sorties>
+     */
+    public function getParticipatingEvents(): Collection
+    {
+        return $this->participatingEvents;
+    }
+
+    public function addParticipatingEvent(sorties $participatingEvent): static
+    {
+        if (!$this->participatingEvents->contains($participatingEvent)) {
+            $this->participatingEvents->add($participatingEvent);
+        }
+
+        return $this;
+    }
+
+    public function removeParticipatingEvent(sorties $participatingEvent): static
+    {
+        $this->participatingEvents->removeElement($participatingEvent);
 
         return $this;
     }
