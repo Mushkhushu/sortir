@@ -3,49 +3,59 @@
 {% block title %}Sorties{% endblock %}
 
 {% block body %}
-    <h1>Sorties</h1>
+    <main class="d-flex">
+        {% block sidebar %}
+            {{ parent() }}
+        {% endblock %}
+        <div class="container">
+            {% for group, messages in app.flashes %}
+                {% for message in messages %}
+                    <div class="alert alert-{{ group }}" role="alert">{{ message }}</div>
+                {% endfor %}
+            {% endfor %}
+            <h1>Sorties</h1>
 
-    <table class="table">
-        <tbody>
-            <tr>
-                <th>Id</th>
-                <td>{{ sorty.id }}</td>
-            </tr>
-            <tr>
-                <th>Nom</th>
-                <td>{{ sorty.nom }}</td>
-            </tr>
-            <tr>
-                <th>Date</th>
-                <td>{{ sorty.date ? sorty.date|date('Y-m-d H:i:s') : '' }}</td>
-            </tr>
+            <table class="table">
+                <tbody>
+                <tr>
+                    <th>Id</th>
+                    <td>{{ sorty.id }}</td>
+                </tr>
+                <tr>
+                    <th>Nom</th>
+                    <td>{{ sorty.nom }}</td>
+                </tr>
+                <tr>
+                    <th>Date</th>
+                    <td>{{ sorty.date ? sorty.date|date('Y-m-d H:i:s') : '' }}</td>
+                </tr>
+                <tr>
+                    <th>Duree</th>
+                    <td>{{ sorty.duree }}</td>
+                </tr>
+                <tr>
+                    <th>Lieu</th>
+                    <td>{{ sorty.lieu }}</td>
+                </tr>
+                <tr>
+                    <th>NbrPersonne</th>
+                    <td>{{ sorty.nbrPersonne }}</td>
+                </tr>
+                <tr>
+                    <th>Note</th>
+                    <td>{{ sorty.note }}</td>
+                </tr>
+                <tr>
+                    <th>DateLimite</th>
+                    <td>{{ sorty.dateLimite ? sorty.dateLimite|date('Y-m-d') : '' }}</td>
+                </tr>
+                </tbody>
+            </table>
 
-            <tr>
-                <th>Duree</th>
-                <td>{{ sorty.duree }}</td>
-            </tr>
-            <tr>
-                <th>Lieu</th>
-                <td>{{ sorty.lieu }}</td>
-            </tr>
-            <tr>
-                <th>NbrPersonne</th>
-                <td>{{ sorty.nbrPersonne }}</td>
-            </tr>
-            <tr>
-                <th>Note</th>
-                <td>{{ sorty.note }}</td>
-            </tr>
-            <tr>
-                <th>DateLimite</th>
-                <td>{{ sorty.dateLimite ? sorty.dateLimite|date('Y-m-d') : '' }}</td>
-            </tr>
-        </tbody>
-    </table>
+            <a href="{{ path('sorties/index') }}" class="btn btn-outline-primary">Back to List</a>
+            <a href="{{ path('sorties/edit', {'id': sorty.id}) }}" class="btn btn-outline-secondary">Edit</a>
 
-    <a href="{{ path('sorties/index') }}">back to list</a>
-
-    <a href="{{ path('sorties/edit', {'id': sorty.id}) }}">edit</a>
-
-    {{ include('sorties/delete_form.html.twig') }}
+            {{ include('sorties/delete_form.html.twig') }}
+        </div>
+    </main>
 {% endblock %}

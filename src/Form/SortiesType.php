@@ -4,6 +4,8 @@ namespace App\Form;
 
 use App\Entity\Sorties;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -20,9 +22,14 @@ class SortiesType extends AbstractType
             ->add('duree')
             ->add('lieu')
             ->add('nbrPersonne')
-            ->add('note')
+            ->add('note', TextareaType::class)
             ->add('dateLimite', null, [
                 'widget' => 'single_text',
+            ])
+            ->add('submit', SubmitType::class, [
+                'attr' => [
+                    'class' => 'btn btn-outline-success'
+                ]
             ])
         ;
     }

@@ -3,48 +3,57 @@
 {% block title %}Sorties index{% endblock %}
 
 {% block body %}
-    <h1>Sorties index</h1>
+    <main class="d-flex">
+        {% block sidebar %}
+            {{ parent() }}
+        {% endblock %}
+        <div class="container">
+            {% for group, messages in app.flashes %}
+                {% for message in messages %}
+                    <div class="alert alert-{{ group }}" role="alert">{{ message }}</div>
+                {% endfor %}
+            {% endfor %}
 
-    <table class="table">
-        <thead>
-            <tr>
-                <th>Id</th>
-                <th>Nom</th>
-                <th>Date</th>
+            <h1>Sorties index</h1>
 
-                <th>Duree</th>
-                <th>Lieu</th>
-                <th>NbrPersonne</th>
-                <th>Note</th>
-                <th>DateLimite</th>
-                <th>actions</th>
-            </tr>
-        </thead>
-        <tbody>
-        {% for sorty in sorties %}
-            <tr>
-                <td>{{ sorty.id }}</td>
-                <td>{{ sorty.nom }}</td>
-                <td>{{ sorty.date ? sorty.date|date('Y-m-d H:i:s') : '' }}</td>
+            <table class="table">
+                <thead>
+                <tr>
+                    <th>Id</th>
+                    <th>Nom</th>
+                    <th>Date</th>
+                    <th>Duree</th>
+                    <th>Lieu</th>
+                    <th>NbrPersonne</th>
+                    <th>Note</th>
+                    <th>DateLimite</th>
+                    <th>Actions</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for sorty in sorties %}
+                    <tr>
+                        <td>{{ sorty.id }}</td>
+                        <td>{{ sorty.nom }}</td>
+                        <td>{{ sorty.date ? sorty.date|date('Y-m-d H:i:s') : '' }}</td>
+                        <td>{{ sorty.duree }}</td>
+                        <td>{{ sorty.lieu }}</td>
+                        <td>{{ sorty.nbrPersonne }}</td>
+                        <td>{{ sorty.note }}</td>
+                        <td>{{ sorty.dateLimite ? sorty.dateLimite|date('Y-m-d') : '' }}</td>
+                        <td>
+                            <a href="{{ path('sorties/show', {'id': sorty.id}) }}" class="btn btn-primary">Show</a>
+                        </td>
+                    </tr>
+                {% else %}
+                    <tr>
+                        <td colspan="9">No records found</td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
 
-                <td>{{ sorty.duree }}</td>
-                <td>{{ sorty.lieu }}</td>
-                <td>{{ sorty.nbrPersonne }}</td>
-                <td>{{ sorty.note }}</td>
-                <td>{{ sorty.dateLimite ? sorty.dateLimite|date('Y-m-d') : '' }}</td>
-                <td>
-                    <a href="{{ path('sorties/show', {'id': sorty.id}) }}">show</a>
-
-                </td>
-            </tr>
-        {% else %}
-            <tr>
-                <td colspan="10">no records found</td>
-            </tr>
-        {% endfor %}
-        </tbody>
-    </table>
-
-    <a href="{{ path('sorties/new') }}">Create new</a>
-
+            <a href="{{ path('sorties/new') }}" class="btn btn-success">Create New</a>
+        </div>
+    </main>
 {% endblock %}

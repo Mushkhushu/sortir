@@ -3,9 +3,98 @@
 {% block title %}New Sorties{% endblock %}
 
 {% block body %}
-    <h1>Create new Sorties</h1>
+    <main class="d-flex">
+        {% block sidebar %}
+            {{ parent() }}
+        {% endblock %}
+        <div class="container">
+            {% for group, messages in app.flashes %}
+                {% for message in messages %}
+                    <div class="alert alert-{{ group }}" role="alert">{{ message }}</div>
+                {% endfor %}
+            {% endfor %}
+            <h1>Create new Sorties</h1>
 
-    {{ include('sorties/form.html.twig') }}
-
-    <a href="{{ path('sorties/index') }}">back to list</a>
+            <div class="row">
+                <div class="col-md-6">
+                    {{ form_start(form) }}
+                    <div class="mb-3">
+                        {{ form_label(form.nom, 'Nom:', {'label_attr': {'class': 'form-label'}}) }}
+                        {{ form_widget(form.nom, {'attr': {'class': 'form-control'}}) }}
+                        {% set errors = form_errors(form.nom) %}
+                        {% if errors %}
+                            <div class="text-danger">
+                                {{ errors|striptags }}
+                            </div>
+                        {% endif %}
+                    </div>
+                    <div class="mb-3">
+                        {{ form_label(form.date, 'Date:', {'label_attr': {'class': 'form-label'}}) }}
+                        {{ form_widget(form.date, {'attr': {'class': 'form-control'}}) }}
+                        {% set errors = form_errors(form.date) %}
+                        {% if errors %}
+                            <div class="text-danger">
+                                {{ errors|striptags }}
+                            </div>
+                        {% endif %}
+                    </div>
+                    <div class="mb-3">
+                        {{ form_label(form.duree, 'Durée:', {'label_attr': {'class': 'form-label'}}) }}
+                        {{ form_widget(form.duree, {'attr': {'class': 'form-control'}}) }}
+                        {% set errors = form_errors(form.duree) %}
+                        {% if errors %}
+                            <div class="text-danger">
+                                {{ errors|striptags }}
+                            </div>
+                        {% endif %}
+                    </div>
+                    <div class="mb-3">
+                        {{ form_label(form.lieu, 'Lieu:', {'label_attr': {'class': 'form-label'}}) }}
+                        {{ form_widget(form.lieu, {'attr': {'class': 'form-control'}}) }}
+                        {% set errors = form_errors(form.lieu) %}
+                        {% if errors %}
+                            <div class="text-danger">
+                                {{ errors|striptags }}
+                            </div>
+                        {% endif %}
+                    </div>
+                    <div class="mb-3">
+                        {{ form_label(form.nbrPersonne, 'Nombre de personnes:', {'label_attr': {'class': 'form-label'}}) }}
+                        {{ form_widget(form.nbrPersonne, {'attr': {'class': 'form-control'}}) }}
+                        {% set errors = form_errors(form.nbrPersonne) %}
+                        {% if errors %}
+                            <div class="text-danger">
+                                {{ errors|striptags }}
+                            </div>
+                        {% endif %}
+                    </div>
+                    <div class="mb-3">
+                        {{ form_label(form.note, 'Note:', {'label_attr': {'class': 'form-label'}}) }}
+                        {{ form_widget(form.note, {'attr': {'class': 'form-control'}}) }}
+                        {% set errors = form_errors(form.note) %}
+                        {% if errors %}
+                            <div class="text-danger">
+                                {{ errors|striptags }}
+                            </div>
+                        {% endif %}
+                    </div>
+                    <div class="mb-3">
+                        {{ form_label(form.dateLimite, 'Date limite:', {'label_attr': {'class': 'form-label'}}) }}
+                        {{ form_widget(form.dateLimite, {'attr': {'class': 'form-control'}}) }}
+                        {% set errors = form_errors(form.dateLimite) %}
+                        {% if errors %}
+                            <div class="text-danger">
+                                {{ errors|striptags }}
+                            </div>
+                        {% endif %}
+                    </div>
+                    <div class="d-flex justify-content-between">
+                        <a href="{{ path('sorties/index') }}" class="btn btn-outline-primary">Back to List</a>
+                        {{ form_row(form.submit, {'label': 'Create New', 'attr': {'class': 'btn btn-primary'}}) }}
+                    </div>
+                    {{ form_end(form) }}
+                </div>
+            </div>
+        </div>
+    </main>
 {% endblock %}

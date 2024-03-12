@@ -17,7 +17,7 @@
 <nav class="navbar navbar-expand-lg navbar-light bg-dark-subtle">
     <div class="container">
         <a class="navbar-brand" href="{{ url('home_home') }}">
-            <img src="{{ asset('images/logo.png') }}" alt="logo" width="30" height="30">
+            <img src="{{ asset('images/favicon.png') }}" alt="logo" width="30" height="30">
         </a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
                 aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
@@ -27,12 +27,12 @@
             <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
                 <li class="nav-item"><a class="nav-link" href="#">À propos</a></li>
                 <li class="nav-item"><a class="nav-link" href="#">Contact</a></li>
-                <li class="nav-item"><a class="nav-link" href="#">Liste des idées</a></li>
+                <li class="nav-item"><a class="nav-link" href="{{ url('sorties/index') }}">Liste des sorties</a></li>
                 {% if is_granted('IS_AUTHENTICATED') %}
-                    <li class="nav-item"><a class="nav-link" href="#">Créer une idée</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{{ url('sorties/new') }}">Créer une sortie</a></li>
                 {% endif %}
                 {% if is_granted('ROLE_ADMIN') %}
-                    <li class="nav-item"><a class="nav-link" href="#">Liste des catégories</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{{ url('users/index') }}">Liste des utilisateurs</a></li>
                 {% endif %}
             </ul>
         </div>
@@ -62,12 +62,12 @@
                         {% if app.user.picture is not empty %}
                             <img src="{{ asset(picture_dir ~ '/'  ~ app.user.picture) }}" alt="#" width="55" height="55" class="rounded-circle"/>
                         {% else %}
-                            <img src="#" alt="default-avatar" width="55" height="55" class="rounded-circle"/>
+                            <img src="{{ asset('images/default-avatar.png') }}" alt="default-avatar" width="55" height="55" class="rounded-circle"/>
                         {% endif %}
                     </a>
                     <p class="ms-2 fw-bold">{{ app.user.username }}</p>
                     <ul class="dropdown-menu text-small shadow" aria-labelledby="dropdownUser3">
-                        <li><a class="dropdown-item" href="{{  url('user/profile') }}">Profile</a></li>
+                        <li><a class="dropdown-item" href="{{  url('user_profile') }}">Profile</a></li>
                         <li>
                             <hr class="dropdown-divider">
                         </li>

@@ -3,9 +3,21 @@
 {% block title %}New User{% endblock %}
 
 {% block body %}
+<main class="d-flex">
+    {%  block sidebar %}
+        {{ parent() }}
+    {% endblock %}
+    <div class="container">
+        {% for group, messages in app.flashes %}
+            {% for message in messages %}
+                <div class="alert alert-{{ group }}" role="alert">{{ message }}</div>
+            {% endfor %}
+        {% endfor %}
     <h1>Create new User</h1>
 
     {{ include('user/_form.html.twig') }}
 
     <a href="{{ path('user_index') }}">back to list</a>
+    </div>
+</main>
 {% endblock %}
