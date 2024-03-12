@@ -59,11 +59,13 @@
                 </tr>
                 </tbody>
             </table>
-
+            <div>
             <a href="{{ path('sorties/index') }}" class="btn btn-outline-primary">Back to List</a>
-            <a href="{{ path('sorties/edit', {'id': sorty.id}) }}" class="btn btn-outline-secondary">Edit</a>
-
+            {% if app.user == sorty.organizator or is_granted('ROLE_ADMIN')%}
+                <a href="{{ path('sorties/edit', {'id': sorty.id}) }}" class="btn btn-outline-secondary">Edit</a>
             {{ include('sorties/delete_form.html.twig') }}
+            {% endif %}
+            </div>
         </div>
     </main>
 {% endblock %}

@@ -18,7 +18,7 @@ use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\String\Slugger\SluggerInterface;
 
-#[Route(path: 'user/', name: 'user_')]
+#[Route(path: 'user/', name: 'user/')]
 class UserController extends AbstractController
 {
     public function getUsersInfos(Security $security): Response
@@ -50,7 +50,7 @@ class UserController extends AbstractController
             $entityManager->persist($user);
             $entityManager->flush();
 
-            return $this->redirectToRoute('app_user_index', [], Response::HTTP_SEE_OTHER);
+            return $this->redirectToRoute('user/index', [], Response::HTTP_SEE_OTHER);
         }
 
         return $this->render('user/new.html.twig', [
@@ -78,7 +78,7 @@ class UserController extends AbstractController
     }
 
     #[Route('edit', name: 'edit', methods: ['GET', 'POST'])]
-    public function edit(Security $security,Request $request, EntityManagerInterface $entityManager, SluggerInterface $slugger): Response
+    public function edit(Security $security, Request $request, EntityManagerInterface $entityManager, SluggerInterface $slugger): Response
     {
         $user = $security->getUser();
         $form = $this->createForm(UserType::class, $user);
@@ -87,7 +87,7 @@ class UserController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $formData = $form->getData();
             if (!empty($formData->getUsername())) {
-               $user->setUsername($formData->getUsername());
+                $user->setUsername($formData->getUsername());
             }
             if (!empty($formData->getFirstName())) {
                 $user->setFirstName($formData->getFirstName());
@@ -107,7 +107,7 @@ class UserController extends AbstractController
                 $fileName = $slugger->slug($user->getUsername()) . '-' . uniqid() . '.' . $pictureFile->guessExtension();
                 $pictureFile->move($this->getParameter('picture_dir'), $fileName);
                 if (!empty($user->getPicture())) {
-                    $picturePath= $this->getParameter('picture_dir') . '/' . $user->getPicture();
+                    $picturePath = $this->getParameter('picture_dir') . '/' . $user->getPicture();
                     if (file_exists($picturePath)) {
                         unlink($picturePath);
                     }
@@ -118,7 +118,7 @@ class UserController extends AbstractController
             $entityManager->flush();
 
             $this->addFlash('success', 'Le profil a été mis à jour avec succès !');
-            return $this->redirectToRoute('user_index');
+            return $this->redirectToRoute('user/index');
         }
 
         return $this->render('user/edit.html.twig', [
@@ -158,7 +158,7 @@ class UserController extends AbstractController
             $entityManager->flush();
 
             $this->addFlash('success', 'Mot de passe modifié avec succès !');
-            return $this->redirectToRoute('user_profile', ['id' => $user->getId()]);
+            return $this->redirectToRoute('user/profile', ['id' => $user->getId()]);
         }
 
         return $this->render('user/changePassword.html.twig', [
@@ -167,14 +167,18 @@ class UserController extends AbstractController
         ]);
     }
 
-    #[Route('delete', name: 'delete', methods: ['POST'])]
+    #[Route('delete', name: 'sorties/delete', methods: ['POST'])]
     public function delete(Request $request, User $user, EntityManagerInterface $entityManager): Response
     {
-        if ($this->isCsrfTokenValid('delete'.$user->getId(), $request->request->get('_token'))) {
+        if ($this->isCsrfTokenValid('delete' . $user->getId(), $request->request->get('_token'))) {
             $entityManager->remove($user);
             $entityManager->flush();
         }
 
-        return $this->redirectToRoute('app_user_index', [], Response::HTTP_SEE_OTHER);
+        return $this->redirectToRoute('user/index', [], Response::HTTP_SEE_OTHER);
     }
+
+
+
 }
+

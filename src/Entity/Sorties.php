@@ -46,6 +46,10 @@ class Sorties
     #[ORM\ManyToMany(targetEntity: User::class, mappedBy: 'participatingEvents')]
     private Collection $participants;
 
+    #[ORM\ManyToOne(inversedBy: 'sorties')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?Etat $etat = null;
+
     public function __construct()
     {
         $this->participants = new ArrayCollection();
@@ -176,6 +180,18 @@ class Sorties
         if ($this->participants->removeElement($participant)) {
             $participant->removeParticipatingEvent($this);
         }
+
+        return $this;
+    }
+
+    public function getEtat(): ?Etat
+    {
+        return $this->etat;
+    }
+
+    public function setEtat(?Etat $etat): static
+    {
+        $this->etat = $etat;
 
         return $this;
     }
