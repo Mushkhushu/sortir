@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Edit User{% endblock %}
+{% block title %}Edit{% endblock %}
 
 {% block body %}
     <main class="d-flex">
@@ -14,12 +14,77 @@
                 {% endfor %}
             {% endfor %}
             <h1>Edit {{ user.username }}</h1>
-
-            {{ include('user/_form.html.twig', {'button_label': 'Update'}) }}
-
-            <a href="{{ path('user_index') }}">back to list</a>
-
-            {{ include('user/_delete_form.html.twig') }}
+            <div class="row">
+                <div class="col-md-6">
+                    {{ form_start(form) }}
+                    <div class="mb-3">
+                        {{ form_label(form.username, 'Username:', {'label_attr': {'class': 'form-label'}}) }}
+                        {{ form_widget(form.username, {'attr': {'class': 'form-control', 'readonly': 'readonly'}}) }}
+                        {% set errors = form_errors(form.username) %}
+                        {% if errors %}
+                            <div class="text-danger">
+                                {{ errors|striptags }}
+                            </div>
+                        {% endif %}
+                    </div>
+                    <div class="mb-3">
+                        {{ form_label(form.firstName, 'Prénom:', {'label_attr': {'class': 'form-label'}}) }}
+                        {{ form_widget(form.firstName, {'attr': {'class': 'form-control'}}) }}
+                        {% set errors = form_errors(form.firstName) %}
+                        {% if errors %}
+                            <div class="text-danger">
+                                {{ errors|striptags }}
+                            </div>
+                        {% endif %}
+                    </div>
+                    <div class="mb-3">
+                        {{ form_label(form.lastName, 'Nom:', {'label_attr': {'class': 'form-label'}}) }}
+                        {{ form_widget(form.lastName, {'attr': {'class': 'form-control'}}) }}
+                        {% set errors = form_errors(form.lastName) %}
+                        {% if errors %}
+                            <div class="text-danger">
+                                {{ errors|striptags }}
+                            </div>
+                        {% endif %}
+                    </div>
+                    <div class="mb-3">
+                        {{ form_label(form.mail, 'Email:', {'label_attr': {'class': 'form-label'}}) }}
+                        {{ form_widget(form.mail, {'attr': {'class': 'form-control'}}) }}
+                        {% set errors = form_errors(form.mail) %}
+                        {% if errors %}
+                            <div class="text-danger">
+                                {{ errors|striptags }}
+                            </div>
+                        {% endif %}
+                    </div>
+                    <div class="mb-3">
+                        {{ form_label(form.phoneNumber, 'Téléphone:', {'label_attr': {'class': 'form-label'}}) }}
+                        {{ form_widget(form.phoneNumber, {'attr': {'class': 'form-control'}}) }}
+                        {% set errors = form_errors(form.phoneNumber) %}
+                        {% if errors %}
+                            <div class="text-danger">
+                                {{ errors|striptags }}
+                            </div>
+                        {% endif %}
+                    </div>
+                    <div class="mb-3">
+                        {{ form_label(form.picture, 'Avatar:', {'label_attr': {'class': 'form-label'}}) }}
+                        {{ form_widget(form.picture, {'attr': {'class': 'form-control'}}) }}
+                        {% set errors = form_errors(form.picture) %}
+                        {% if errors %}
+                            <div class="text-danger">
+                                {{ errors|striptags }}
+                            </div>
+                        {% endif %}
+                    </div>
+                    <div class="d-flex justify-content-between">
+                        <a href="{{ path('user_index') }}" class="btn btn-outline-danger">Retour à la liste</a>
+                        <a href="{{ path('user_change_password') }}" class="btn btn-outline-secondary">Modifier votre mot de passe</a>
+                        {{ form_row(form.submit, {'label': 'Modifier votre profil'}) }}
+                    </div>
+                    {{ form_end(form) }}
+                </div>
+            </div>
         </div>
     </main>
 {% endblock %}

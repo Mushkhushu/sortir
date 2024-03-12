@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\User;
 
+use App\Form\EditPasswordType;
 use App\Form\UserType;
 use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
@@ -12,7 +13,9 @@ use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\String\Slugger\SluggerInterface;
 
 #[Route(path: 'user/', name: 'user_')]
@@ -95,6 +98,7 @@ class UserController extends AbstractController
             if (!empty($formData->getPhoneNumber())) {
                 $user->setPhoneNumber($formData->getPhoneNumber());
             }
+
             if (!empty($formData->getMail())) {
                 $user->setMail($formData->getMail());
             }
@@ -114,10 +118,51 @@ class UserController extends AbstractController
             $entityManager->flush();
 
             $this->addFlash('success', 'Le profil a été mis à jour avec succès !');
-            return $this->redirectToRoute('user_show');
+            return $this->redirectToRoute('user_index');
         }
 
         return $this->render('user/edit.html.twig', [
+            'user' => $user,
+            'form' => $form->createView(),
+        ]);
+    }
+
+    #[Route('change_password', name: 'change_password')]
+    public function changePassword(Request $request, UserPasswordHasherInterface $passwordHasher, EntityManagerInterface $entityManager, Security $security): Response
+    {
+        $user = $security->getUser();
+
+        // Vérifier si l'utilisateur est authentifié
+        if (!$user instanceof PasswordAuthenticatedUserInterface) {
+            throw new \LogicException('Vous devez être authentifié pour accéder à cette page.');
+        }
+
+        $form = $this->createForm(EditPasswordType::class);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $formData = $form->getData();
+
+            // Vérifie que le mot de passe actuel est correct
+            if (!$passwordHasher->isPasswordValid($user, $formData['current_password'])) {
+                $this->addFlash('error', 'Le mot de passe actuel est incorrect.');
+                return $this->redirectToRoute('change_password');
+            }
+
+            // Hachage du nouveau mot de passe
+            $newPassword = $formData['new_password'];
+            $hashedPassword = $passwordHasher->hashPassword($user, $newPassword);
+            $user->setPassword($hashedPassword);
+
+            $entityManager->persist($user);
+            $entityManager->flush();
+
+            $this->addFlash('success', 'Mot de passe modifié avec succès !');
+
+            return $this->redirectToRoute('user_profile', ['id' => $user->getId()]);
+        }
+
+        return $this->render('user/changePassword.html.twig', [
             'user' => $user,
             'form' => $form->createView(),
         ]);
