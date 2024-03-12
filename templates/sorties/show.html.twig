@@ -38,8 +38,16 @@
                     <td>{{ sorty.lieu }}</td>
                 </tr>
                 <tr>
-                    <th>NbrPersonne</th>
+                    <th>Organisateur</th>
+                    <td>{{ sorty.organizator.username }}</td>
+                </tr>
+                <tr>
+                    <th>NbrPersonne max</th>
                     <td>{{ sorty.nbrPersonne }}</td>
+                </tr>
+                <tr>
+                    <th>Nb Participants</th>
+                    <td>{{ sorty.participants|length }}</td>
                 </tr>
                 <tr>
                     <th>Note</th>
