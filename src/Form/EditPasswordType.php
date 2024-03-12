@@ -18,36 +18,34 @@ class EditPasswordType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('password', PasswordType::class, [
-                'label' => 'Mot de passe actuel',
-                'constraints' => [
-                    //on s'assure que le mot de passe actuel est bon !
-                    new UserPassword([
-                        'message' => 'Votre mot de passe actuel est invalide !'
-                    ])
-                ]
-            ])
-            ->add('new_password', RepeatedType::class, [
-                'mapped' => false,
+            ->add('plainPassword', RepeatedType::class, [
                 'type' => PasswordType::class,
-                'invalid_message' => 'Les mots de passe ne correspondent pas !',
-                'options' => ['attr' => ['class' => 'password-field']],
-                'required' => true,
-                'first_options'  => ['label' => 'Nouveau mot de passe'],
-                'second_options' => ['label' => 'Répétez svp !'],
-                //la validation est faite directement ici, pourquoi pas
-                //sinon, il fallait créer une propriété "bidon" dans l'entité pour utiliser les Assert()
-                'constraints' => [
-                    new NotBlank([
-                        'message' => 'Veuillez renseigner un mot de passe',
-                    ]),
-                    new Length([
-                        'min' => 6,
-                        'minMessage' => 'Votre mot de passe devrait avoir au moins {{ limit }} caractères',
-                        // max length allowed by Symfony for security reasons
-                        'max' => 4096,
-                    ]),
+                'options' => [
+                    'attr' => [
+                        'autocomplete' => 'new-password',
+                    ],
                 ],
+                'first_options' => [
+                    'constraints' => [
+                        new NotBlank([
+                            'message' => 'Please enter a password',
+                        ]),
+                        new Length([
+                            'min' => 6,
+                            'minMessage' => 'Your password should be at least {{ limit }} characters',
+                            // max length allowed by Symfony for security reasons
+                            'max' => 4096,
+                        ]),
+                    ],
+                    'label' => 'New password',
+                ],
+                'second_options' => [
+                    'label' => 'Repeat Password',
+                ],
+                'invalid_message' => 'The password fields must match.',
+                // Instead of being set onto the object directly,
+                // this is read and encoded in the controller
+                'mapped' => false,
             ])
             ->add('ok', SubmitType::class)
         ;
