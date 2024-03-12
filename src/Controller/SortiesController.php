@@ -82,7 +82,6 @@ class SortiesController extends AbstractController
             $entityManager->remove($sorty);
             $entityManager->flush();
         }
-
         return $this->redirectToRoute('sorties/index', [], Response::HTTP_SEE_OTHER);
     }
 }
