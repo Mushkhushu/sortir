@@ -47,7 +47,7 @@ class UserController extends AbstractController
             $entityManager->persist($user);
             $entityManager->flush();
 
-            return $this->redirectToRoute('app_user_index', [], Response::HTTP_SEE_OTHER);
+            return $this->render('home/home.html.twig');
         }
 
         return $this->render('user/new.html.twig', [
@@ -114,7 +114,7 @@ class UserController extends AbstractController
             $entityManager->flush();
 
             $this->addFlash('success', 'Le profil a été mis à jour avec succès !');
-            return $this->redirectToRoute('user_show');
+            return $this->redirectToRoute('user/show.html.twig');
         }
 
         return $this->render('user/edit.html.twig', [
@@ -123,7 +123,7 @@ class UserController extends AbstractController
         ]);
     }
 
-    #[Route('delete', name: 'delete', methods: ['POST'])]
+    #[Route('delete/{id}', name: 'delete', methods: ['POST'])]
     public function delete(Request $request, User $user, EntityManagerInterface $entityManager): Response
     {
         if ($this->isCsrfTokenValid('delete'.$user->getId(), $request->request->get('_token'))) {
@@ -131,6 +131,6 @@ class UserController extends AbstractController
             $entityManager->flush();
         }
 
-        return $this->redirectToRoute('app_user_index', [], Response::HTTP_SEE_OTHER);
+        return $this->render('home/home.html.twig');
     }
 }
