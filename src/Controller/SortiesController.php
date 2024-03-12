@@ -7,6 +7,7 @@ use App\Form\SortiesType;
 use App\Repository\SortiesRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
@@ -28,13 +29,14 @@ class SortiesController extends AbstractController
     }
 
     #[Route('/new', name: 'sorties/new', methods: ['GET', 'POST'])]
-    public function new(Request $request, EntityManagerInterface $entityManager): Response
+    public function new(Security $security, Request $request, EntityManagerInterface $entityManager): Response
     {
         $sorty = new Sorties();
         $form = $this->createForm(SortiesType::class, $sorty);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            $sorty->setOrganizator($security->getUser());
             $entityManager->persist($sorty);
             $entityManager->flush();
 
