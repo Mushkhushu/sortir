@@ -21,10 +21,12 @@
                 <tr>
                     <th>Id</th>
                     <th>Nom</th>
-                    <th>Date</th>
+                    <th>Date de la sortie</th>
                     <th>Duree</th>
                     <th>Lieu</th>
-                    <th>NbrPersonne</th>
+                    <th>Organisateur</th>
+                    <th>NbrPersonne max</th>
+                    <th>Participants</th>
                     <th>Note</th>
                     <th>DateLimite</th>
                     <th>Actions</th>
@@ -38,11 +40,14 @@
                         <td>{{ sorty.date ? sorty.date|date('Y-m-d H:i:s') : '' }}</td>
                         <td>{{ sorty.duree }}</td>
                         <td>{{ sorty.lieu }}</td>
+                        <td>{{ sorty.organizator.username }}</td>
                         <td>{{ sorty.nbrPersonne }}</td>
+                        <td>{{ sorty.participants|length }}</td>
                         <td>{{ sorty.note }}</td>
                         <td>{{ sorty.dateLimite ? sorty.dateLimite|date('Y-m-d') : '' }}</td>
                         <td>
                             <a href="{{ path('sorties/show', {'id': sorty.id}) }}" class="btn btn-primary">Show</a>
+                            <a href="{{ path('register_to_sortie', {'id': sorty.id}) }}" class="btn btn-primary">Register</a>
                         </td>
                     </tr>
                 {% else %}

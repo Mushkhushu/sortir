@@ -8,6 +8,7 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use phpDocumentor\Reflection\Types\Integer;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: SortiesRepository::class)]
 class Sorties
@@ -167,7 +168,6 @@ class Sorties
             $this->participants->add($participant);
             $participant->addParticipatingEvent($this);
         }
-
         return $this;
     }
 
