@@ -43,6 +43,7 @@ class SortiesController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $sorty->setOrganizator($security->getUser());
             $etat = $entityManager->getRepository(Etat::class)->find(1);
+            $sorty->setLieu('à préciser');
             $sorty->setEtat($etat);
             $entityManager->persist($sorty);
             $entityManager->flush();

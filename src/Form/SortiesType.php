@@ -19,14 +19,7 @@ class SortiesType extends AbstractType
             ->add('date', null, [
                 'widget' => 'single_text',
             ])
-
             ->add('duree')
-            ->add('ville')
-            ->add('CodePostal')
-            ->add('Longitude')
-            ->add('latitude')
-
-            ->add('Rue')
             ->add('nbrPersonne')
             ->add('note', TextareaType::class)
             ->add('dateLimite', null, [
