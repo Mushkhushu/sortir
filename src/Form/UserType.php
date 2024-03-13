@@ -19,7 +19,7 @@ class UserType extends AbstractType
             ->add('username')
             ->add('firstName')
             ->add('lastName')
-            ->add('password')
+
             ->add('phoneNumber')
             ->add('mail')
             ->add('picture', FileType::class, [

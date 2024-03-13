@@ -4,9 +4,11 @@ namespace App\Controller;
 
 use App\Entity\Etat;
 use App\Entity\Sorties;
+use App\Entity\User;
 use App\Form\SortiesType;
 use App\Repository\SortiesRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\ORM\Mapping\Entity;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\HttpFoundation\Request;
@@ -52,6 +54,21 @@ class SortiesController extends AbstractController
         ]);
     }
 
+
+
+    #[Route('/filter', name: 'sorties/filter', methods: ['GET'])]
+    public function filter(Request $request, SortiesRepository $sortiesRepository)
+    {
+        $date = $request->query->get('date');
+        $nom = $request->query->get('nom');
+
+        $sorties = $sortiesRepository->findByFilter($date, $nom);
+
+        return $this->render('sorties/index.html.twig', [
+            'sorties' => $sorties,
+        ]);
+    }
+
     #[Route('/{id}', name: 'sorties/show', methods: ['GET'])]
     public function show(Sorties $sorty): Response
     {
@@ -68,7 +85,6 @@ class SortiesController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager->flush();
-
             return $this->redirectToRoute('sorties/index', [], Response::HTTP_SEE_OTHER);
         }
 

@@ -20,7 +20,22 @@ class SortiesRepository extends ServiceEntityRepository
     {
         parent::__construct($registry, Sorties::class);
     }
+    public function findByFilter(?string $date, ?string $nom): array
+    {
+        $qb = $this->createQueryBuilder('s');
 
+        if ($date) {
+            $qb->andWhere('s.date = :date')
+                ->setParameter('date', $date);
+        }
+
+        if ($nom) {
+            $qb->andWhere('s.nom LIKE :nom')
+                ->setParameter('nom', "%{$nom}%");
+        }
+
+        return $qb->getQuery()->getResult();
+    }
     //    /**
     //     * @return Sorties[] Returns an array of Sorties objects
     //     */

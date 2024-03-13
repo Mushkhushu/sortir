@@ -50,6 +50,7 @@ class Sorties
     #[ORM\JoinColumn(nullable: false)]
     private ?Etat $etat = null;
 
+
     public function __construct()
     {
         $this->participants = new ArrayCollection();
