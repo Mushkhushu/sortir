@@ -47,9 +47,12 @@
                         <td>{{ sorty.dateLimite ? sorty.dateLimite|date('Y-m-d') : '' }}</td>
                         <td>
                             <a href="{{ path('sorties/show', {'id': sorty.id}) }}" class="btn btn-primary">Show</a>
+                            {% if sorty.etat.id == 1 or sorty.etat.id == 2 %}
                             <a href="{{ path('register_to_sortie', {'id': sorty.id}) }}" class="btn btn-primary">Register</a>
                             <a href="{{ path('unsubscribe_to_sortie', {'id': sorty.id}) }}" class="btn btn-primary">unsubscribe</a>
+                            {% endif %}
                         </td>
+
                         <td>{{ sorty.etat.libelle }}</td>
                     </tr>
                 {% else %}
