@@ -68,6 +68,7 @@
             <a href="{{ path('sorties/index') }}" class="btn btn-outline-primary">Back to List</a>
             {% if app.user == sorty.organizator or is_granted('ROLE_ADMIN')%}
                 <a href="{{ path('sorties/edit', {'id': sorty.id}) }}" class="btn btn-outline-secondary">Edit</a>
+                <a href="{{ path('etat_cancel', {'id': sorty.id}) }}" class="btn btn-outline-danger">Annuler</a>
             {{ include('sorties/delete_form.html.twig') }}
             {% endif %}
             </div>
