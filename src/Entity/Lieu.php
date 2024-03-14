@@ -122,16 +122,6 @@ class Lieu
         return $this;
     }
 
-    public function getVille(): ?Ville
-    {
-        return $this->Ville;
-    }
 
-    public function setVille(?Ville $Ville): static
-    {
-        $this->Ville = $Ville;
-
-        return $this;
-    }
 
 }
