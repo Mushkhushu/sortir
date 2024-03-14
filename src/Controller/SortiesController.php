@@ -4,7 +4,6 @@ namespace App\Controller;
 
 
 
-
 use App\Entity\Etat;
 use App\Entity\Sorties;
 use App\Form\SortiesType;
@@ -16,7 +15,8 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
-
+use Geocoder\Query\GeocodeQuery;
+use Geoname\Query\GeonameQuery;
 
 #[Route('/sorties')]
 #[IsGranted('ROLE_USER')]
@@ -43,7 +43,6 @@ class SortiesController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $sorty->setOrganizator($security->getUser());
             $etat = $entityManager->getRepository(Etat::class)->find(1);
-            $sorty->setLieu('tqt');
             $sorty->setEtat($etat);
             $entityManager->persist($sorty);
             $entityManager->flush();
@@ -54,19 +53,6 @@ class SortiesController extends AbstractController
         return $this->render('sorties/new.html.twig', [
             'sorty' => $sorty,
             'form' => $form,
-        ]);
-    }
-
-    #[Route('/filter', name: 'sorties/filter', methods: ['GET'])]
-    public function filter(Request $request, SortiesRepository $sortiesRepository)
-    {
-        $date = $request->query->get('date');
-        $nom = $request->query->get('nom');
-
-        $sorties = $sortiesRepository->findByFilter($date, $nom);
-
-        return $this->render('sorties/index.html.twig', [
-            'sorties' => $sorties,
         ]);
     }
 
@@ -99,25 +85,11 @@ class SortiesController extends AbstractController
     #[Route('/{id}', name: 'sorties/delete', methods: ['POST'])]
     public function delete(Request $request, Sorties $sorty, EntityManagerInterface $entityManager): Response
     {
-        if ($this->isCsrfTokenValid('delete' . $sorty->getId(), $request->request->get('_token'))) {
+        if ($this->isCsrfTokenValid('delete'.$sorty->getId(), $request->request->get('_token'))) {
             $entityManager->remove($sorty);
             $entityManager->flush();
-            return $this->redirectToRoute('sorties/index', [], Response::HTTP_SEE_OTHER);
         }
-
-
         return $this->redirectToRoute('sorties/index', [], Response::HTTP_SEE_OTHER);
     }
 
-
-    public function estExpiree(Sorties $sorties): Response
-    {
-        if ($sorties->estExpiree()) {
-            throw $this->createNotFoundException('Cette sortie n\'est plus disponible.');
-
-        }
-
-        return $this->redirectToRoute('sorties/index', [], Response::HTTP_SEE_OTHER);
-    }
 }
-

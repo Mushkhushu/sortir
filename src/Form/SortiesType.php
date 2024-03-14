@@ -3,7 +3,6 @@
 namespace App\Form;
 
 use App\Entity\Sorties;
-use DateTime;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
@@ -30,7 +29,15 @@ class SortiesType extends AbstractType
                 'attr' => [
                     'class' => 'btn btn-outline-success'
                 ]
-            ]);
+            ])
+            ->add('participants', EntityType::class, [
+                'class' => User::class,
+                'choice_label' => 'username',
+                'multiple' => true,
+                'expanded' => true,
+            ])
+        ;
+
     }
 
     public function configureOptions(OptionsResolver $resolver): void

@@ -1,0 +1,45 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Annuler une sortie{% endblock %}
+
+{% block body %}
+
+    <main class="d-flex">
+        {% block sidebar %}
+            {{ parent() }}
+        {% endblock %}
+        <div class="container">
+            {% for group, messages in app.flashes %}
+                {% for message in messages %}
+                    <div class="alert alert-{{ group }}" role="alert">{{ message }}</div>
+                {% endfor %}
+            {% endfor %}
+            <h1>Annuler une sortie</h1>
+            <form method="post" action="{{ path('etat_cancel', {'id': sorty.id}) }}">
+                {{ form_start(form) }}
+                <div class="mb-3">
+                    <label for="sortie" class="form-label">Sortie concernée:</label>
+                    <input type="text" id="sortie" name="sortie" class="form-control" value="{{ sorty.nom }}" readonly>
+                </div>
+                <div class="mb-3">
+                    <label for="libelle" class="form-label">État:</label>
+                    <input type="text" id="libelle" name="libelle" class="form-control" value="{{ etat.libelle }}" readonly>
+                </div>
+                <div class="mb-3">
+                    {{ form_label(form.motif, 'motif:', {'label_attr': {'class': 'form-label'}}) }}
+                    {{ form_widget(form.motif, {'attr': {'class': 'form-control'}}) }}
+                    {% set errors = form_errors(form.motif) %}
+                    {% if errors %}
+                        <div class="text-danger">
+                            {{ errors|striptags }}
+                        </div>
+                    {% endif %}
+                </div>
+                <div class="mb-3">
+                    {{ form_row(form.submit, {'label': 'Annuler', 'attr': {'class': 'btn btn-danger'}}) }}
+                </div>
+                {{ form_end(form) }}
+            </form>
+        </div>
+    </main>
+{% endblock %}

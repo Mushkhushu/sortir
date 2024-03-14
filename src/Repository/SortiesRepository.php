@@ -3,6 +3,7 @@
 namespace App\Repository;
 
 use App\Entity\Sorties;
+
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -20,7 +21,7 @@ class SortiesRepository extends ServiceEntityRepository
     {
         parent::__construct($registry, Sorties::class);
     }
-    public function findByFilter(?string $date, ?string $nom): array
+    public function findByFilter(?string $date, ?string $nom,): array
     {
         $qb = $this->createQueryBuilder('s');
 
@@ -33,6 +34,7 @@ class SortiesRepository extends ServiceEntityRepository
             $qb->andWhere('s.nom LIKE :nom')
                 ->setParameter('nom', "%{$nom}%");
         }
+
 
         return $qb->getQuery()->getResult();
     }

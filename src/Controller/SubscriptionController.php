@@ -21,6 +21,12 @@ class SubscriptionController extends AbstractController
     {
         $user = $security->getUser();
         $sortie = $sortiesRepository->find($id);
+        //Vérifier l'état de la sortie
+        $etatSortie = $sortie->getEtat();
+        if ($etatSortie !== 1 && $etatSortie !== 2) {
+            $this->addFlash('warning', 'Vous ne pouvez pas vous inscrire à cette sortie.');
+            return $this->redirectToRoute('sorties/show', ['id' => $id]);
+        }
         if (!$user instanceof User) {
             throw new \LogicException('L\'utilisateur connecté n\'est pas une instance de la classe User.');
         }

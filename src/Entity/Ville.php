@@ -13,37 +13,37 @@ class Ville
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\Column]
-    private ?int $CodePostal = null;
+    #[ORM\Column(length: 255)]
+    private ?string $nom = null;
 
     #[ORM\Column(length: 255)]
-    private ?string $Nom = null;
+    private ?string $codePostal = null;
 
     public function getId(): ?int
     {
         return $this->id;
     }
 
-    public function getCodePostal(): ?int
+    public function getNom(): ?string
     {
-        return $this->CodePostal;
+        return $this->nom;
     }
 
-    public function setCodePostal(int $CodePostal): static
+    public function setNom(string $nom): static
     {
-        $this->CodePostal = $CodePostal;
+        $this->nom = $nom;
 
         return $this;
     }
 
-    public function getNom(): ?string
+    public function getCodePostal(): ?string
     {
-        return $this->Nom;
+        return $this->codePostal;
     }
 
-    public function setNom(string $Nom): static
+    public function setCodePostal(string $codePostal): static
     {
-        $this->Nom = $Nom;
+        $this->codePostal = $codePostal;
 
         return $this;
     }
