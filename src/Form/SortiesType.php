@@ -16,12 +16,21 @@ class SortiesType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
+        $displayParticipants = $options['display_participants'] ?? true; // Par défaut, afficher le champ 'participants'
+
+        if ($displayParticipants) {
+            $builder->add('participants', EntityType::class, [
+                'class' => User::class,
+                'choice_label' => 'username',
+                'multiple' => true,
+                'expanded' => true,
+            ]);
+        }
         $builder
             ->add('nom')
             ->add('date', null, [
                 'widget' => 'single_text',
             ])
-
             ->add('duree')
             ->add('nbrPersonne')
             ->add('note', TextareaType::class)
@@ -32,21 +41,14 @@ class SortiesType extends AbstractType
                 'attr' => [
                     'class' => 'btn btn-outline-success'
                 ]
-            ])
-            ->add('participants', EntityType::class, [
-                'class' => User::class,
-                'choice_label' => 'username',
-                'multiple' => true,
-                'expanded' => true,
-            ])
-        ;
-
+            ]);
     }
 
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
             'data_class' => Sorties::class,
+            'display_participants' => true, // Par défaut, affichez le champ 'participants'
         ]);
     }
 

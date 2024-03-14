@@ -40,7 +40,7 @@ class SortiesController extends AbstractController
     public function new(Security $security, Request $request, EntityManagerInterface $entityManager): Response
     {
         $sorty = new Sorties();
-        $form = $this->createForm(SortiesType::class, $sorty);
+        $form = $this->createForm(SortiesType::class, $sorty, ['display_participants' => false]);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
