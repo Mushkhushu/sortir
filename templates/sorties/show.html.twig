@@ -71,6 +71,16 @@
             {{ include('sorties/delete_form.html.twig') }}
             {% endif %}
             </div>
+            {% if sorty.participants %}
+                <h2>Liste des participants</h2>
+                <ul>
+                    {% for participant in sorty.participants %}
+                        <li>{{ participant.username }}</li>
+                    {% else %}
+                        <li>Aucun participant</li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
         </div>
     </main>
 {% endblock %}

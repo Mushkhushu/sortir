@@ -57,17 +57,18 @@ class SortiesController extends AbstractController
 
 
     #[Route('/filter', name: 'sorties/filter', methods: ['GET'])]
-    public function filter(Request $request, SortiesRepository $sortiesRepository)
+    public function filter(Request $request, SortiesRepository $sortiesRepository,)
     {
         $date = $request->query->get('date');
         $nom = $request->query->get('nom');
 
-        $sorties = $sortiesRepository->findByFilter($date, $nom);
+        $sorties = $sortiesRepository->findByFilter($date, $nom, );
 
         return $this->render('sorties/index.html.twig', [
             'sorties' => $sorties,
         ]);
     }
+
 
     #[Route('/{id}', name: 'sorties/show', methods: ['GET'])]
     public function show(Sorties $sorty): Response
