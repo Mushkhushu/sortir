@@ -28,8 +28,8 @@
                     <th>Participants</th>
                     <th>Note</th>
                     <th>DateLimite</th>
-                    <th>Actions</th>
                     <th>Etat</th>
+                    <th>Actions</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -45,15 +45,16 @@
                         <td>{{ sorty.participants|length }}</td>
                         <td>{{ sorty.note }}</td>
                         <td>{{ sorty.dateLimite ? sorty.dateLimite|date('Y-m-d') : '' }}</td>
+                        <td>{{ sorty.etat.libelle }}</td>
                         <td>
+                            <div>
                             <a href="{{ path('sorties/show', {'id': sorty.id}) }}" class="btn btn-primary">Show</a>
                             {% if sorty.etat.id == 1 or sorty.etat.id == 2 %}
                             <a href="{{ path('register_to_sortie', {'id': sorty.id}) }}" class="btn btn-primary">Register</a>
                             <a href="{{ path('unsubscribe_to_sortie', {'id': sorty.id}) }}" class="btn btn-primary">unsubscribe</a>
                             {% endif %}
+                            </div>
                         </td>
-
-                        <td>{{ sorty.etat.libelle }}</td>
                     </tr>
                 {% else %}
                     <tr>
@@ -62,7 +63,6 @@
                 {% endfor %}
                 </tbody>
             </table>
-
             <a href="{{ path('sorties/new') }}" class="btn btn-success">Create New</a>
         </div>
     </main>
