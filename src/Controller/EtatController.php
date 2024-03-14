@@ -27,6 +27,10 @@ class EtatController extends AbstractController
         $form = $this->createForm(CancelationType::class);
         $form->handleRequest($request);
         $sorty = $sortiesRepository->find($id);
+        if($sorty->getEtat()->getId() == 2){
+            $this->addFlash('danger', 'Cette sortie est ouverte et ne peut pas être annulée !');
+            return $this->redirectToRoute('sorties/index');
+        }
         $etat = $entityManager->getRepository(Etat::class)->find(6);
         if($form->isSubmitted() && $form->isValid()){
             $sorty->setEtat($etat);
