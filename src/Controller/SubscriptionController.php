@@ -22,7 +22,7 @@ class SubscriptionController extends AbstractController
         $user = $security->getUser();
         $sortie = $sortiesRepository->find($id);
         //Vérifier l'état de la sortie (elle doit être ouverte)
-        $etatSortie = $sortie->getEtat();
+        $etatSortie = $sortie->getEtat()->getId();
         if ($etatSortie !== 2) {
             $this->addFlash('warning', 'Vous ne pouvez pas vous inscrire à cette sortie, elle n\'est pas ouverte.');
             return $this->redirectToRoute('sorties/show', ['id' => $id]);

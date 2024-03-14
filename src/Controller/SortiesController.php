@@ -28,6 +28,8 @@ class SortiesController extends AbstractController
         $sorties = $entityManager->getRepository(Sorties::class)->findAll();
         foreach ($sorties as $sorty) {
             $etatUpdater->updateEtat($sorty,$entityManager);
+            $entityManager->persist($sorty);
+            $entityManager->flush();
         }
         return $this->render('sorties/index.html.twig', [
             'sorties' => $sorties,
