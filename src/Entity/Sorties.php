@@ -196,4 +196,5 @@ class Sorties
 
         return $this;
     }
+
 }

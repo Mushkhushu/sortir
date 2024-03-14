@@ -22,6 +22,7 @@ class UserType extends AbstractType
 
             ->add('phoneNumber')
             ->add('mail')
+
             ->add('picture', FileType::class, [
                 'label' => 'Photo (.jpeg, .jpg, .png)',
                 'mapped' => false,

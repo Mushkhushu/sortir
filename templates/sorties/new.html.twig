@@ -49,16 +49,6 @@
                         {% endif %}
                     </div>
                     <div class="mb-3">
-                        {{ form_label(form.lieu, 'Lieu:', {'label_attr': {'class': 'form-label'}}) }}
-                        {{ form_widget(form.lieu, {'attr': {'class': 'form-control'}}) }}
-                        {% set errors = form_errors(form.lieu) %}
-                        {% if errors %}
-                            <div class="text-danger">
-                                {{ errors|striptags }}
-                            </div>
-                        {% endif %}
-                    </div>
-                    <div class="mb-3">
                         {{ form_label(form.nbrPersonne, 'Nombre de personnes:', {'label_attr': {'class': 'form-label'}}) }}
                         {{ form_widget(form.nbrPersonne, {'attr': {'class': 'form-control'}}) }}
                         {% set errors = form_errors(form.nbrPersonne) %}

@@ -3,8 +3,6 @@
 {% block title %}Sorties index{% endblock %}
 
 {% block body %}
-
-
     <main class="d-flex">
         {% block sidebar %}
             {{ parent() }}
@@ -15,15 +13,8 @@
                     <div class="alert alert-{{ group }}" role="alert">{{ message }}</div>
                 {% endfor %}
             {% endfor %}
-
             <h1>Sorties index</h1>
-            <form action="{{ path('sorties/filter') }}" method="GET">
-                <div class="form-group">
-                    <label for="nom">Nom de la fête :</label>
-                    <input type="text" id="nom" name="nom" >
-                </div>
-                <button type="submit" class="btn btn-primary">Filtrer</button>
-            </form>
+
             <table class="table">
                 <thead>
                 <tr>
@@ -37,8 +28,8 @@
                     <th>Participants</th>
                     <th>Note</th>
                     <th>DateLimite</th>
-                    <th>Actions
-                    <th>Etats</th>
+                    <th>Actions</th>
+                    <th>Etat</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -54,12 +45,15 @@
                         <td>{{ sorty.participants|length }}</td>
                         <td>{{ sorty.note }}</td>
                         <td>{{ sorty.dateLimite ? sorty.dateLimite|date('Y-m-d') : '' }}</td>
-
                         <td>
                             <a href="{{ path('sorties/show', {'id': sorty.id}) }}" class="btn btn-primary">Show</a>
+                            {% if sorty.etat.id == 1 or sorty.etat.id == 2 %}
                             <a href="{{ path('register_to_sortie', {'id': sorty.id}) }}" class="btn btn-primary">Register</a>
                             <a href="{{ path('unsubscribe_to_sortie', {'id': sorty.id}) }}" class="btn btn-primary">unsubscribe</a>
+                            {% endif %}
                         </td>
+
+                        <td>{{ sorty.etat.libelle }}</td>
                     </tr>
                 {% else %}
                     <tr>
