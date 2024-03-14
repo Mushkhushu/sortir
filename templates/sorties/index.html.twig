@@ -17,7 +17,7 @@
             <form action="{{ path('sorties/filter') }}" method="GET">
                 <div class="form-group">
                     <label for="nom">Nom de la fête :</label>
-                    <input type="text" id="nom" name="nom" >
+                    <input type="text" id="nom" name="nom">
                 </div>
                 <button type="submit" class="btn btn-primary">Filtrer</button>
             </form>
@@ -40,25 +40,31 @@
                 </thead>
                 <tbody>
                 {% for sorty in sorties %}
+                    {% set style = sorty.etat.id == 7 ? 'text-decoration: line-through;' : '' %}
                     <tr>
-                        <td>{{ sorty.id }}</td>
-                        <td>{{ sorty.nom }}</td>
-                        <td>{{ sorty.date ? sorty.date|date('Y-m-d H:i:s') : '' }}</td>
-                        <td>{{ sorty.duree }}</td>
-                        <td>{{ sorty.lieu }}</td>
-                        <td>{{ sorty.organizator.username }}</td>
-                        <td>{{ sorty.nbrPersonne }}</td>
-                        <td>{{ sorty.participants|length }}</td>
-                        <td>{{ sorty.note }}</td>
-                        <td>{{ sorty.dateLimite ? sorty.dateLimite|date('Y-m-d') : '' }}</td>
+                        <td style="{{ style }}">{{ sorty.id }}</td>
+                        <td style="{{ style }}">{{ sorty.nom }}</td>
+                        <td style="{{ style }}">{{ sorty.date ? sorty.date|date('Y-m-d H:i:s') : '' }}</td>
+                        <td style="{{ style }}">{{ sorty.duree }}</td>
+                        <td style="{{ style }}">{{ sorty.lieu }}</td>
+                        <td style="{{ style }}">{{ sorty.organizator.username }}</td>
+                        <td style="{{ style }}">{{ sorty.nbrPersonne }}</td>
+                        <td style="{{ style }}">{{ sorty.participants|length }}</td>
+                        <td style="{{ style }}">{{ sorty.note }}</td>
+                        <td style="{{ style }}">{{ sorty.dateLimite ? sorty.dateLimite|date('Y-m-d') : '' }}</td>
                         <td>{{ sorty.etat.libelle }}</td>
                         <td>
                             <div>
-                            <a href="{{ path('sorties/show', {'id': sorty.id}) }}" class="btn btn-primary">Show</a>
-                            {% if sorty.etat.id == 1 or sorty.etat.id == 2 %}
-                            <a href="{{ path('register_to_sortie', {'id': sorty.id}) }}" class="btn btn-primary">Register</a>
-                            <a href="{{ path('unsubscribe_to_sortie', {'id': sorty.id}) }}" class="btn btn-primary">unsubscribe</a>
-                            {% endif %}
+                                {% if sorty.etat.id != 7 %}
+                                    <a href="{{ path('sorties/show', {'id': sorty.id}) }}"
+                                       class="btn btn-primary">Show</a>
+                                    {% if sorty.etat.id == 1 or sorty.etat.id == 2 %}
+                                        <a href="{{ path('register_to_sortie', {'id': sorty.id}) }}"
+                                           class="btn btn-primary">Register</a>
+                                        <a href="{{ path('unsubscribe_to_sortie', {'id': sorty.id}) }}"
+                                           class="btn btn-primary">unsubscribe</a>
+                                    {% endif %}
+                                {% endif %}
                             </div>
                         </td>
                     </tr>

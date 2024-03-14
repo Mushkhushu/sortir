@@ -8,6 +8,7 @@ use App\Entity\Etat;
 use App\Entity\Sorties;
 use App\Form\SortiesType;
 use App\Repository\SortiesRepository;
+use App\Services\EtatUpdater;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Bundle\SecurityBundle\Security;
@@ -22,10 +23,14 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
 class SortiesController extends AbstractController
 {
     #[Route('/', name: 'sorties/index', methods: ['GET'])]
-    public function index(SortiesRepository $sortiesRepository): Response
+    public function index(EntityManagerInterface $entityManager, EtatUpdater $etatUpdater): Response
     {
+        $sorties = $entityManager->getRepository(Sorties::class)->findAll();
+        foreach ($sorties as $sorty) {
+            $etatUpdater->updateEtat($sorty,$entityManager);
+        }
         return $this->render('sorties/index.html.twig', [
-            'sorties' => $sortiesRepository->findAll(),
+            'sorties' => $sorties,
             'title' => 'Liste des sorties',
         ]);
 
