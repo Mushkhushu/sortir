@@ -15,8 +15,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
-use Geocoder\Query\GeocodeQuery;
-use Geoname\Query\GeonameQuery;
+
 
 #[Route('/sorties')]
 #[IsGranted('ROLE_USER')]
@@ -25,7 +24,6 @@ class SortiesController extends AbstractController
     #[Route('/', name: 'sorties/index', methods: ['GET'])]
     public function index(SortiesRepository $sortiesRepository): Response
     {
-
         return $this->render('sorties/index.html.twig', [
             'sorties' => $sortiesRepository->findAll(),
             'title' => 'Liste des sorties',
@@ -91,5 +89,16 @@ class SortiesController extends AbstractController
         }
         return $this->redirectToRoute('sorties/index', [], Response::HTTP_SEE_OTHER);
     }
+    #[Route('/filter', name: 'sorties/filter', methods: ['GET'])]
+    public function filter(Request $request, SortiesRepository $sortiesRepository): Response
+    {
+        $date = $request->query->get('date');
+        $nom = $request->query->get('nom');
 
+        $sorties = $sortiesRepository->findByFilter($date, $nom);
+
+        return $this->render('sorties/index.html.twig', [
+            'sorties' => $sorties,
+        ]);
+    }
 }

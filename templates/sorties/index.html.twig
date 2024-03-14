@@ -14,7 +14,13 @@
                 {% endfor %}
             {% endfor %}
             <h1>Sorties index</h1>
-
+            <form action="{{ path('sorties/filter') }}" method="GET">
+                <div class="form-group">
+                    <label for="nom">Nom de la fête :</label>
+                    <input type="text" id="nom" name="nom" >
+                </div>
+                <button type="submit" class="btn btn-primary">Filtrer</button>
+            </form>
             <table class="table">
                 <thead>
                 <tr>
