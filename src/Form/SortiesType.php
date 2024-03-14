@@ -3,6 +3,7 @@
 namespace App\Form;
 
 use App\Entity\Sorties;
+use DateTime;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
@@ -19,14 +20,7 @@ class SortiesType extends AbstractType
             ->add('date', null, [
                 'widget' => 'single_text',
             ])
-
             ->add('duree')
-            ->add('ville')
-            ->add('CodePostal')
-            ->add('Longitude')
-            ->add('latitude')
-
-            ->add('Rue')
             ->add('nbrPersonne')
             ->add('note', TextareaType::class)
             ->add('dateLimite', null, [
@@ -36,8 +30,7 @@ class SortiesType extends AbstractType
                 'attr' => [
                     'class' => 'btn btn-outline-success'
                 ]
-            ])
-        ;
+            ]);
     }
 
     public function configureOptions(OptionsResolver $resolver): void
@@ -45,5 +38,16 @@ class SortiesType extends AbstractType
         $resolver->setDefaults([
             'data_class' => Sorties::class,
         ]);
+    }
+
+    public function estExpiree(): bool
+    {
+
+
+        $date = new DateTime();
+        $date->modify('+1 month');
+        return true;
+
+
     }
 }

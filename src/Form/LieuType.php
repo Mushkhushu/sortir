@@ -16,6 +16,8 @@ class LieuType extends AbstractType
             ->add('Ville')
             ->add('Longitude')
             ->add('latitude')
+            ->add('nom')
+            ->add('rue')
 
         ;
     }

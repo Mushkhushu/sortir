@@ -66,8 +66,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\ManyToMany(targetEntity: Sorties::class, inversedBy: 'participants')]
     private Collection $participatingEvents;
 
-    #[ORM\Column(length: 255)]
-    private ?string $SiteDeRattachement = null;
+
 
     public function __construct()
     {
