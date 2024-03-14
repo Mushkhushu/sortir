@@ -45,7 +45,7 @@ class Sorties
     #[ORM\JoinColumn(nullable: false)]
     private ?Etat $etat = null;
 
-    #[ORM\ManyToOne(inversedBy: 'sorties')]
+    #[ORM\ManyToOne(inversedBy: 'sorties',targetEntity: Lieu::class, cascade: ['persist'])]
     private ?Lieu $Lieu = null;
 
     public function __construct()

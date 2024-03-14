@@ -3,22 +3,23 @@
 namespace App\Form;
 
 use App\Entity\Lieu;
+use App\Entity\Ville;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 
 class LieuType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('nom')
-            ->add('rue')
-            ->add('Ville')
-            ->add('Longitude')
-            ->add('latitude')
-            ->add('nom')
-            ->add('rue')
+            ->add('nom', TextType::class)
+            ->add('rue', TextType::class)
+            ->add('ville', TextType::class)
+            ->add('longitude', TextType::class)
+            ->add('latitude', TextType::class)
 
         ;
     }

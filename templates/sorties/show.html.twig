@@ -73,12 +73,12 @@
             {% endif %}
             </div>
             {% if sorty.participants %}
-                <h2>Liste des participant</h2>
+                <h2>Liste des participants</h2>
                 <ul>
                     {% for participant in sorty.participants %}
                         <li>{{ participant.username }}</li>
                     {% else %}
-                        <li>Aucun particip</li>
+                        <li>Aucun participant</li>
                     {% endfor %}
                 </ul>
             {% endif %}

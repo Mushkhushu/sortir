@@ -16,10 +16,10 @@ class Lieu
     private ?int $id = null;
 
     #[ORM\Column]
-    private ?int $Longitude = null;
+    private ?float $Longitude = null;
 
     #[ORM\Column]
-    private ?int $latitude = null;
+    private ?float $latitude = null;
 
     #[ORM\Column(length: 255)]
     private ?string $nom = null;
@@ -30,7 +30,7 @@ class Lieu
     #[ORM\OneToMany(targetEntity: Sorties::class, mappedBy: 'Lieu')]
     private Collection $sorties;
 
-    #[ORM\ManyToOne(inversedBy: 'lieus')]
+    #[ORM\ManyToOne(targetEntity: Ville::class, inversedBy: 'lieus',cascade: ['persist'])]
     #[ORM\JoinColumn(nullable: false)]
     private ?Ville $Ville = null;
 
@@ -44,24 +44,24 @@ class Lieu
         return $this->id;
     }
 
-    public function getLongitude(): ?int
+    public function getLongitude(): ?float
     {
         return $this->Longitude;
     }
 
-    public function setLongitude(int $Longitude): static
+    public function setLongitude(float $Longitude): static
     {
         $this->Longitude = $Longitude;
 
         return $this;
     }
 
-    public function getLatitude(): ?int
+    public function getLatitude(): ?float
     {
         return $this->latitude;
     }
 
-    public function setLatitude(int $latitude): static
+    public function setLatitude(float $latitude): static
     {
         $this->latitude = $latitude;
 

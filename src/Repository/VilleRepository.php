@@ -20,7 +20,14 @@ class VilleRepository extends ServiceEntityRepository
     {
         parent::__construct($registry, Ville::class);
     }
-
+    public function findByCodePostal($codePostal)
+    {
+        return $this->createQueryBuilder('v')
+            ->where('v.codePostal = :codePostal')
+            ->setParameter('codePostal', $codePostal)
+            ->getQuery()
+            ->getResult();
+    }
     //    /**
     //     * @return Ville[] Returns an array of Ville objects
     //     */
