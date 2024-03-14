@@ -22,7 +22,7 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
 #[IsGranted('ROLE_USER')]
 class SortiesController extends AbstractController
 {
-    #[Route('/', name: 'sorties/index', methods: ['GET'])]
+    #[Route('/', name: 'sorties/index', methods: ['POST', 'GET'])]
     public function index(EntityManagerInterface $entityManager, EtatUpdater $etatUpdater): Response
     {
         $sorties = $entityManager->getRepository(Sorties::class)->findAll();

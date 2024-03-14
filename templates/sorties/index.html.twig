@@ -22,6 +22,28 @@
                 <button type="submit" class="btn btn-primary">Filtrer</button>
             </form>
             <table class="table">
+
+
+                <div class="custom-control custom-checkbox">
+                    <input type="checkbox" class="custom-control-input" id="id_userCheckbox"> <?php echo $isUser ? '' : 'disabled'; ?>
+                    <label class="custom-control-label" for="userCheckbox">sorties aux qu'elle je suis inscrite</label>
+                </div>
+                <div class="custom-control custom-checkbox">
+                    <input type="checkbox" class="custom-control-input" id="userCheckbox"> <?php echo $isUser ? '' : 'disabled'; ?>
+                    <label class="custom-control-label" for="id_userCheckbox">sorties aux qu'elle je ne suis pas inscrite</label>
+                </div>
+                <div class="custom-control custom-checkbox">
+                    <input type="checkbox" class="custom-control-input" id="userCheckbox"> <?php echo $isUser ? '' : 'disabled'; ?>
+                    <label class="custom-control-label" for="userCheckbox">sorties passées</label>
+                </div>
+                <form action="" method="post">
+                    <div class="custom-control custom-checkbox">
+                        <input type="checkbox" class="custom-control-input" id="userCheckbox"> <?php echo $isUser ? '' : 'disabled'; ?>
+                        <label class="custom-control-label" for="userCheckbox">Sorties dont je suis l'organisateur</label>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Search</button>
+                </form>
+
                 <thead>
                 <tr>
                     <th>Id</th>
@@ -66,6 +88,7 @@
                                     {% endif %}
                                 {% endif %}
                             </div>
+
                         </td>
                     </tr>
                 {% else %}

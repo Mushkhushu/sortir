@@ -4,8 +4,12 @@ namespace App\Repository;
 
 use App\Entity\Sorties;
 
+use Composer\XdebugHandler\Status;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
+use Error;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Routing\Attribute\Route;
 
 /**
  * @extends ServiceEntityRepository<Sorties>
@@ -39,6 +43,27 @@ class SortiesRepository extends ServiceEntityRepository
         return $qb->getQuery()->getResult();
     }
 
+
+
+    public function findByUser(?string $user, ?string $User,): array
+    {
+        if ($user) {
+            return $this->createQueryBuilder('s')
+                ->andWhere('s.organizator = :user')
+                ->setParameter('user', $user)
+                ->getQuery()
+                ->getResult();
+        }
+        if ($User) {
+            return $this->createQueryBuilder('s')
+                ->andWhere('s.user = :User')
+                ->setParameter('User', $User)
+                ->getQuery()
+                ->getResult();
+
+        }
+        return [];
+    }
     //    /**
     //     * @return Sorties[] Returns an array of Sorties objects
     //     */

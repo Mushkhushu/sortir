@@ -21,6 +21,7 @@ class SortiesType extends AbstractType
             ->add('date', null, [
                 'widget' => 'single_text',
             ])
+
             ->add('duree')
             ->add('nbrPersonne')
             ->add('note', TextareaType::class)

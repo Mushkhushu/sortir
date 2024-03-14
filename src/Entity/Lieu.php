@@ -15,6 +15,9 @@ class Lieu
     #[ORM\Column]
     private ?int $id = null;
 
+    #[ORM\Column(length: 255)]
+    private ?string $Ville = null;
+
     #[ORM\Column]
     private ?int $Longitude = null;
 
@@ -32,7 +35,7 @@ class Lieu
 
     #[ORM\ManyToOne(inversedBy: 'lieus')]
     #[ORM\JoinColumn(nullable: false)]
-    private ?Ville $Ville = null;
+
 
     public function __construct()
     {
@@ -43,6 +46,11 @@ class Lieu
     {
         return $this->id;
     }
+
+
+
+
+
 
     public function getLongitude(): ?int
     {
@@ -122,16 +130,6 @@ class Lieu
         return $this;
     }
 
-    public function getVille(): ?Ville
-    {
-        return $this->Ville;
-    }
 
-    public function setVille(?Ville $Ville): static
-    {
-        $this->Ville = $Ville;
-
-        return $this;
-    }
 
 }
