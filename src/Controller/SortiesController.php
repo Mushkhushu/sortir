@@ -10,6 +10,7 @@ use App\Form\SortiesType;
 use App\Repository\SortiesRepository;
 use App\Services\EtatUpdater;
 use Doctrine\ORM\EntityManagerInterface;
+use phpDocumentor\Reflection\Types\Mixed_;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\HttpFoundation\Request;
@@ -22,14 +23,17 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
 #[IsGranted('ROLE_USER')]
 class SortiesController extends AbstractController
 {
+
     #[Route('/', name: 'sorties/index', methods: ['GET','POST'])]
     public function index(EntityManagerInterface $entityManager, EtatUpdater $etatUpdater): Response
     {
+
         $sorties = $entityManager->getRepository(Sorties::class)->findAll();
         foreach ($sorties as $sorty) {
             $etatUpdater->updateEtat($sorty, $entityManager);
             $entityManager->persist($sorty);
             $entityManager->flush();
+
         }
         return $this->render('sorties/index.html.twig', [
             'sorties' => $sorties,
@@ -37,14 +41,10 @@ class SortiesController extends AbstractController
     }
     #[Route('/filter', name: 'sorties/filter', methods: ['GET','POST'])]
     public function filter(Request $request, SortiesRepository $sortiesRepository): Response
+
     {
-        $date = $request->query->get('date');
-        $nom = $request->query->get('nom');
-        $participants = $request->query->get('participants');
-        $nonParticipants = $request->query->get('non_participants');
-        $etat = $request->query->get('etat');
-        $organizator = $request->query->get('organizator');
-        $sorties = $sortiesRepository->findByFilter($date, $nom, $participants, $nonParticipants, $etat, $organizator);
+
+        $sorties = $sortiesRepository->findByFilter($request->request->all(), $this->getUser()->getId());
         return $this->render('sorties/index.html.twig', [
             'sorties' => $sorties,
         ]);

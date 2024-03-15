@@ -26,7 +26,7 @@ class SortiesRepository extends ServiceEntityRepository
     {
         parent::__construct($registry, Sorties::class);
     }
-    public function findByFilter(?string $date,?string $organizator,?string $nom, ?string $participants, ?string $nonParticipants, ?string $etat): array
+    public function findByFilter(mixed $data, $userID): array
     {
 
         $qb = $this->createQueryBuilder('s')
