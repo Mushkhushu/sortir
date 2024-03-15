@@ -4,9 +4,6 @@
 
 {% block body %}
     <main class="d-flex">
-        {% block sidebar %}
-            {{ parent() }}
-        {% endblock %}
         <div class="container">
             {% for group, messages in app.flashes %}
                 {% for message in messages %}
@@ -14,7 +11,6 @@
                 {% endfor %}
             {% endfor %}
             <h1>Sorties</h1>
-
             <table class="table">
                 <tbody>
                 <tr>
@@ -72,16 +68,24 @@
             {{ include('sorties/delete_form.html.twig') }}
             {% endif %}
             </div>
-            {% if sorty.participants %}
-                <h2>Liste des participants</h2>
-                <ul>
-                    {% for participant in sorty.participants %}
-                        <li>{{ participant.username }}</li>
-                    {% else %}
-                        <li>Aucun participant</li>
-                    {% endfor %}
-                </ul>
-            {% endif %}
+            <div class="container">
+                {% if sorty.participants %}
+                    <div class="card-body">
+                        <h2 class="card-title">Liste des participants</h2>
+                        <ul class="list-group list-group-flush">
+                            {% for participant in sorty.participants %}
+                                <li class="list-group-item">
+                                    <a class="link-success link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover" href="{{ path('user/show', {'id': participant.id}) }}">{{ participant.username }}</a>
+                                </li>
+                            {% else %}
+                                <li class="list-group-item">Aucun participant</li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                {% endif %}
+            </div>
+
+
         </div>
     </main>
 {% endblock %}

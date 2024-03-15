@@ -4,9 +4,6 @@
 
 {% block body %}
     <main class="d-flex">
-        {% block sidebar %}
-            {{ parent() }}
-        {% endblock %}
         <div class="container">
             {% for group, messages in app.flashes %}
                 {% for message in messages %}
@@ -14,91 +11,103 @@
                 {% endfor %}
             {% endfor %}
             <h1>Sorties index</h1>
-            <form action="{{ path('sorties/filter') }}" method="GET">
-                <div class="form-group">
-                    <label for="nom">Nom de la fête :</label>
-                    <input type="text" id="nom" name="nom">
-                </div>
-                <button type="submit" class="btn btn-primary">Filtrer</button>
-            </form>
-            <table class="table">
-
-
-                <div class="custom-control custom-checkbox">
-                    <input type="checkbox" class="custom-control-input" id="id_userCheckbox"> <?php echo $isUser ? '' : 'disabled'; ?>
-                    <label class="custom-control-label" for="userCheckbox">sorties aux qu'elle je suis inscrite</label>
-                </div>
-                <div class="custom-control custom-checkbox">
-                    <input type="checkbox" class="custom-control-input" id="userCheckbox"> <?php echo $isUser ? '' : 'disabled'; ?>
-                    <label class="custom-control-label" for="id_userCheckbox">sorties aux qu'elle je ne suis pas inscrite</label>
-                </div>
-                <div class="custom-control custom-checkbox">
-                    <input type="checkbox" class="custom-control-input" id="userCheckbox"> <?php echo $isUser ? '' : 'disabled'; ?>
-                    <label class="custom-control-label" for="userCheckbox">sorties passées</label>
-                </div>
-                <form action="" method="post">
-                    <div class="custom-control custom-checkbox">
-                        <input type="checkbox" class="custom-control-input" id="userCheckbox"> <?php echo $isUser ? '' : 'disabled'; ?>
-                        <label class="custom-control-label" for="userCheckbox">Sorties dont je suis l'organisateur</label>
-                    </div>
-                    <button type="submit" class="btn btn-primary">Search</button>
-                </form>
-
-                <thead>
-                <tr>
-                    <th>Id</th>
-                    <th>Nom</th>
-                    <th>Date de la sortie</th>
-                    <th>Duree</th>
-                    <th>Lieu</th>
-                    <th>Organisateur</th>
-                    <th>NbrPersonne max</th>
-                    <th>Participants</th>
-                    <th>Note</th>
-                    <th>DateLimite</th>
-                    <th>Etat</th>
-                    <th>Actions</th>
-                </tr>
-                </thead>
-                <tbody>
-                {% for sorty in sorties %}
-                    {% set style = sorty.etat.id == 7 ? 'text-decoration: line-through;' : '' %}
-                    <tr>
-                        <td style="{{ style }}">{{ sorty.id }}</td>
-                        <td style="{{ style }}">{{ sorty.nom }}</td>
-                        <td style="{{ style }}">{{ sorty.date ? sorty.date|date('Y-m-d H:i:s') : '' }}</td>
-                        <td style="{{ style }}">{{ sorty.duree }}</td>
-                        <td style="{{ style }}">{{ sorty.lieu }}</td>
-                        <td style="{{ style }}">{{ sorty.organizator.username }}</td>
-                        <td style="{{ style }}">{{ sorty.nbrPersonne }}</td>
-                        <td style="{{ style }}">{{ sorty.participants|length }}</td>
-                        <td style="{{ style }}">{{ sorty.note }}</td>
-                        <td style="{{ style }}">{{ sorty.dateLimite ? sorty.dateLimite|date('Y-m-d') : '' }}</td>
-                        <td>{{ sorty.etat.libelle }}</td>
-                        <td>
-                            <div>
-                                {% if sorty.etat.id != 7 %}
-                                    <a href="{{ path('sorties/show', {'id': sorty.id}) }}"
-                                       class="btn btn-primary">Show</a>
-                                    {% if sorty.etat.id == 1 or sorty.etat.id == 2 %}
-                                        <a href="{{ path('register_to_sortie', {'id': sorty.id}) }}"
-                                           class="btn btn-primary">Register</a>
-                                        <a href="{{ path('unsubscribe_to_sortie', {'id': sorty.id}) }}"
-                                           class="btn btn-primary">unsubscribe</a>
-                                    {% endif %}
-                                {% endif %}
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-6">
+                        <form action="{{ path('sorties/filter') }}" method="GET">
+                            <div class="form-group">
+                                <label for="nom">Nom de la fête :</label>
+                                <input type="text" id="nom" name="nom" class="form-control">
                             </div>
+                            <button type="submit" class="btn btn-primary">Filtrer</button>
+                        </form>
+                    </div>
+                </div>
+                {% if is_granted('IS_AUTHENTICATED') %}
+                    <div class="row mt-4">
+                        <div class="col-lg-6">
+                            <div class="custom-control custom-checkbox">
+                                <input type="checkbox" class="custom-control-input" id="id_userCheckbox">
+                                <label class="custom-control-label" for="userCheckbox">Sorties auxquelles je suis
+                                    inscrit</label>
+                            </div>
+                            <div class="custom-control custom-checkbox">
+                                <input type="checkbox" class="custom-control-input" id="userCheckbox">
+                                <label class="custom-control-label" for="id_userCheckbox">Sorties auxquelles je ne suis
+                                    pas inscrit</label>
+                            </div>
+                            <div class="custom-control custom-checkbox">
+                                <input type="checkbox" class="custom-control-input" id="userCheckbox">
+                                <label class="custom-control-label" for="userCheckbox">Sorties passées</label>
+                            </div>
+                            <div class="col-lg-6">
+                                <form action="" method="post">
+                                    <div class="custom-control custom-checkbox">
+                                        <input type="checkbox" class="custom-control-input" id="userCheckbox">
+                                        <label class="custom-control-label" for="userCheckbox">Sorties dont je suis
+                                            l'organisateur</label>
+                                    </div>
+                                    <button type="submit" class="btn btn-primary mt-2">Search</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                {% endif %}
+            </div>
 
-                        </td>
-                    </tr>
-                {% else %}
-                    <tr>
-                        <td colspan="9">No records found</td>
-                    </tr>
-                {% endfor %}
-                </tbody>
-            </table>
-            <a href="{{ path('sorties/new') }}" class="btn btn-success">Create New</a>
+
+            <div class="container">
+                <div class="row row-cols-1 row-cols-md-4 row-cols-lg-5">
+                    {% for sorty in sorties %}
+                        {% set style = sorty.etat.id == 7 ? 'text-decoration: line-through; opacity: 0.5;' : '' %}
+                        <div class="col mb-4 px-3">
+                            <div class="card bg-light mb-3"
+                                 style="max-width: 30rem; min-width: 10rem;">
+                                <div class="card-body" style="{{ style }}">
+                                    <div class="card-header">
+                                        <h5 class="card-title">{{ sorty.nom }}</h5>
+                                    </div>
+                                    <p class="card-text">Date de la
+                                        sortie: {{ sorty.date ? sorty.date|date('Y-m-d H:i:s') : '' }}</p>
+                                    <p class="card-text">Durée: {{ sorty.duree }}</p>
+                                    <p class="card-text">Lieu: {{ sorty.lieu }}</p>
+                                    <p class="card-text">Organisateur: {{ sorty.organizator.username }}</p>
+                                    <p class="card-text">Inscrits/places: {{ sorty.participants|length }}
+                                        /{{ sorty.nbrPersonne }}</p>
+                                    <p class="card-text">Je
+                                        participe: {% if app.user in sorty.participants %}oui{% else %}non{% endif %}</p>
+                                    <p class="card-text">Date
+                                        limite: {{ sorty.dateLimite ? sorty.dateLimite|date('Y-m-d') : '' }}</p>
+                                    <p class="card-text">État: {{ sorty.etat.libelle }}</p>
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <a href="{{ path('sorties/show', {'id': sorty.id}) }}"
+                                           class="btn btn-primary btn-sm {% if sorty.etat.id == 7 %}disabled{% endif %}">Show</a>
+                                        {% if sorty.etat.id == 2 %}
+                                            <div class="btn-group">
+                                                <a href="{{ path('register_to_sortie', {'id': sorty.id}) }}"
+                                                   class="btn btn-primary btn-sm {% if sorty.etat.id == 7 %}disabled{% endif %}">Register</a>
+                                                <a href="{{ path('unsubscribe_to_sortie', {'id': sorty.id}) }}"
+                                                   class="btn btn-primary btn-sm {% if sorty.etat.id == 7 %}disabled{% endif %}">Unsubscribe</a>
+                                            </div>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    {% else %}
+                        <div class="col">
+                            <div class="card">
+                                <div class="card-body">
+                                    <p class="card-text">No records found</p>
+                                </div>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+                <div class="d-none d-lg-block">
+                    <a href="{{ path('sorties/new') }}" class="btn btn-success">Create New</a>
+                </div>
+            </div>
         </div>
     </main>
 {% endblock %}
