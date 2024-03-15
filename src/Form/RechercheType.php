@@ -6,6 +6,7 @@ namespace App\Form;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
+use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -49,6 +50,22 @@ class RechercheType extends AbstractType
                 'required' => false,
                 'attr' => [
                     'class' => 'form-check-input'
+                ]
+            ])
+            ->add('dateMin', DateType::class, [
+                'label' => 'Date min',
+                'widget' => 'single_text',
+                'required' => false,
+                'row_attr' => [
+                    'class' => 'datepicker'
+                ]
+            ])
+            ->add('dateMax', DateType::class, [
+                'label' => 'Date max',
+                'widget' => 'single_text',
+                'required' => false,
+                'row_attr' => [
+                    'class' => 'datepicker'
                 ]
             ])
         ->add('submit', SubmitType::class, [

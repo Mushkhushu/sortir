@@ -47,6 +47,11 @@ class SortiesRepository extends ServiceEntityRepository
         if (!empty($data['etat'])) {
             $qb->andWhere("s.id = 5");
         }
+        if (!empty($data['dateMin'])&&!empty($data['dateMax'])) {
+            $qb->andWhere('s.date BETWEEN :dateMin AND :dateMax')
+                ->setParameter('dateMin', $data['dateMin'])
+                ->setParameter('dateMax', $data['dateMax']);
+        }
         $qb->orderBy('s.date', 'DESC');
         return $qb->getQuery()->getResult();
     }
