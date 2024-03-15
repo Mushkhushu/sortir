@@ -45,7 +45,7 @@ class SortiesRepository extends ServiceEntityRepository
                 ->setParameter('search', "%{$data['search']}%");
         }
         if (!empty($data['etat'])) {
-            $qb->andWhere("s.id = 5");
+            $qb->andWhere("e.id = 5 OR e.id = 7");
         }
         if (!empty($data['dateMin'])&&!empty($data['dateMax'])) {
             $qb->andWhere('s.date BETWEEN :dateMin AND :dateMax')

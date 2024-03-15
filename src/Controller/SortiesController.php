@@ -6,6 +6,7 @@ namespace App\Controller;
 
 use App\Entity\Etat;
 use App\Entity\Sorties;
+use App\Form\RechercheType;
 use App\Form\SortiesType;
 use App\Repository\SortiesRepository;
 use App\Services\EtatUpdater;
@@ -38,27 +39,15 @@ class SortiesController extends AbstractController
             ]);
         }
         foreach ($sorties as $sorty) {
-            $etatUpdater->updateEtat($sorty,$entityManager);
+            $etatUpdater->updateEtat($sorty, $entityManager);
             $entityManager->persist($sorty);
             $entityManager->flush();
-        }
-        return $this->render('sorties/index.html.twig', [
-            'sorties' => $sorties,
 
-        ]);
-    }
-    #[Route('/filter', name: 'sorties/filter', methods: ['GET','POST'])]
-    public function filter(Request $request, SortiesRepository $sortiesRepository): Response
-    {
-        $date = $request->query->get('date');
-        $nom = $request->query->get('nom');
-        $participants = $request->query->get('participants');
-        $nonParticipants = $request->query->get('non_participants');
-        $etat = $request->query->get('etat');
-        $organizator = $request->query->get('organizator');
-        $sorties = $sortiesRepository->findByFilter($date, $nom, $participants, $nonParticipants, $etat, $organizator);
+        }
+        $entityManager->flush();
         return $this->render('sorties/index.html.twig', [
             'sorties' => $sorties,
+            'formFilter' => $formFilter
         ]);
     }
 

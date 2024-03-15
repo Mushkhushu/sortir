@@ -31,11 +31,20 @@
                 </tr>
                 <tr>
                     <th>Lieu</th>
+                    {%  if sorty.lieu is not null %}
                     <td>{{ sorty.lieu.nom }}</td>
+                    {% else %}
+                    <td>Aucun lieu</td>
+                    {% endif %}
                 </tr>
                 <tr>
+
                     <th>Adresse</th>
+                    {% if sorty.lieu is not null %}
                     <td>{{ sorty.lieu.rue }}</td>
+                    {% else %}
+                    <td>Aucune adresse</td>
+                    {% endif %}
                 </tr>
                 <tr>
                     <th>Organisateur</th>
