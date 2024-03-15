@@ -33,9 +33,19 @@ class SortiesController extends AbstractController
         }
         return $this->render('sorties/index.html.twig', [
             'sorties' => $sorties,
-            'title' => 'Liste des sorties',
         ]);
+    }
+    #[Route('/filter', name: 'sorties/filter', methods: ['POST', 'GET'])]
+    public function filter(Request $request, SortiesRepository $sortiesRepository): Response
+    {
+        $date = $request->query->get('date');
+        $nom = $request->query->get('nom');
 
+        $sorties = $sortiesRepository->findByFilter($date, $nom);
+
+        return $this->render('sorties/index.html.twig', [
+            'sorties' => $sorties,
+        ]);
     }
 
     #[Route('/new', name: 'sorties/new', methods: ['GET', 'POST'])]
@@ -95,17 +105,5 @@ class SortiesController extends AbstractController
             $entityManager->flush();
         }
         return $this->redirectToRoute('sorties/index', [], Response::HTTP_SEE_OTHER);
-    }
-    #[Route('/filter', name: 'sorties/filter', methods: ['GET'])]
-    public function filter(Request $request, SortiesRepository $sortiesRepository): Response
-    {
-        $date = $request->query->get('date');
-        $nom = $request->query->get('nom');
-
-        $sorties = $sortiesRepository->findByFilter($date, $nom);
-
-        return $this->render('sorties/index.html.twig', [
-            'sorties' => $sorties,
-        ]);
     }
 }

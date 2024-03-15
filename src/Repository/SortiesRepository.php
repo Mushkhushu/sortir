@@ -4,12 +4,11 @@ namespace App\Repository;
 
 use App\Entity\Sorties;
 
-use Composer\XdebugHandler\Status;
+
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
-use Error;
-use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Routing\Attribute\Route;
+
+
 
 /**
  * @extends ServiceEntityRepository<Sorties>
