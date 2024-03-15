@@ -2,6 +2,7 @@
 
 namespace App\Form;
 
+use App\Entity\Lieu;
 use App\Entity\Sorties;
 use App\Entity\User;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
@@ -41,6 +42,12 @@ class SortiesType extends AbstractType
                 'attr' => [
                     'class' => 'btn btn-outline-success'
                 ]
+
+            ])
+            ->add('lieu', EntityType::class, [
+                'class' => Lieu::class,
+                'choice_label' => 'nom',
+                'required' => true,
             ]);
     }
 

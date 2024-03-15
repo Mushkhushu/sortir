@@ -67,7 +67,7 @@
                                 <p class="card-text">Date de la
                                     sortie: {{ sorty.date ? sorty.date|date('Y-m-d H:i:s') : '' }}</p>
                                 <p class="card-text">Durée: {{ sorty.duree }}</p>
-                                <p class="card-text">Lieu: {{ sorty.lieu }}</p>
+                                <p class="card-text">Lieu: {{ sorty.lieu.nom }}</p>
                                 <p class="card-text">Organisateur: {{ sorty.organizator.username }}</p>
                                 <p class="card-text">Inscrits/places: {{ sorty.participants|length }}
                                     /{{ sorty.nbrPersonne }}</p>

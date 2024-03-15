@@ -51,6 +51,8 @@
                 {% if is_granted('IS_AUTHENTICATED') %}
                     <li class="nav-item"><a class="nav-link" href="{{ url('sorties/new') }}">Créer une sortie</a></li>
                 {% endif %}
+                <a href="{{ path('app_ville_new') }}" class="btn btn-primary">Ajouter une nouvelle ville</a>
+                <a href="{{ path('app_lieu_new') }}" class="btn btn-primary">Ajouter un nouveaux lieux</a>
                 {% if is_granted('ROLE_ADMIN') %}
                     <li class="nav-item"><a href="{{ path('app_ville_new') }}" class="btn btn-primary">Ajouter une nouvelle ville</a></li>
                     <li class="nav-item"><a class="nav-link" href="{{ url('users/index') }}">Liste des utilisateurs</a></li>

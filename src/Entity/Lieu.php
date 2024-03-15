@@ -39,6 +39,16 @@ class Lieu
         $this->sorties = new ArrayCollection();
     }
 
+    public function getVille(): ?Ville
+    {
+        return $this->Ville;
+    }
+
+    public function setVille(?Ville $Ville): void
+    {
+        $this->Ville = $Ville;
+    }
+
     public function getId(): ?int
     {
         return $this->id;
