@@ -4,11 +4,13 @@ namespace App\Repository;
 
 use App\Entity\Sorties;
 
-
+use App\Entity\User;
+use Composer\XdebugHandler\Status;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
-
-
+use Error;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Routing\Attribute\Route;
 
 /**
  * @extends ServiceEntityRepository<Sorties>
@@ -26,7 +28,27 @@ class SortiesRepository extends ServiceEntityRepository
     }
     public function findByFilter(?string $date, ?string $nom,): array
     {
-        $qb = $this->createQueryBuilder('s');
+
+        $qb = $this->createQueryBuilder('s')
+        ->join('s.etat', 'e')
+        ->join('s.participants', 'p');
+
+        //filtre pour savoir les sorties ou on est inscrit
+        if(!empty($data['participants']) && empty($data['non_participants'])){
+
+            $userID = User::class . ':id';
+            $qb->andWhere('p.id IN (:participants)')
+                ->setParameter('participants', $userID);
+        }
+
+        //filtre pour savoir les sorties ou on ne l'est pas inscrit
+        if(!empty($data['non_participants']) && empty($data['participants'])){
+            $qb->andWhere('p.id NOT IN (:non_participants)')
+                ->setParameter('non_participants', $userID);
+        }
+
+
+
 
         if ($date) {
             $qb->andWhere('s.date = :date')
@@ -39,8 +61,19 @@ class SortiesRepository extends ServiceEntityRepository
         }
 
 
-        return $qb->getQuery()->getResult();
-    }
+
+
+    //filtre pour savoir si la sortie est passée
+if(!empty($data['etat']) ){
+$qb->andWhere("s.etat = 'Passée'");
+};
+$qb->andWhere("e.etat != 'Archivée'")
+//                ->andWhere("s.s.participants ")
+    ->orderBy('s.dateTimeStart', 'DESC');
+
+//retourner le résultat
+return $qb->getQuery()->getResult();
+}
 
 
 

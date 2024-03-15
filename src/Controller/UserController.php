@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\Sorties;
 use App\Entity\User;
 
 use App\Form\EditPasswordType;

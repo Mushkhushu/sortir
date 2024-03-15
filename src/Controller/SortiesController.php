@@ -27,7 +27,7 @@ class SortiesController extends AbstractController
     {
         $sorties = $entityManager->getRepository(Sorties::class)->findAll();
         foreach ($sorties as $sorty) {
-            $etatUpdater->updateEtat($sorty,$entityManager);
+            $etatUpdater->updateEtat($sorty, $entityManager);
             $entityManager->persist($sorty);
             $entityManager->flush();
         }
@@ -42,7 +42,6 @@ class SortiesController extends AbstractController
         $nom = $request->query->get('nom');
 
         $sorties = $sortiesRepository->findByFilter($date, $nom);
-
         return $this->render('sorties/index.html.twig', [
             'sorties' => $sorties,
         ]);
@@ -105,5 +104,17 @@ class SortiesController extends AbstractController
             $entityManager->flush();
         }
         return $this->redirectToRoute('sorties/index', [], Response::HTTP_SEE_OTHER);
+    }
+    #[Route('/filter', name: 'sorties/filter', methods: ['GET'])]
+    public function filter(Request $request, SortiesRepository $sortiesRepository): Response
+    {
+        $date = $request->query->get('date');
+        $nom = $request->query->get('nom');
+
+        $sorties = $sortiesRepository->findByFilter($date, $nom);
+
+        return $this->render('sorties/index.html.twig', [
+            'sorties' => $sorties,
+        ]);
     }
 }

@@ -37,6 +37,19 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
         $this->getEntityManager()->persist($user);
         $this->getEntityManager()->flush();
     }
+    public function findSortiesByUser(?string $user, ?string $User,): array
+    {
+        if ($user) {
+            return $this->createQueryBuilder('s')
+                ->andWhere('s.user = :user')
+                ->setParameter('user', $user)
+                ->getQuery()
+                ->getResult();
+        }
+
+        return [];
+
+    }
 
     //    /**
     //     * @return User[] Returns an array of User objects
