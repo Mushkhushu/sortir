@@ -22,7 +22,7 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
 #[IsGranted('ROLE_USER')]
 class SortiesController extends AbstractController
 {
-    #[Route('/', name: 'sorties/index', methods: ['POST', 'GET'])]
+    #[Route('/', name: 'sorties/index', methods: ['GET','POST'])]
     public function index(EntityManagerInterface $entityManager, EtatUpdater $etatUpdater): Response
     {
         $sorties = $entityManager->getRepository(Sorties::class)->findAll();
@@ -35,32 +35,33 @@ class SortiesController extends AbstractController
             'sorties' => $sorties,
         ]);
     }
-    #[Route('/filter', name: 'sorties/filter', methods: ['POST', 'GET'])]
+    #[Route('/filter', name: 'sorties/filter', methods: ['GET','POST'])]
     public function filter(Request $request, SortiesRepository $sortiesRepository): Response
     {
         $date = $request->query->get('date');
         $nom = $request->query->get('nom');
-
-        $sorties = $sortiesRepository->findByFilter($date, $nom);
+        $participants = $request->query->get('participants');
+        $nonParticipants = $request->query->get('non_participants');
+        $etat = $request->query->get('etat');
+        $organizator = $request->query->get('organizator');
+        $sorties = $sortiesRepository->findByFilter($date, $nom, $participants, $nonParticipants, $etat, $organizator);
         return $this->render('sorties/index.html.twig', [
             'sorties' => $sorties,
         ]);
     }
 
-    #[Route('/new', name: 'sorties/new', methods: ['GET', 'POST'])]
+    #[Route('/new', name: 'sorties/new', methods: ['GET','POST'])]
     public function new(Security $security, Request $request, EntityManagerInterface $entityManager): Response
     {
         $sorty = new Sorties();
         $form = $this->createForm(SortiesType::class, $sorty, ['display_participants' => false]);
         $form->handleRequest($request);
-
         if ($form->isSubmitted() && $form->isValid()) {
             $sorty->setOrganizator($security->getUser());
             $etat = $entityManager->getRepository(Etat::class)->find(1);
             $sorty->setEtat($etat);
             $entityManager->persist($sorty);
             $entityManager->flush();
-
             return $this->redirectToRoute('sorties/index', [], Response::HTTP_SEE_OTHER);
         }
 
@@ -104,17 +105,5 @@ class SortiesController extends AbstractController
             $entityManager->flush();
         }
         return $this->redirectToRoute('sorties/index', [], Response::HTTP_SEE_OTHER);
-    }
-    #[Route('/filter', name: 'sorties/filter', methods: ['GET'])]
-    public function filter(Request $request, SortiesRepository $sortiesRepository): Response
-    {
-        $date = $request->query->get('date');
-        $nom = $request->query->get('nom');
-
-        $sorties = $sortiesRepository->findByFilter($date, $nom);
-
-        return $this->render('sorties/index.html.twig', [
-            'sorties' => $sorties,
-        ]);
     }
 }

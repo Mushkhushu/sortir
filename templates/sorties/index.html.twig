@@ -4,9 +4,6 @@
 
 {% block body %}
     <main class="d-flex">
-        {% block sidebar %}
-            {{ parent() }}
-        {% endblock %}
         <div class="container">
             {% for group, messages in app.flashes %}
                 {% for message in messages %}
@@ -16,97 +13,96 @@
             <h1>Sorties index</h1>
             <div class="row mt-4">
                 <div class="col-lg-6">
-                        <form action="{{ path('sorties/filter') }}" method="GET">
-                            <div class="form-group">
-                                <label for="nom">Nom de la fête :</label>
-                                <input type="text" id="nom" name="nom" class="form-control">
-                            </div>
-                            <button type="submit" class="btn btn-primary">Filtrer</button>
-                        </form>
+                    <form action="{{ path('sorties/filter') }}" method="GET">
+                        <div class="form-group">
+                            <label for="nom">Nom de la fête :</label>
+                            <input type="text" id="nom" name="nom" class="form-control">
+                        </div>
+                        <button type="submit" class="btn btn-primary">Filtrer</button>
+                    </form>
                 </div>
             </div>
-                {% if is_granted('IS_AUTHENTICATED') %}
-                    <div class="row mt-4">
+            {% if is_granted('IS_AUTHENTICATED') %}
+            <div class="row mt-4">
+                <div class="col-lg-6">
+                    <form action="" id="filterForm" method="POST">
+                        <div class="custom-control custom-checkbox">
+                            <input type="checkbox" class="custom-control-input" name="participants" id="check_participants">
+                            <label class="custom-control-label" for="check_participants">Sorties auxquelles je suis
+                                inscrit</label>
+                        </div>
+                        <div class="custom-control custom-checkbox">
+                            <input type="checkbox" class="custom-control-input" name="non_participants" id="check_non_participants">
+                            <label class="custom-control-label" for="check_non_participants">Sorties auxquelles je ne suis
+                                pas inscrit</label>
+                        </div>
+                        <div class="custom-control custom-checkbox">
+                            <input type="checkbox" class="custom-control-input" name="etat" id="check_etat">
+                            <label class="custom-control-label" for="check_etat">Sorties passées</label>
+                        </div>
                         <div class="col-lg-6">
                             <div class="custom-control custom-checkbox">
-                                <input type="checkbox" class="custom-control-input" id="id_userCheckbox">
-                                <label class="custom-control-label" for="userCheckbox">Sorties auxquelles je suis
-                                    inscrit</label>
+                                <input type="checkbox" class="custom-control-input" name="organizator" id="check_organizator">
+                                <label class="custom-control-label" for="check_organizator">Sorties dont je suis
+                                    l'organisateur</label>
                             </div>
-                            <div class="custom-control custom-checkbox">
-                                <input type="checkbox" class="custom-control-input" id="userCheckbox">
-                                <label class="custom-control-label" for="id_userCheckbox">Sorties auxquelles je ne suis
-                                    pas inscrit</label>
-                            </div>
-                            <div class="custom-control custom-checkbox">
-                                <input type="checkbox" class="custom-control-input" id="userCheckbox">
-                                <label class="custom-control-label" for="userCheckbox">Sorties passées</label>
-                            </div>
-                            <div class="col-lg-6">
-                                <form action="" method="post">
-                                    <div class="custom-control custom-checkbox">
-                                        <input type="checkbox" class="custom-control-input" id="userCheckbox">
-                                        <label class="custom-control-label" for="userCheckbox">Sorties dont je suis
-                                            l'organisateur</label>
-                                    </div>
-                                    <button type="submit" class="btn btn-primary mt-2">Search</button>
-                                </form>
+                            <button type="submit" class="btn btn-primary mt-2">Search</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        {% endif %}
+        <div class="container">
+            <div class="row row-cols-1 row-cols-md-4 row-cols-lg-5">
+                {% for sorty in sorties %}
+                    {% set style = sorty.etat.id == 7 ? 'text-decoration: line-through; opacity: 0.5;' : '' %}
+                    <div class="col mb-4 px-3">
+                        <div class="card bg-light mb-3"
+                             style="max-width: 30rem; min-width: 10rem;">
+                            <div class="card-body" style="{{ style }}">
+                                <div class="card-header">
+                                    <h5 class="card-title">{{ sorty.nom }}</h5>
+                                </div>
+                                <p class="card-text">Date de la
+                                    sortie: {{ sorty.date ? sorty.date|date('Y-m-d H:i:s') : '' }}</p>
+                                <p class="card-text">Durée: {{ sorty.duree }}</p>
+                                <p class="card-text">Lieu: {{ sorty.lieu }}</p>
+                                <p class="card-text">Organisateur: {{ sorty.organizator.username }}</p>
+                                <p class="card-text">Inscrits/places: {{ sorty.participants|length }}
+                                    /{{ sorty.nbrPersonne }}</p>
+                                <p class="card-text">Je
+                                    participe: {% if app.user in sorty.participants %}oui{% else %}non{% endif %}</p>
+                                <p class="card-text">Date
+                                    limite: {{ sorty.dateLimite ? sorty.dateLimite|date('Y-m-d') : '' }}</p>
+                                <p class="card-text">État: {{ sorty.etat.libelle }}</p>
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <a href="{{ path('sorties/show', {'id': sorty.id}) }}"
+                                       class="btn btn-primary btn-sm {% if sorty.etat.id == 7 %}disabled{% endif %}">Show</a>
+                                    {% if sorty.etat.id == 2 %}
+                                        <div class="btn-group">
+                                            <a href="{{ path('register_to_sortie', {'id': sorty.id}) }}"
+                                               class="btn btn-primary btn-sm {% if sorty.etat.id == 7 %}disabled{% endif %}">Register</a>
+                                            <a href="{{ path('unsubscribe_to_sortie', {'id': sorty.id}) }}"
+                                               class="btn btn-primary btn-sm {% if sorty.etat.id == 7 %}disabled{% endif %}">Unsubscribe</a>
+                                        </div>
+                                    {% endif %}
+                                </div>
                             </div>
                         </div>
                     </div>
-                {% endif %}
+                {% else %}
+                    <div class="col">
+                        <div class="card">
+                            <div class="card-body">
+                                <p class="card-text">No records found</p>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
             </div>
-            <div class="container">
-                <div class="row row-cols-1 row-cols-md-4 row-cols-lg-5">
-                    {% for sorty in sorties %}
-                        {% set style = sorty.etat.id == 7 ? 'text-decoration: line-through; opacity: 0.5;' : '' %}
-                        <div class="col mb-4 px-3">
-                            <div class="card bg-light mb-3"
-                                 style="max-width: 30rem; min-width: 10rem;">
-                                <div class="card-body" style="{{ style }}">
-                                    <div class="card-header">
-                                        <h5 class="card-title">{{ sorty.nom }}</h5>
-                                    </div>
-                                    <p class="card-text">Date de la
-                                        sortie: {{ sorty.date ? sorty.date|date('Y-m-d H:i:s') : '' }}</p>
-                                    <p class="card-text">Durée: {{ sorty.duree }}</p>
-                                    <p class="card-text">Lieu: {{ sorty.lieu }}</p>
-                                    <p class="card-text">Organisateur: {{ sorty.organizator.username }}</p>
-                                    <p class="card-text">Inscrits/places: {{ sorty.participants|length }}
-                                        /{{ sorty.nbrPersonne }}</p>
-                                    <p class="card-text">Je
-                                        participe: {% if app.user in sorty.participants %}oui{% else %}non{% endif %}</p>
-                                    <p class="card-text">Date
-                                        limite: {{ sorty.dateLimite ? sorty.dateLimite|date('Y-m-d') : '' }}</p>
-                                    <p class="card-text">État: {{ sorty.etat.libelle }}</p>
-                                    <div class="d-flex justify-content-between align-items-center">
-                                        <a href="{{ path('sorties/show', {'id': sorty.id}) }}"
-                                           class="btn btn-primary btn-sm {% if sorty.etat.id == 7 %}disabled{% endif %}">Show</a>
-                                        {% if sorty.etat.id == 2 %}
-                                            <div class="btn-group">
-                                                <a href="{{ path('register_to_sortie', {'id': sorty.id}) }}"
-                                                   class="btn btn-primary btn-sm {% if sorty.etat.id == 7 %}disabled{% endif %}">Register</a>
-                                                <a href="{{ path('unsubscribe_to_sortie', {'id': sorty.id}) }}"
-                                                   class="btn btn-primary btn-sm {% if sorty.etat.id == 7 %}disabled{% endif %}">Unsubscribe</a>
-                                            </div>
-                                        {% endif %}
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    {% else %}
-                        <div class="col">
-                            <div class="card">
-                                <div class="card-body">
-                                    <p class="card-text">No records found</p>
-                                </div>
-                            </div>
-                        </div>
-                    {% endfor %}
-                </div>
-                <div class="d-none d-lg-block">
-                    <a href="{{ path('sorties/new') }}" class="btn btn-success">Create New</a>
-                </div>
+            <div class="d-none d-lg-block">
+                <a href="{{ path('sorties/new') }}" class="btn btn-success">Create New</a>
             </div>
         </div>
     </main>
