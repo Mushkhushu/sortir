@@ -26,52 +26,34 @@ class SortiesRepository extends ServiceEntityRepository
     {
         parent::__construct($registry, Sorties::class);
     }
-    public function findByFilter(mixed $data, $userID): array
+    public function findByFilter(array $data, int $userID): array
     {
-
         $qb = $this->createQueryBuilder('s')
             ->join('s.etat', 'e')
-            ->join('s.participants', 'p');
-
-        //filtre pour savoir les sorties ou on est inscrit
+            ->leftJoin('s.participants', 'p');
         if (!empty($data['participants']) && empty($data['non_participants'])) {
-
-            $userID = User::class . ':id';
-            $qb->andWhere('p.id IN (:participants)')
-                ->setParameter('participants', $userID);
+            $qb->andWhere(':userID MEMBER OF s.participants')
+                ->setParameter('userID', $userID);
         }
-
-        //filtre pour savoir les sorties ou on ne l'est pas inscrit
         if (!empty($data['non_participants']) && empty($data['participants'])) {
-            $qb->andWhere('p.id NOT IN (:non_participants)')
-                ->setParameter('non_participants', $userID);
+            $qb->andWhere(':userID NOT MEMBER OF s.participants')
+                ->setParameter('userID', $userID);
         }
-        //sorties que j'organise
-        if (!empty($data['organizator'])){
-            $qb->andWhere('s.organizator = :organizator');
-            $qb->setParameter('organizator', $userID);
+        if (!empty($data['organizator'])) {
+            $qb->andWhere('s.organizator = :organizator')
+                ->setParameter('organizator', $userID);
         }
-
-        if ($date) {
-            $qb->andWhere('s.date = :date')
-                ->setParameter('date', $date);
+        if (!empty($data['search'])) {
+            $qb->andWhere('s.nom LIKE :search')
+                ->setParameter('search', "%{$data['search']}%");
         }
-
-        if ($nom) {
-            $qb->andWhere('s.nom LIKE :nom')
-                ->setParameter('nom', "%{$nom}%");
-        }
-        //filtre pour savoir si la sortie est passée
         if (!empty($data['etat'])) {
             $qb->andWhere("s.id = 5");
-        };
-        $qb->andWhere("e.id != 7")
-            //->andWhere("s.s.participants ")
-            ->orderBy('s.date', 'DESC');
-
-            //retourner le résultat
+        }
+        $qb->orderBy('s.date', 'DESC');
         return $qb->getQuery()->getResult();
     }
+
 
 
     public function findByUser(?string $user, ?string $User,): array

@@ -3,14 +3,13 @@
 namespace App\Controller;
 
 
-
 use App\Entity\Etat;
 use App\Entity\Sorties;
+use App\Form\RechercheType;
 use App\Form\SortiesType;
 use App\Repository\SortiesRepository;
 use App\Services\EtatUpdater;
 use Doctrine\ORM\EntityManagerInterface;
-use phpDocumentor\Reflection\Types\Mixed_;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\HttpFoundation\Request;
@@ -23,34 +22,48 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
 #[IsGranted('ROLE_USER')]
 class SortiesController extends AbstractController
 {
-
-    #[Route('/', name: 'sorties/index', methods: ['GET','POST'])]
-    public function index(EntityManagerInterface $entityManager, EtatUpdater $etatUpdater): Response
+    #[Route('/', name: 'sorties/index', methods: ['GET', 'POST'])]
+    public function index(Security $security, Request $request, EntityManagerInterface $entityManager, EtatUpdater $etatUpdater, SortiesRepository $sortiesRepository): Response
     {
-
-        $sorties = $entityManager->getRepository(Sorties::class)->findAll();
+        $formFilter = $this->createForm(RechercheType::class);
+        $formFilter->handleRequest($request);
+        $sorties = $sortiesRepository->findAll();
+        if ($formFilter->isSubmitted() && $formFilter->isValid()) {
+            $data = $formFilter->getData();
+            $userId=$security->getUser()->getId();
+            $sorties = $sortiesRepository->findByFilter($data, $userId);
+            return $this->render('sorties/index.html.twig', [
+                'sorties' => $sorties,
+                'formFilter' => $formFilter
+            ]);
+        }
         foreach ($sorties as $sorty) {
             $etatUpdater->updateEtat($sorty, $entityManager);
             $entityManager->persist($sorty);
-            $entityManager->flush();
-
         }
+        $entityManager->flush();
         return $this->render('sorties/index.html.twig', [
             'sorties' => $sorties,
+            'formFilter' => $formFilter
         ]);
     }
-    #[Route('/filter', name: 'sorties/filter', methods: ['GET','POST'])]
-    public function filter(Request $request, SortiesRepository $sortiesRepository): Response
 
+    #[Route('/{id}/edit', name: 'sorties/edit', methods: ['GET', 'POST'])]
+    public function edit(Request $request, Sorties $sorty, EntityManagerInterface $entityManager): Response
     {
-
-        $sorties = $sortiesRepository->findByFilter($request->request->all(), $this->getUser()->getId());
-        return $this->render('sorties/index.html.twig', [
-            'sorties' => $sorties,
+        $form = $this->createForm(SortiesType::class, $sorty);
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            $entityManager->flush();
+            return $this->redirectToRoute('sorties/index', [], Response::HTTP_SEE_OTHER);
+        }
+        return $this->render('sorties/edit.html.twig', [
+            'sorty' => $sorty,
+            'form' => $form,
         ]);
     }
 
-    #[Route('/new', name: 'sorties/new', methods: ['GET','POST'])]
+    #[Route('/new', name: 'sorties/new', methods: ['GET', 'POST'])]
     public function new(Security $security, Request $request, EntityManagerInterface $entityManager): Response
     {
         $sorty = new Sorties();
@@ -79,28 +92,10 @@ class SortiesController extends AbstractController
         ]);
     }
 
-    #[Route('/{id}/edit', name: 'sorties/edit', methods: ['GET', 'POST'])]
-    public function edit(Request $request, Sorties $sorty, EntityManagerInterface $entityManager): Response
-    {
-        $form = $this->createForm(SortiesType::class, $sorty);
-        $form->handleRequest($request);
-
-        if ($form->isSubmitted() && $form->isValid()) {
-            $entityManager->flush();
-
-            return $this->redirectToRoute('sorties/index', [], Response::HTTP_SEE_OTHER);
-        }
-
-        return $this->render('sorties/edit.html.twig', [
-            'sorty' => $sorty,
-            'form' => $form,
-        ]);
-    }
-
     #[Route('/{id}', name: 'sorties/delete', methods: ['POST'])]
     public function delete(Request $request, Sorties $sorty, EntityManagerInterface $entityManager): Response
     {
-        if ($this->isCsrfTokenValid('delete'.$sorty->getId(), $request->request->get('_token'))) {
+        if ($this->isCsrfTokenValid('delete' . $sorty->getId(), $request->request->get('_token'))) {
             $entityManager->remove($sorty);
             $entityManager->flush();
         }

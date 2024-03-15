@@ -2,15 +2,12 @@
 
 namespace App\Form;
 
-use App\Entity\Site;
-use App\Entity\User;
-use Doctrine\DBAL\Types\DateTimeType;
-use Doctrine\DBAL\Types\TextType;
-use Symfony\Bridge\Doctrine\Form\Type\EntityType;
+
+
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
-use Symfony\Component\Form\Extension\Core\Type\TextareaType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -18,7 +15,6 @@ class RechercheType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
-
         $builder
             ->add('search', TextType::class, [
                 'label' => 'Le nom de la sortie contient',
@@ -27,10 +23,8 @@ class RechercheType extends AbstractType
                     'class' => 'form-control'
                 ]
             ])
-
-
             ->add('organizator', CheckboxType::class, [
-                'label' => 'Sorties dont je suis l\'organisateur/trice',
+                'label' => 'Sorties que j\'organise',
                 'required' => false,
                 'attr' => [
                     'class' => 'form-check-input'
@@ -44,7 +38,7 @@ class RechercheType extends AbstractType
                 ]
             ])
             ->add('non_participants', CheckboxType::class, [
-                'label' => 'Sorties auxquelles je ne suis pas inscrit/e',
+                'label' => 'Sorties auxquelles je suis PAS inscrit/e',
                 'required' => false,
                 'attr' => [
                     'class' => 'form-check-input'
@@ -56,7 +50,16 @@ class RechercheType extends AbstractType
                 'attr' => [
                     'class' => 'form-check-input'
                 ]
-            ]);
-
+            ])
+        ->add('submit', SubmitType::class, [
+            'attr' => [
+                'class' => 'btn btn-outline-success'
+            ]
+        ]);
+    }
+    public function configureOptions(OptionsResolver $resolver): void
+    {
+        $resolver->setDefaults([
+        ]);
     }
 }
