@@ -11,48 +11,9 @@
                 {% endfor %}
             {% endfor %}
             <h1>Sorties index</h1>
-            <div class="row mt-4">
-                <div class="col-lg-6">
-                    <form action="{{ path('sorties/filter') }}" method="GET">
-                        <div class="form-group">
-                            <label for="nom">Nom de la fête :</label>
-                            <input type="text" id="nom" name="nom" class="form-control">
-                        </div>
-                        <button type="submit" class="btn btn-primary">Filtrer</button>
-                    </form>
-                </div>
-            </div>
-            {% if is_granted('IS_AUTHENTICATED') %}
-            <div class="row mt-4">
-                <div class="col-lg-6">
-                    <form action="" id="filterForm" method="POST">
-                        <div class="custom-control custom-checkbox">
-                            <input type="checkbox" class="custom-control-input" name="participants" id="check_participants">
-                            <label class="custom-control-label" for="check_participants">Sorties auxquelles je suis
-                                inscrit</label>
-                        </div>
-                        <div class="custom-control custom-checkbox">
-                            <input type="checkbox" class="custom-control-input" name="non_participants" id="check_non_participants">
-                            <label class="custom-control-label" for="check_non_participants">Sorties auxquelles je ne suis
-                                pas inscrit</label>
-                        </div>
-                        <div class="custom-control custom-checkbox">
-                            <input type="checkbox" class="custom-control-input" name="etat" id="check_etat">
-                            <label class="custom-control-label" for="check_etat">Sorties passées</label>
-                        </div>
-                        <div class="col-lg-6">
-                            <div class="custom-control custom-checkbox">
-                                <input type="checkbox" class="custom-control-input" name="organizator" id="check_organizator">
-                                <label class="custom-control-label" for="check_organizator">Sorties dont je suis
-                                    l'organisateur</label>
-                            </div>
-                            <button type="submit" class="btn btn-primary mt-2">Search</button>
-                        </div>
-                    </form>
-                </div>
-            </div>
-        </div>
-        {% endif %}
+            {{ form_start(formFilter) }}
+                {{ form_row(formFilter.submit, {'label': 'Filtrer'}) }}
+            {{ form_end(formFilter) }}
         <div class="container">
             <div class="row row-cols-1 row-cols-md-4 row-cols-lg-5">
                 {% for sorty in sorties %}

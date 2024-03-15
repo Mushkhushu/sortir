@@ -59,25 +59,5 @@ window.addEventListener('DOMContentLoaded', event => {
         e.preventDefault();
     });
 
-    //les checkbox
-    document.addEventListener('DOMContentLoaded', function () {
-        const form = document.querySelector('#filterForm');
-        const checkboxes = form.querySelectorAll('input[type="checkbox"]');
 
-        form.addEventListener('submit', function (event) {
-            event.preventDefault();
-
-            const formData = new FormData(form);
-            const queryParams = new URLSearchParams();
-
-            checkboxes.forEach(function (checkbox) {
-                if (checkbox.checked) {
-                    queryParams.append(checkbox.name, checkbox.value);
-                }
-            });
-
-            const url = '{{ path(sorties/filter) }}' + '?' + queryParams.toString();
-            window.location.href = url;
-        });
-    });
 });
