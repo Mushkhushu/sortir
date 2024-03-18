@@ -46,6 +46,7 @@
             <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
                 <li class="nav-item"><a class="nav-link" href="{{ url('user/index') }}">Liste des Users</a></li>
                 <li class="nav-item"><a class="nav-link" href="#">Contact</a></li>
+                <li class="nav-item"><a class="nav-link" href="{{ url('admin') }}">Page Admin</a></li>
                 <li class="nav-item"><a class="nav-link" href="{{ url('sorties/index') }}">Liste des sorties</a></li>
                 {% if is_granted('IS_AUTHENTICATED') %}
                     <li class="nav-item"><a class="nav-link" href="{{ url('sorties/new') }}">Créer une sortie</a></li>
@@ -54,7 +55,7 @@
                 <a href="{{ path('app_lieu_new') }}" class="btn btn-primary">Ajouter un nouveaux lieux</a>
                 {% if is_granted('ROLE_ADMIN') %}
                     <li class="nav-item"><a href="{{ path('app_ville_new') }}" class="btn btn-primary">Ajouter une nouvelle ville</a></li>
-                    <li class="nav-item"><a class="nav-link" href="{{ url('users/index') }}">Liste des utilisateurs</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{{ url('user/index') }}">Liste des utilisateurs</a></li>
                 {% endif %}
             </ul>
         </div>

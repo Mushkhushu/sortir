@@ -35,7 +35,10 @@
                 <td>{% if user.mail is empty %}aucun email renseigné{% else %}{{ user.mail }}{% endif %}</td>
             </tr>
             <tr>
-
+                <th>Campus</th>
+                <td>{% if user.site is empty %}aucun campus renseigné{% else %}{{ user.site.nom }}{% endif %}</td>
+            </tr>
+            <tr>
                 <th>Picture</th>
                 <td>
                     {% if user.picture is empty %}

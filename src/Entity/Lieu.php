@@ -30,7 +30,7 @@ class Lieu
     #[ORM\OneToMany(targetEntity: Sorties::class, mappedBy: 'Lieu')]
     private Collection $sorties;
 
-    #[ORM\ManyToOne(targetEntity: Ville::class, inversedBy: 'lieus',cascade: ['persist'])]
+    #[ORM\ManyToOne(targetEntity: Ville::class, cascade: ['persist'], inversedBy: 'lieus')]
     #[ORM\JoinColumn(nullable: false)]
     private ?Ville $Ville = null;
 

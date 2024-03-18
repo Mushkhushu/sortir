@@ -61,10 +61,8 @@ class SortiesController extends AbstractController
             $sorty->setOrganizator($security->getUser());
             $etat = $entityManager->getRepository(Etat::class)->find(1);
             $sorty->setEtat($etat);
-
             $lieu = $form->get('lieu')->getData();
             $sorty->setLieu($lieu);
-
             $entityManager->persist($sorty);
             $entityManager->flush();
             return $this->redirectToRoute('sorties/index', [], Response::HTTP_SEE_OTHER);

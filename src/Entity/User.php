@@ -66,6 +66,8 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\ManyToMany(targetEntity: Sorties::class, inversedBy: 'participants')]
     private Collection $participatingEvents;
 
+    #[ORM\ManyToOne(inversedBy: 'etudiants')]
+    private ?Site $site = null;
 
 
     public function __construct()
@@ -265,6 +267,18 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     public function setUser(mixed $user)
     {
+    }
+
+    public function getSite(): ?Site
+    {
+        return $this->site;
+    }
+
+    public function setSite(?Site $site): static
+    {
+        $this->site = $site;
+
+        return $this;
     }
 
 
