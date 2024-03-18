@@ -5,6 +5,7 @@ namespace App\Controller\Admin;
 
 use App\Entity\Sorties;
 use App\Entity\User;
+use EasyCorp\Bundle\EasyAdminBundle\Config\MenuItem;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractDashboardController;
 use Locale;
 use PhpParser\Comment;
