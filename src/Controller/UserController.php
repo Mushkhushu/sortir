@@ -93,6 +93,9 @@ class UserController extends AbstractController
             if (!empty($formData->getFirstName())) {
                 $user->setFirstName($formData->getFirstName());
             }
+            if (!empty($formData->getCampus())) {
+                $user->setCampus($formData->getCampus());
+            }
             if (!empty($formData->getlastName())) {
                 $user->setLastName($formData->getLastName());
             }

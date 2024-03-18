@@ -4,8 +4,6 @@ controllers:
         namespace: App\Controller
     type: attribute
     # config/routes.yaml
-    dashboard:
-        path: /admin
-        controller: App\Controller\Admin\DashboardController::index
+
 
     # ...
