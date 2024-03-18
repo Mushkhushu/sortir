@@ -25,9 +25,11 @@ class Sorties
     private ?\DateTimeInterface $date = null;
 
     #[ORM\Column(nullable: true)]
+    #[Assert\GreaterThanOrEqual(value: 1, message: "La duree doit être positive.")]
     private ?int $duree = 0;
 
     #[ORM\Column(nullable: true)]
+    #[Assert\GreaterThanOrEqual(value: 1, message: "selectionner au moins un participant")]
     private ?int $nbrPersonne = 0;
 
     #[ORM\Column(length: 255)]
@@ -196,5 +198,10 @@ class Sorties
 
         return $this;
     }
+
+    public function __toString(): string
+    {
+        // TODO: Implement __toString() method.
+        return $this->getNom();}
 
 }
