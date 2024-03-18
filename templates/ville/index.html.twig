@@ -4,38 +4,37 @@
 {% block title %}Ville index{% endblock %}
 
 {% block body %}
-    <h1>Ville index</h1>
-
-    <table class="table">
-        <thead>
-            <tr>
-                <th>Id</th>
-                <th>Nom</th>
-                <th>CodePostal</th>
-                <th>actions</th>
-            </tr>
-        </thead>
-        <tbody>
-        {% for ville in villes %}
-            <tr>
-                <td>{{ ville.id }}</td>
-                <td>{{ ville.nom }}</td>
-                <td>{{ ville.codePostal }}</td>
-                <td>
-                    <a href="{{ path('app_ville_show', {'id': ville.id}) }}">show</a>
-                    <a href="{{ path('app_ville_edit', {'id': ville.id}) }}">edit</a>
-                </td>
-            </tr>
-        {% else %}
-            <tr>
-                <td colspan="4">no records found</td>
-            </tr>
-        {% endfor %}
-        </tbody>
-    </table>
-
-    <a href="{{ path('app_ville_new') }}">Create new</a>
-
-
-
+    <main class="d-flex">
+        <div class="container">
+            {% for group, messages in app.flashes %}
+                {% for message in messages %}
+                    <div class="alert alert-{{ group }}" role="alert">{{ message }}</div>
+                {% endfor %}
+            {% endfor %}
+            <h1>Liste des villes</h1>
+            <div class="row row-cols-1 row-cols-sm-2 row-cols-lg-4">
+                {% for ville in villes %}
+                    <div class="col mb-4">
+                        <div class="card">
+                            <div class="card-body">
+                                <h5 class="card-title">{{ ville.nom }}</h5>
+                                <p class="card-text">{{ ville.codePostal }}</p>
+                                <a href="{{ path('app_ville_show', {'id': ville.id}) }}" class="btn btn-primary">show</a>
+                                <a href="{{ path('app_ville_edit', {'id': ville.id}) }}"  class="btn btn-secondary">edit</a>
+                            </div>
+                        </div>
+                    </div>
+                {% else %}
+                    <div class="col">
+                        <div class="card">
+                            <div class="card-body">
+                                <p class="card-text">No records found</p>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+            <a href="{{ path('app_ville_new') }}" class="btn btn-success">Create new</a>
+        </div>
+    </main>
 {% endblock %}

@@ -15,7 +15,7 @@
                 {% for user in users %}
                     <div class="col mb-4">
                         <div class="card">
-                            {% if app.user.picture is not empty %}
+                            {% if user.picture is not empty %}
                                 <img src="{{ asset(picture_dir ~ '/'  ~ app.user.picture) }}" alt="#" width="55" height="55" class="rounded-circle"/>
                             {% else %}
                                 <img src="{{ asset('images/default-avatar.png') }}" alt="default-avatar" width="55" height="55" class="rounded-circle"/>
