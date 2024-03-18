@@ -76,25 +76,14 @@
                             </div>
                         {% endif %}
                     </div>
-
-                    {{ form_label(form.lieu, 'Lieu:', {'label_attr': {'class': 'form-label'}}) }}
-
-                    {{ form_widget(form.lieu, {'attr': {'class': 'form-control'}}) }}
-
                     <div class="d-flex justify-content-between">
-
-
-
                         <a href="{{ path('sorties/index') }}" class="btn btn-outline-primary">Back to List</a>
                         {{ form_row(form.submit, {'label': 'Create New', 'attr': {'class': 'btn btn-primary'}}) }}
                     </div>
                     {{ form_end(form) }}
-
-
                 </div>
 
             </div>
         </div>
     </main>
 {% endblock %}
-

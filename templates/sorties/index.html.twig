@@ -10,10 +10,89 @@
                     <div class="alert alert-{{ group }}" role="alert">{{ message }}</div>
                 {% endfor %}
             {% endfor %}
-            <h1>Sorties index</h1>
-            {{ form_start(formFilter) }}
-                {{ form_row(formFilter.submit, {'label': 'Filtrer'}) }}
-            {{ form_end(formFilter) }}
+            <h1>Liste des Sorties</h1>
+            <div class="container">
+                <div class="row">
+                    {{ form_start(formFilter) }}
+                    <div class="mb-3">
+                        {{ form_label(formFilter.search, 'Le nom de la sortie contient:',{'label_attr': {'class': 'form-label'}}) }}
+                        {{ form_widget(formFilter.search, {'attr': {'class': 'form-control'}}) }}
+                        {% set errors = form_errors(formFilter.search) %}
+                        {% if errors %}
+                            <div class="text-danger">
+                                {{ errors|striptags }}
+                            </div>
+                        {% endif %}
+                    </div>
+                    <div class="mb-3">
+                        {{ form_label(formFilter.organizator, 'Sorties que j\'organise:', {'label_attr': {'class': 'form-check-label'}}) }}
+                        {{ form_widget(formFilter.organizator, {'attr': {'class': 'form-check-input'}}) }}
+                        {% set errors = form_errors(formFilter.organizator) %}
+                        {% if errors %}
+                            <div class="text-danger">
+                                {{ errors|striptags }}
+                            </div>
+                        {% endif %}
+                    </div>
+                    <div class="mb-3">
+                        {{ form_label(formFilter.participants, 'Sorties auxquelles je suis inscrit/e:', {'label_attr': {'class': 'form-check-label'}}) }}
+                        {{ form_widget(formFilter.participants, {'attr': {'class': 'form-check-input'}}) }}
+                        {% set errors = form_errors(formFilter.participants) %}
+                        {% if errors %}
+                            <div class="text-danger">
+                                {{ errors|striptags }}
+                            </div>
+                        {% endif %}
+                    </div>
+                    <div class="mb-3">
+                        {{ form_label(formFilter.non_participants, 'Sorties auxquelles je suis PAS inscrit/e:', {'label_attr': {'class': 'form-check-label'}}) }}
+                        {{ form_widget(formFilter.non_participants, {'attr': {'class': 'form-check-input'}}) }}
+                        {% set errors = form_errors(formFilter.non_participants) %}
+                        {% if errors %}
+                            <div class="text-danger">
+                                {{ errors|striptags }}
+                            </div>
+                        {% endif %}
+                    </div>
+                    <div class="mb-3">
+                        {{ form_label(formFilter.etat, 'Sorties passées:', {'label_attr': {'class': 'form-check-label'}}) }}
+                        {{ form_widget(formFilter.etat, {'attr': {'class': 'form-check-input'}}) }}
+                        {% set errors = form_errors(formFilter.etat) %}
+                        {% if errors %}
+                            <div class="text-danger">
+                                {{ errors|striptags }}
+                            </div>
+                        {% endif %}
+                    </div>
+                    <div class="mb-3">
+                        {{ form_label(formFilter.dateMin, 'Date min:', {'label_attr': {'class': 'datepicker-label'}}) }}
+                        {{ form_widget(formFilter.dateMin, {'attr': {'class': 'datepicker-input'}}) }}
+                        {% set errors = form_errors(formFilter.dateMin) %}
+                        {% if errors %}
+                            <div class="text-danger">
+                                {{ errors|striptags }}
+                            </div>
+                        {% endif %}
+                    </div>
+                    <div class="mb-3">
+                        {{ form_label(formFilter.dateMax, 'Date max:', {'label_attr': {'class': 'datepicker-label'}}) }}
+                        {{ form_widget(formFilter.dateMax, {'attr': {'class': 'datepicker-input'}}) }}
+                        {% set errors = form_errors(formFilter.dateMax) %}
+                        {% if errors %}
+                            <div class="text-danger">
+                                {{ errors|striptags }}
+                            </div>
+                        {% endif %}
+                    </div>
+                    <div class="col-mb-3">
+                        <div class="d-flex justify-content-between">
+                            {{ form_row(formFilter.submit, {'label': 'Filtrer', 'attr': {'class': 'btn btn-success'}}) }}
+                        </div>
+                    </div>
+                    {{ form_end(formFilter) }}
+                </div>
+            </div>
+        </div>
         <div class="container">
             <div class="row row-cols-1 row-cols-md-4 row-cols-lg-5">
                 {% for sorty in sorties %}
@@ -29,7 +108,7 @@
                                     sortie: {{ sorty.date ? sorty.date|date('Y-m-d H:i:s') : '' }}</p>
                                 <p class="card-text">Durée: {{ sorty.duree }}</p>
                                 {% if sorty.lieu is not null %}
-                                <p class="card-text">Lieu: {{ sorty.lieu.nom }}</p>
+                                    <p class="card-text">Lieu: {{ sorty.lieu.nom }}</p>
                                 {% endif %}
                                 <p class="card-text">Organisateur: {{ sorty.organizator.username }}</p>
                                 <p class="card-text">Inscrits/places: {{ sorty.participants|length }}

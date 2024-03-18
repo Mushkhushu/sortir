@@ -69,6 +69,7 @@ class RechercheType extends AbstractType
                 ]
             ])
         ->add('submit', SubmitType::class, [
+            'label' => 'Filtrer',
             'attr' => [
                 'class' => 'btn btn-outline-success'
             ]
