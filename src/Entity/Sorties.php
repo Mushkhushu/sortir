@@ -7,8 +7,6 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
-use PHPUnit\Framework\Constraint\GreaterThan;
-use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: SortiesRepository::class)]
 class Sorties
@@ -34,7 +32,6 @@ class Sorties
     private ?string $note = null;
 
     #[ORM\Column(type: Types::DATE_IMMUTABLE)]
-    #[Assert\LessThanOrEqual(propertyPath:"date",message: "La date limite doit être postérieure à la date.")]
     private ?\DateTimeImmutable $dateLimite = null;
 
     #[ORM\ManyToOne(inversedBy: 'createdEvents')]
