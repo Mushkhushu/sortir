@@ -93,6 +93,9 @@ class UserController extends AbstractController
             if (!empty($formData->getFirstName())) {
                 $user->setFirstName($formData->getFirstName());
             }
+            if (!empty($formData->getSite())) {
+                $user->setSite($formData->getSite());
+            }
             if (!empty($formData->getlastName())) {
                 $user->setLastName($formData->getLastName());
             }
@@ -147,7 +150,7 @@ class UserController extends AbstractController
             // Vérifie que le mot de passe actuel est correct
             if (!$passwordHasher->isPasswordValid($user, $formData['current_password'])) {
                 $this->addFlash('error', 'Le mot de passe actuel est incorrect.');
-                return $this->redirectToRoute('change_password');
+                return $this->redirectToRoute('user/change_password');
             }
 
             // Hachage du nouveau mot de passe

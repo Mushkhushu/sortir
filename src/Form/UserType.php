@@ -2,7 +2,9 @@
 
 namespace App\Form;
 
+use App\Entity\Site;
 use App\Entity\User;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
@@ -22,7 +24,11 @@ class UserType extends AbstractType
 
             ->add('phoneNumber')
             ->add('mail')
-
+            ->add('site', EntityType::class, [
+                'class' => Site::class,
+                'required' => false,
+                'choice_label' => 'Nom',
+            ])
             ->add('picture', FileType::class, [
                 'label' => 'Photo (.jpeg, .jpg, .png)',
                 'mapped' => false,

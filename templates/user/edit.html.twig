@@ -55,6 +55,10 @@
                         {% endif %}
                     </div>
                     <div class="mb-3">
+                        {{ form_label(form.site, 'Campus:', {'label_attr': {'class': 'form-label'}}) }}
+                        {{ form_widget(form.site, {'attr': {'class': 'form-control'}}) }}
+                    </div>
+                    <div class="mb-3">
                         {{ form_label(form.phoneNumber, 'Téléphone:', {'label_attr': {'class': 'form-label'}}) }}
                         {{ form_widget(form.phoneNumber, {'attr': {'class': 'form-control'}}) }}
                         {% set errors = form_errors(form.phoneNumber) %}
