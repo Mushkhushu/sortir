@@ -28,6 +28,8 @@
             </a>
             <ul class="dropdown-menu text-small shadow" aria-labelledby="dropdownUser3">
                 <li><a class="dropdown-item" href="{{  url('user/profile') }}">Profile</a></li>
+                <li><a class="dropdown-item" href="{{ url('admin') }}">Page Admin</a></li>
+                <li><a class="dropdown-item" href="{{ url('admin_user_loadcsv') }}">Add people with a .csv</a></li>
                 <li>
                     <hr class="dropdown-divider">
                 </li>
@@ -46,17 +48,15 @@
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
                 <li class="nav-item"><a class="nav-link" href="{{ url('user/index') }}">Liste des Users</a></li>
-                <li class="nav-item"><a class="nav-link" href="#">Contact</a></li>
-                <li class="nav-item"><a class="nav-link" href="{{ url('admin') }}">Page Admin</a></li>
+
                 <li class="nav-item"><a class="nav-link" href="{{ url('sorties/index') }}">Liste des sorties</a></li>
                 {% if is_granted('IS_AUTHENTICATED') %}
                     <li class="nav-item"><a class="nav-link" href="{{ url('sorties/new') }}">Créer une sortie</a></li>
                 {% endif %}
-                <a href="{{ path('app_ville_new') }}" class="btn btn-primary">Ajouter une nouvelle ville</a>
-                <a href="{{ path('app_lieu_new') }}" class="btn btn-primary">Ajouter un nouveaux lieux</a>
+                <li class="nav-item"><a href="{{ path('app_ville_new') }}" class="nav-link">Ajouter une nouvelle ville</a></li>
+                <li class="nav-item"><a href="{{ path('app_lieu_new') }}" class="nav-link">Ajouter un nouveau lieu</a></li>
                 {% if is_granted('ROLE_ADMIN') %}
-                    <li class="nav-item"><a href="{{ path('app_ville_new') }}" class="btn btn-primary">Ajouter une nouvelle ville</a></li>
-                    <li class="nav-item"><a class="nav-link" href="{{ url('user/index') }}">Liste des utilisateurs</a></li>
+                    <li class="nav-item"><a href="#" class="nav-link">Ajouter un site (TODO)</a></li>
                 {% endif %}
             </ul>
         </div>
