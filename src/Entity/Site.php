@@ -18,7 +18,7 @@ class Site
     #[ORM\Column(length: 255)]
     private ?string $Nom = null;
 
-    #[ORM\OneToMany(targetEntity: User::class, mappedBy: 'campus')]
+    #[ORM\OneToMany(targetEntity: User::class, mappedBy: 'site')]
     private Collection $etudiants;
 
     public function __construct()
@@ -55,7 +55,7 @@ class Site
     {
         if (!$this->etudiants->contains($etudiant)) {
             $this->etudiants->add($etudiant);
-            $etudiant->setCampus($this);
+            $etudiant->setSite($this);
         }
 
         return $this;
@@ -65,8 +65,8 @@ class Site
     {
         if ($this->etudiants->removeElement($etudiant)) {
             // set the owning side to null (unless already changed)
-            if ($etudiant->getCampus() === $this) {
-                $etudiant->setCampus(null);
+            if ($etudiant->getSite() === $this) {
+                $etudiant->setSite(null);
             }
         }
 
