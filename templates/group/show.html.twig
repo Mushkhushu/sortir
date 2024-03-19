@@ -1,0 +1,36 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Group{% endblock %}
+
+{% block body %}
+    <h1>Group</h1>
+
+    <table class="table">
+        <thead>
+        <tr>
+            <th>Id</th>
+            <th>Name</th>
+            <th>Users</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+            <td>{{ group.id }}</td>
+            <td>{{ group.name }}</td>
+            <td>
+                <ul>
+                    {% for user in group.users %}
+                        <li>{{ user.userName }} {{ user.lastName }}</li>
+                    {% endfor %}
+                </ul>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+
+    <a href="{{ path('group/index') }}">back to list</a>
+
+    <a href="{{ path('group/edit', {'id': group.id}) }}">edit</a>
+
+
+{% endblock %}
