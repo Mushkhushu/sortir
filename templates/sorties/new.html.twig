@@ -77,8 +77,8 @@
                         {% endif %}
                     </div>
                     <div class="d-flex justify-content-between">
-                        <a href="{{ path('sorties/index') }}" class="btn btn-outline-primary">Back to List</a>
                         {{ form_row(form.submit, {'label': 'Create New', 'attr': {'class': 'btn btn-primary'}}) }}
+                        <a href="{{ path('sorties/index') }}" class="btn btn-outline-secondary">Back to List</a>
                     </div>
                     {{ form_end(form) }}
                 </div>

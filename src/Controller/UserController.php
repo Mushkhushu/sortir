@@ -178,7 +178,7 @@ class UserController extends AbstractController
             $entityManager->remove($user);
             $entityManager->flush();
         }
-
+        $this->addFlash('success', 'utilisateur supprimé avec succès !');
         return $this->redirectToRoute('user/index', [], Response::HTTP_SEE_OTHER);
     }
 

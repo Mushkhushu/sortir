@@ -22,11 +22,13 @@
                 {% if app.user.picture is not empty %}
                     <img src="{{ asset(picture_dir ~ '/'  ~ app.user.picture) }}" alt="#" width="55" height="55" class="rounded-circle"/>
                 {% else %}
-                    <img src="{{ asset('images/default-avatar.png') }}" alt="default-avatar" width="55" height="55" class="rounded-circle"/>
+                    <img src="{{ asset('../assets/images/default-avatar.png') }}" alt="default-avatar" width="55" height="55" class="rounded-circle"/>
                 {% endif %}
             </a>
             <ul class="dropdown-menu text-small shadow" aria-labelledby="dropdownUser3">
                 <li><a class="dropdown-item" href="{{  url('user/profile') }}">Profile</a></li>
+                <li><a class="dropdown-item" href="{{ url('admin') }}">Page Admin</a></li>
+                <li><a class="dropdown-item" href="{{ url('admin_user_loadcsv') }}">Add people with a .csv</a></li>
                 <li>
                     <hr class="dropdown-divider">
                 </li>
@@ -36,7 +38,7 @@
     {% endif %}
     <div class="container">
         <a class="navbar-brand d-none d-lg-block" href="{{ url('home_home') }}">
-            <img src="{{ asset('images/favicon.png') }}" alt="logo" width="30" height="30">
+            <img src="{{ asset('../assets/images/favicon.png') }}" alt="logo" width="30" height="30">
         </a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
                 aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
@@ -45,17 +47,15 @@
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
                 <li class="nav-item"><a class="nav-link" href="{{ url('user/index') }}">Liste des Users</a></li>
-                <li class="nav-item"><a class="nav-link" href="#">Contact</a></li>
-                <li class="nav-item"><a class="nav-link" href="{{ url('admin') }}">Page Admin</a></li>
+
                 <li class="nav-item"><a class="nav-link" href="{{ url('sorties/index') }}">Liste des sorties</a></li>
                 {% if is_granted('IS_AUTHENTICATED') %}
                     <li class="nav-item"><a class="nav-link" href="{{ url('sorties/new') }}">Créer une sortie</a></li>
                 {% endif %}
-                <a href="{{ path('app_ville_new') }}" class="btn btn-primary">Ajouter une nouvelle ville</a>
-                <a href="{{ path('app_lieu_new') }}" class="btn btn-primary">Ajouter un nouveaux lieux</a>
+                <li class="nav-item"><a href="{{ path('app_ville_new') }}" class="nav-link">Ajouter une nouvelle ville</a></li>
+                <li class="nav-item"><a href="{{ path('app_lieu_new') }}" class="nav-link">Ajouter un nouveau lieu</a></li>
                 {% if is_granted('ROLE_ADMIN') %}
-                    <li class="nav-item"><a href="{{ path('app_ville_new') }}" class="btn btn-primary">Ajouter une nouvelle ville</a></li>
-                    <li class="nav-item"><a class="nav-link" href="{{ url('user/index') }}">Liste des utilisateurs</a></li>
+                    <li class="nav-item"><a href="#" class="nav-link">Ajouter un site (TODO)</a></li>
                 {% endif %}
             </ul>
         </div>

@@ -29,15 +29,15 @@ class EtatController extends AbstractController
         $sorty = $sortiesRepository->find($id);
         if($sorty->getEtat()->getId() == 2){
             $this->addFlash('danger', 'Cette sortie est ouverte et ne peut pas être annulée !');
-            return $this->redirectToRoute('sorties/index');
+            return $this->redirectToRoute('sorties/show', ['id' => $id]);
         }
         $etat = $entityManager->getRepository(Etat::class)->find(6);
         if($form->isSubmitted() && $form->isValid()){
             $sorty->setEtat($etat);
             $entityManager->persist($sorty);
             $entityManager->flush();
-            $this->addFlash('danger', 'La sortie a été annulée !');
-            return $this->redirectToRoute('sorties/index');
+            $this->addFlash('danger', 'La sortie est désormais annulée !');
+            return $this->redirectToRoute('sorties/show', ['id' => $id]);
         }
         return $this->render('etat/cancel.html.twig', [
             'etat' => $etat,

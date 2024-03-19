@@ -38,7 +38,7 @@ class SubscriptionController extends AbstractController
         // Vérifier si la date limite est dépassée
         if ($sortie->getDateLimite() < new \DateTime()) {
             $this->addFlash('danger', 'La date limite pour s\'inscrire à cette sortie est dépassée.');
-            return $this->redirectToRoute('sorties_show', ['id' => $id]);
+            return $this->redirectToRoute('sorties/show', ['id' => $id]);
         }
 
         // Vérifier si le nombre maximal de participants est atteint
@@ -68,7 +68,7 @@ class SubscriptionController extends AbstractController
 
         $sortie->removeParticipant($user);
         $entityManager->flush();
-        $this->addFlash('success', 'vous avez été viré à la sortie');
+        $this->addFlash('success', 'vous avez été viré de la sortie');
         return $this->redirectToRoute('sorties/show', ['id' => $id]);
         }
     }
