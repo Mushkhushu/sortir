@@ -32,14 +32,11 @@ class UserCrudController extends AbstractCrudController
         if ($form->isSubmitted() && $form->isValid()) {
             $formData = $form->getData();
             $csvFile = $formData['csv'];
-
             try {
                 $handle = fopen($csvFile->getRealPath(), 'r');
-
                 if ($handle !== false) {
                     // Skip the header row
                     fgetcsv($handle);
-
                     while (($record = fgetcsv($handle)) !== false) {
                         // Process each record
                         $user = new User();
@@ -64,7 +61,7 @@ class UserCrudController extends AbstractCrudController
 
                     // Optionally return or do something with the processed data
                     $this->addFlash('success', "PLEIN de participants ajoutés !");
-                    return $this->redirectToRoute('admin_user_loadcsv');
+                    return $this->redirectToRoute('user/index');
                 } else {
                     throw new \Exception("Failed to open CSV file");
                 }

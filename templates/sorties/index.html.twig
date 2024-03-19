@@ -3,148 +3,102 @@
 {% block title %}Sorties index{% endblock %}
 
 {% block body %}
-    <main class="d-flex">
+    <main class="d-flex flex-column">
         <div class="container">
-            {% for group, messages in app.flashes %}
-                {% for message in messages %}
-                    <div class="alert alert-{{ group }}" role="alert">{{ message }}</div>
-                {% endfor %}
-            {% endfor %}
-            <h1>Liste des Sorties</h1>
-            <div class="container">
-                <div class="row">
-                    {{ form_start(formFilter) }}
-                    <div class="mb-3">
-                        {{ form_label(formFilter.search, 'Le nom de la sortie contient:',{'label_attr': {'class': 'form-label'}}) }}
-                        {{ form_widget(formFilter.search, {'attr': {'class': 'form-control'}}) }}
-                        {% set errors = form_errors(formFilter.search) %}
-                        {% if errors %}
-                            <div class="text-danger">
-                                {{ errors|striptags }}
+            <div class="row justify-content-center">
+                <div class="col-lg-8">
+                    <div class="card mb-4 mt-4">
+                        <div class="card-body">
+                            {{ form_start(formFilter) }}
+                            <h5 class="card-title text-center">Rechercher</h5>
+                            <div class="card-text">
+                                <div class="form-group">
+                                    {{ form_label(formFilter.search, 'Le nom de la sortie contient : ',{'label_attr': {'class': 'form-label'}}) }}
+                                    {{ form_widget(formFilter.search, {'attr': {'class': 'form-control'}}) }}
+                                </div>
+                                <div class="form-group">
+                                    {{ form_label(formFilter.organizator, 'Sorties que j\'organise : ', {'label_attr': {'class': 'form-check-label'}}) }}
+                                    {{ form_widget(formFilter.organizator, {'attr': {'class': 'form-check-input'}}) }}
+                                </div>
+                                <div class="form-group">
+                                    {{ form_label(formFilter.participants, 'Sorties auxquelles je suis inscrit/e : ', {'label_attr': {'class': 'form-check-label'}}) }}
+                                    {{ form_widget(formFilter.participants, {'attr': {'class': 'form-check-input'}}) }}
+                                </div>
+                                <div class="form-group">
+                                    {{ form_label(formFilter.non_participants, 'Sorties auxquelles je suis PAS inscrit/e : ', {'label_attr': {'class': 'form-check-label'}}) }}
+                                    {{ form_widget(formFilter.non_participants, {'attr': {'class': 'form-check-input'}}) }}
+                                </div>
+                                <div class="form-group">
+                                    {{ form_label(formFilter.etat, 'Sorties passées : ', {'label_attr': {'class': 'form-check-label'}}) }}
+                                    {{ form_widget(formFilter.etat, {'attr': {'class': 'form-check-input'}}) }}
+                                </div>
+                                <div class="form-group">
+                                    {{ form_label(formFilter.dateMin, 'Date min : ', {'label_attr': {'class': 'datepicker-label'}}) }}
+                                    {{ form_widget(formFilter.dateMin, {'attr': {'class': 'datepicker-input'}}) }}
+                                </div>
+                                <div class="form-group">
+                                    {{ form_label(formFilter.dateMax, 'Date max : ', {'label_attr': {'class': 'datepicker-label'}}) }}
+                                    {{ form_widget(formFilter.dateMax, {'attr': {'class': 'datepicker-input'}}) }}
+                                </div>
+                                <div class="form-group text-center">
+                                    {{ form_row(formFilter.submit, {'label': 'Filtrer', 'attr': {'class': 'btn btn-success'}}) }}
+                                </div>
                             </div>
-                        {% endif %}
-                    </div>
-                    <div class="mb-3">
-                        {{ form_label(formFilter.organizator, 'Sorties que j\'organise:', {'label_attr': {'class': 'form-check-label'}}) }}
-                        {{ form_widget(formFilter.organizator, {'attr': {'class': 'form-check-input'}}) }}
-                        {% set errors = form_errors(formFilter.organizator) %}
-                        {% if errors %}
-                            <div class="text-danger">
-                                {{ errors|striptags }}
-                            </div>
-                        {% endif %}
-                    </div>
-                    <div class="mb-3">
-                        {{ form_label(formFilter.participants, 'Sorties auxquelles je suis inscrit/e:', {'label_attr': {'class': 'form-check-label'}}) }}
-                        {{ form_widget(formFilter.participants, {'attr': {'class': 'form-check-input'}}) }}
-                        {% set errors = form_errors(formFilter.participants) %}
-                        {% if errors %}
-                            <div class="text-danger">
-                                {{ errors|striptags }}
-                            </div>
-                        {% endif %}
-                    </div>
-                    <div class="mb-3">
-                        {{ form_label(formFilter.non_participants, 'Sorties auxquelles je suis PAS inscrit/e:', {'label_attr': {'class': 'form-check-label'}}) }}
-                        {{ form_widget(formFilter.non_participants, {'attr': {'class': 'form-check-input'}}) }}
-                        {% set errors = form_errors(formFilter.non_participants) %}
-                        {% if errors %}
-                            <div class="text-danger">
-                                {{ errors|striptags }}
-                            </div>
-                        {% endif %}
-                    </div>
-                    <div class="mb-3">
-                        {{ form_label(formFilter.etat, 'Sorties passées:', {'label_attr': {'class': 'form-check-label'}}) }}
-                        {{ form_widget(formFilter.etat, {'attr': {'class': 'form-check-input'}}) }}
-                        {% set errors = form_errors(formFilter.etat) %}
-                        {% if errors %}
-                            <div class="text-danger">
-                                {{ errors|striptags }}
-                            </div>
-                        {% endif %}
-                    </div>
-                    <div class="mb-3">
-                        {{ form_label(formFilter.dateMin, 'Date min:', {'label_attr': {'class': 'datepicker-label'}}) }}
-                        {{ form_widget(formFilter.dateMin, {'attr': {'class': 'datepicker-input'}}) }}
-                        {% set errors = form_errors(formFilter.dateMin) %}
-                        {% if errors %}
-                            <div class="text-danger">
-                                {{ errors|striptags }}
-                            </div>
-                        {% endif %}
-                    </div>
-                    <div class="mb-3">
-                        {{ form_label(formFilter.dateMax, 'Date max:', {'label_attr': {'class': 'datepicker-label'}}) }}
-                        {{ form_widget(formFilter.dateMax, {'attr': {'class': 'datepicker-input'}}) }}
-                        {% set errors = form_errors(formFilter.dateMax) %}
-                        {% if errors %}
-                            <div class="text-danger">
-                                {{ errors|striptags }}
-                            </div>
-                        {% endif %}
-                    </div>
-                    <div class="col-mb-3">
-                        <div class="d-flex justify-content-between">
-                            {{ form_row(formFilter.submit, {'label': 'Filtrer', 'attr': {'class': 'btn btn-success'}}) }}
+                            {{ form_end(formFilter) }}
                         </div>
                     </div>
-                    {{ form_end(formFilter) }}
                 </div>
             </div>
         </div>
         <div class="container">
-            <div class="row row-cols-1 row-cols-md-4 row-cols-lg-5">
+            <h1 class="row justify-content-center">Liste des Sorties</h1>
+            <div class="row">
                 {% for sorty in sorties %}
-                    {% set style = sorty.etat.id == 7 ? 'text-decoration: line-through; opacity: 0.5;' : '' %}
-                    <div class="col mb-4 px-3">
-                        <div class="card bg-light mb-3"
-                             style="max-width: 30rem; min-width: 10rem;">
+                    <div class="col-lg-4 mb-4">
+                        <div class="card">
+                            {% set style = sorty.etat.id == 7 ? 'text-decoration: line-through; opacity: 0.5;' : '' %}
                             <div class="card-body" style="{{ style }}">
-                                <div class="card-header">
+                                <div class="card-body" style="{{ style }}">
                                     <h5 class="card-title">{{ sorty.nom }}</h5>
-                                </div>
-                                <p class="card-text">Date de la
-                                    sortie: {{ sorty.date ? sorty.date|date('Y-m-d H:i:s') : '' }}</p>
-                                <p class="card-text">Durée: {{ sorty.duree }}</p>
-                                {% if sorty.lieu is not null %}
-                                    <p class="card-text">Lieu: {{ sorty.lieu.nom }}</p>
-                                {% endif %}
-                                <p class="card-text">Organisateur: {{ sorty.organizator.username }}</p>
-                                <p class="card-text">Inscrits/places: {{ sorty.participants|length }}
-                                    /{{ sorty.nbrPersonne }}</p>
-                                <p class="card-text">Je
-                                    participe: {% if app.user in sorty.participants %}oui{% else %}non{% endif %}</p>
-                                <p class="card-text">Date
-                                    limite: {{ sorty.dateLimite ? sorty.dateLimite|date('Y-m-d') : '' }}</p>
-                                <p class="card-text">État: {{ sorty.etat.libelle }}</p>
-                                <div class="d-flex justify-content-between align-items-center">
-                                    <a href="{{ path('sorties/show', {'id': sorty.id}) }}"
-                                       class="btn btn-primary btn-sm {% if sorty.etat.id == 7 %}disabled{% endif %}">Show</a>
-                                    {% if sorty.etat.id == 2 %}
-                                        <div class="btn-group">
-                                            <a href="{{ path('register_to_sortie', {'id': sorty.id}) }}"
-                                               class="btn btn-primary btn-sm {% if sorty.etat.id == 7 %}disabled{% endif %}">Register</a>
-                                            <a href="{{ path('unsubscribe_to_sortie', {'id': sorty.id}) }}"
-                                               class="btn btn-primary btn-sm {% if sorty.etat.id == 7 %}disabled{% endif %}">Unsubscribe</a>
-                                        </div>
+                                    <p class="card-text">Date de la
+                                        sortie: {{ sorty.date ? sorty.date|date('Y-m-d H:i:s') : '' }}</p>
+                                    <p class="card-text">Durée: {{ sorty.duree }}</p>
+                                    {% if sorty.lieu is not null %}
+                                        <p class="card-text">Lieu: {{ sorty.lieu.nom }}</p>
                                     {% endif %}
+                                    <p class="card-text">Organisateur: {{ sorty.organizator.username }}</p>
+                                    <p class="card-text">Inscrits/places: {{ sorty.participants|length }}
+                                        /{{ sorty.nbrPersonne }}</p>
+                                    <p class="card-text">Je
+                                        participe: {% if app.user in sorty.participants %}oui{% else %}non{% endif %}</p>
+                                    <p class="card-text">Date
+                                        limite: {{ sorty.dateLimite ? sorty.dateLimite|date('Y-m-d') : '' }}</p>
+                                    <p class="card-text">État: {{ sorty.etat.libelle }}</p>
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <a href="{{ path('sorties/show', {'id': sorty.id}) }}"
+                                           class="btn btn-primary btn-sm {% if sorty.etat.id == 7 %}disabled{% endif %}">Show</a>
+                                        {% if sorty.etat.id == 2 %}
+                                            <div class="btn-group">
+                                                <a href="{{ path('register_to_sortie', {'id': sorty.id}) }}"
+                                                   class="btn btn-primary btn-sm {% if sorty.etat.id == 7 %}disabled{% endif %}">Register</a>
+                                                <a href="{{ path('unsubscribe_to_sortie', {'id': sorty.id}) }}"
+                                                   class="btn btn-primary btn-sm {% if sorty.etat.id == 7 %}disabled{% endif %}">Unsubscribe</a>
+                                            </div>
+                                        {% endif %}
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
                 {% else %}
-                    <div class="col">
+                    <div class="col-lg-12">
                         <div class="card">
                             <div class="card-body">
-                                <p class="card-text">No records found</p>
+                                <p class="card-text">J'ai rien trouvé déso :/</p>
                             </div>
                         </div>
                     </div>
                 {% endfor %}
-            </div>
-            <div class="d-none d-lg-block">
-                <a href="{{ path('sorties/new') }}" class="btn btn-success">Create New</a>
             </div>
         </div>
     </main>

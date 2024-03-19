@@ -23,7 +23,7 @@
                 {% if app.user.picture is not empty %}
                     <img src="{{ asset(picture_dir ~ '/'  ~ app.user.picture) }}" alt="#" width="55" height="55" class="rounded-circle"/>
                 {% else %}
-                    <img src="{{ asset('images/default-avatar.png') }}" alt="default-avatar" width="55" height="55" class="rounded-circle"/>
+                    <img src="{{ asset('../assets/images/default-avatar.png') }}" alt="default-avatar" width="55" height="55" class="rounded-circle"/>
                 {% endif %}
             </a>
             <ul class="dropdown-menu text-small shadow" aria-labelledby="dropdownUser3">
@@ -39,7 +39,7 @@
     {% endif %}
     <div class="container">
         <a class="navbar-brand d-none d-lg-block" href="{{ url('home_home') }}">
-            <img src="{{ asset('images/favicon.png') }}" alt="logo" width="30" height="30">
+            <img src="{{ asset('../assets/images/favicon.png') }}" alt="logo" width="30" height="30">
         </a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
                 aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
