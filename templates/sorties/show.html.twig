@@ -3,100 +3,107 @@
 {% block title %}Sorties{% endblock %}
 
 {% block body %}
+    <h1 class="row justify-content-center">Sortie {{ sorty.nom }}</h1>
     <main class="d-flex">
-        <div class="container">
+
+        <div class="container d-flex flex-column">
             {% for group, messages in app.flashes %}
                 {% for message in messages %}
                     <div class="alert alert-{{ group }}" role="alert">{{ message }}</div>
                 {% endfor %}
             {% endfor %}
-            <h1>Sorties</h1>
-            <table class="table">
-                <tbody>
-                <tr>
-                    <th>Id</th>
-                    <td>{{ sorty.id }}</td>
-                </tr>
-                <tr>
-                    <th>Nom</th>
-                    <td>{{ sorty.nom }}</td>
-                </tr>
-                <tr>
-                    <th>Date</th>
-                    <td>{{ sorty.date ? sorty.date|date('Y-m-d H:i:s') : '' }}</td>
-                </tr>
-                <tr>
-                    <th>Duree</th>
-                    <td>{{ sorty.duree }}</td>
-                </tr>
-                <tr>
-                    <th>Lieu</th>
-                    {%  if sorty.lieu is not null %}
-                    <td>{{ sorty.lieu.nom }}</td>
-                    {% else %}
-                    <td>Aucun lieu</td>
-                    {% endif %}
-                </tr>
-                <tr>
 
-                    <th>Adresse</th>
-                    {% if sorty.lieu is not null %}
-                    <td>{{ sorty.lieu.rue }}</td>
-                    {% else %}
-                    <td>Aucune adresse</td>
+            <div class="card mb-4 mt-4">
+                <table class="table">
+                    <tbody>
+                    <tr>
+                        <th>Id</th>
+                        <td>{{ sorty.id }}</td>
+                    </tr>
+                    <tr>
+                        <th>Nom</th>
+                        <td>{{ sorty.nom }}</td>
+                    </tr>
+                    <tr>
+                        <th>Date</th>
+                        <td>{{ sorty.date ? sorty.date|date('Y-m-d H:i:s') : '' }}</td>
+                    </tr>
+                    <tr>
+                        <th>Duree</th>
+                        <td>{{ sorty.duree }}</td>
+                    </tr>
+                    <tr>
+                        <th>Lieu</th>
+                        {% if sorty.lieu is not null %}
+                            <td>{{ sorty.lieu.nom }}</td>
+                        {% else %}
+                            <td>Aucun lieu</td>
+                        {% endif %}
+                    </tr>
+                    <tr>
+                        <th>Adresse</th>
+                        {% if sorty.lieu is not null %}
+                            <td>{{ sorty.lieu.rue }}</td>
+                        {% else %}
+                            <td>Aucune adresse</td>
+                        {% endif %}
+                    </tr>
+                    <tr>
+                        <th>Organisateur</th>
+                        <td>{{ sorty.organizator.username }}</td>
+                    </tr>
+                    <tr>
+                        <th>Etat</th>
+                        <td>{{ sorty.etat.libelle }}</td>
+                    </tr>
+                    <tr>
+                        <th>NbrPersonne max</th>
+                        <td>{{ sorty.nbrPersonne }}</td>
+                    </tr>
+                    <tr>
+                        <th>Nb Participants</th>
+                        <td>{{ sorty.participants|length }}</td>
+                    </tr>
+                    <tr>
+                        <th>Note</th>
+                        <td>{{ sorty.note }}</td>
+                    </tr>
+                    <tr>
+                        <th>DateLimte</th>
+                        <td>{{ sorty.dateLimite ? sorty.dateLimite|date('Y-m-d') : '' }}</td>
+                    </tr>
+                    </tbody>
+                </table>
+                <div class="d-flex justify-content mb-4">
+                    <a href="{{ path('sorties/index') }}" class="btn btn-outline-primary">Back to List</a>
+                    {% if app.user == sorty.organizator or is_granted('ROLE_ADMIN') %}
+                        <a href="{{ path('sorties/edit', {'id': sorty.id}) }}" class="btn btn-outline-secondary">Edit</a>
+                        <a href="{{ path('etat_cancel', {'id': sorty.id}) }}" class="btn btn-outline-danger">Annuler</a>
+                        {{ include('sorties/delete_form.html.twig') }}
                     {% endif %}
-                </tr>
-                <tr>
-                    <th>Organisateur</th>
-                    <td>{{ sorty.organizator.username }}</td>
-                </tr>
-                <tr>
-                    <th>Etat</th>
-                    <td>{{ sorty.etat.libelle }}</td>
-                </tr>
-                <tr>
-                    <th>NbrPersonne max</th>
-                    <td>{{ sorty.nbrPersonne }}</td>
-                </tr>
-                <tr>
-                    <th>Nb Participants</th>
-                    <td>{{ sorty.participants|length }}</td>
-                </tr>
-                <tr>
-                    <th>Note</th>
-                    <td>{{ sorty.note }}</td>
-                </tr>
-                <tr>
-                    <th>DateLimte</th>
-                    <td>{{ sorty.dateLimite ? sorty.dateLimite|date('Y-m-d') : '' }}</td>
-                </tr>
-
-                </tbody>
-            </table>
-            <div class="d-flex col justify-content-start">
-            <a href="{{ path('sorties/index') }}" class="btn btn-outline-primary">Back to List</a>
-            {% if app.user == sorty.organizator or is_granted('ROLE_ADMIN')%}
-                <a href="{{ path('sorties/edit', {'id': sorty.id}) }}" class="btn btn-outline-secondary">Edit</a>
-                <a href="{{ path('etat_cancel', {'id': sorty.id}) }}" class="btn btn-outline-danger">Annuler</a>
-            {{ include('sorties/delete_form.html.twig') }}
-            {% endif %}
+                </div>
             </div>
-            <div class="container">
-                {% if sorty.participants %}
+        </div>
+
+        <div class="container d-flex flex-column align-items-start">
+            {% if sorty.participants %}
+                <div class="card mb-4 mt-4">
                     <div class="card-body">
-                        <h2 class="card-title">Liste des participants</h2>
+                        <h2 class="card-header">Liste des participants</h2>
                         <ul class="list-group list-group-flush">
                             {% for participant in sorty.participants %}
                                 <li class="list-group-item">
-                                    <a class="link-success link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover" href="{{ path('user/show', {'id': participant.id}) }}">{{ participant.username }}</a>
+                                    <a class="link-success link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover"
+                                       href="{{ path('user/show', {'id': participant.id}) }}">{{ participant.username }}</a>
                                 </li>
                             {% else %}
                                 <li class="list-group-item">Aucun participant</li>
                             {% endfor %}
                         </ul>
                     </div>
-                {% endif %}
-            </div>
+                </div>
+            {% endif %}
         </div>
     </main>
+
 {% endblock %}

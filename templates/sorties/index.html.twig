@@ -17,6 +17,10 @@
                                     {{ form_widget(formFilter.search, {'attr': {'class': 'form-control'}}) }}
                                 </div>
                                 <div class="form-group">
+                                    {{ form_label(formFilter.site, 'Sorties par site : ', {'label_attr': {'class': 'form-check-label'}}) }}
+                                    {{ form_widget(formFilter.site, {'attr': {'class': 'form-control'}}) }}
+                                </div>
+                                <div class="form-group">
                                     {{ form_label(formFilter.organizator, 'Sorties que j\'organise : ', {'label_attr': {'class': 'form-check-label'}}) }}
                                     {{ form_widget(formFilter.organizator, {'attr': {'class': 'form-check-input'}}) }}
                                 </div>
@@ -67,6 +71,7 @@
                                         <p class="card-text">Lieu: {{ sorty.lieu.nom }}</p>
                                     {% endif %}
                                     <p class="card-text">Organisateur: {{ sorty.organizator.username }}</p>
+                                    <p class="card-text">Campus: {{ sorty.organizator.site.nom }}</p>
                                     <p class="card-text">Inscrits/places: {{ sorty.participants|length }}
                                         /{{ sorty.nbrPersonne }}</p>
                                     <p class="card-text">Je
