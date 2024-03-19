@@ -69,11 +69,15 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\ManyToOne(inversedBy: 'etudiants')]
     private ?Site $site = null;
 
+    #[ORM\ManyToMany(targetEntity: Group::class, mappedBy: 'users')]
+    private Collection $groupe;
+
 
     public function __construct()
     {
         $this->createdEvents = new ArrayCollection();
         $this->participatingEvents = new ArrayCollection();
+        $this->groupe = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -277,6 +281,33 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setSite(?Site $site): static
     {
         $this->site = $site;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Group>
+     */
+    public function getGroupe(): Collection
+    {
+        return $this->groupe;
+    }
+
+    public function addGroupe(Group $groupe): static
+    {
+        if (!$this->groupe->contains($groupe)) {
+            $this->groupe->add($groupe);
+            $groupe->addUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeGroupe(Group $groupe): static
+    {
+        if ($this->groupe->removeElement($groupe)) {
+            $groupe->removeUser($this);
+        }
 
         return $this;
     }
