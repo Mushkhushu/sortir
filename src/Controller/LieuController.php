@@ -52,6 +52,7 @@ class LieuController extends AbstractController
             $entityManager->persist($lieu);
             $entityManager->flush();
             // Rediriger vers la page de détail du lieu
+            $this->addFlash('success', 'Nouveau lieu ajouté avec succès !');
             return $this->redirectToRoute('app_lieu_show',['id' => $lieu->getId()]);
         }
 
@@ -77,7 +78,7 @@ class LieuController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager->flush();
-
+            $this->addFlash('success', 'Lieu modifié avec succès !');
             return $this->redirectToRoute('app_lieu_index', [], Response::HTTP_SEE_OTHER);
         }
 
@@ -94,7 +95,7 @@ class LieuController extends AbstractController
             $entityManager->remove($lieu);
             $entityManager->flush();
         }
-
+        $this->addFlash('success', 'Lieu supprimé avec succès !');
         return $this->redirectToRoute('app_lieu_index', [], Response::HTTP_SEE_OTHER);
     }
 }

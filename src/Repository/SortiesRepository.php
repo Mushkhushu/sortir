@@ -27,7 +27,8 @@ class SortiesRepository extends ServiceEntityRepository
     {
         $qb = $this->createQueryBuilder('s')
             ->join('s.etat', 'e')
-            ->leftJoin('s.participants', 'p');
+            ->leftJoin('s.participants', 'p')
+            ->leftJoin('s.organizator', 'o');
         if (!empty($data['participants']) && empty($data['non_participants'])) {
             $qb->andWhere(':userID MEMBER OF s.participants')
                 ->setParameter('userID', $userID);
@@ -43,6 +44,10 @@ class SortiesRepository extends ServiceEntityRepository
         if (!empty($data['search'])) {
             $qb->andWhere('s.nom LIKE :search')
                 ->setParameter('search', "%{$data['search']}%");
+        }
+        if (!empty($data['site'])) {
+            $qb->andWhere('o.site = :site')
+                ->setParameter('site', $data['site']);
         }
         if (!empty($data['etat'])) {
             $qb->andWhere("e.id = 5 OR e.id = 7");

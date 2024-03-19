@@ -67,7 +67,7 @@ class SortiesController extends AbstractController
             $entityManager->flush();
             return $this->redirectToRoute('sorties/index', [], Response::HTTP_SEE_OTHER);
         }
-
+        $this->addFlash('success', 'Nouvelle sortie ajoutée avec succès !');
         return $this->render('sorties/new.html.twig', [
             'sorty' => $sorty,
             'form' => $form,
@@ -90,7 +90,7 @@ class SortiesController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager->flush();
-
+            $this->addFlash('success', 'Sortie modifiée avec succès !');
             return $this->redirectToRoute('sorties/index', [], Response::HTTP_SEE_OTHER);
         }
 
@@ -107,6 +107,7 @@ class SortiesController extends AbstractController
             $entityManager->remove($sorty);
             $entityManager->flush();
         }
+        $this->addFlash('success', 'Sortie supprimée avec succès !');
         return $this->redirectToRoute('sorties/index', [], Response::HTTP_SEE_OTHER);
     }
 }
