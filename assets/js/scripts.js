@@ -49,15 +49,4 @@ window.addEventListener('DOMContentLoaded', event => {
         });
     });
 
-    // Function to toggle password visibility
-    const togglePasswordButton = document.getElementById('toggle-password');
-    const passwordInput = document.getElementById('password-input');
-    togglePasswordButton.addEventListener('click', function(e) {
-        const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
-        passwordInput.setAttribute('type', type);
-        this.textContent = type === 'password' ? 'Afficher' : 'Masquer';
-        e.preventDefault();
-    });
-
-
 });
