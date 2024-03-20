@@ -22,6 +22,10 @@ class Group
     #[ORM\ManyToMany(targetEntity: User::class, inversedBy: 'groupe')]
     private Collection $users;
 
+    #[ORM\ManyToOne(inversedBy: 'groupesPrivé')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?User $createBy = null;
+
     public function __construct()
     {
         $this->users = new ArrayCollection();
@@ -74,6 +78,18 @@ class Group
     public function removeUser(User $user): static
     {
         $this->users->removeElement($user);
+
+        return $this;
+    }
+
+    public function getCreateBy(): ?User
+    {
+        return $this->createBy;
+    }
+
+    public function setCreateBy(?User $createBy): static
+    {
+        $this->createBy = $createBy;
 
         return $this;
     }

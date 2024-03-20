@@ -18,8 +18,10 @@ class GroupController extends AbstractController
     #[Route('', name: 'index', methods: ['GET'])]
     public function index(GroupRepository $groupRepository): Response
     {
+        $groups = $groupRepository->findByIdForGroup($this->getUser());
+
         return $this->render('group/index.html.twig', [
-            'groups' => $groupRepository->findAll(),
+            'groups' => $groups,
         ]);
     }
 
@@ -27,6 +29,7 @@ class GroupController extends AbstractController
     public function new(Request $request, EntityManagerInterface $entityManager): Response
     {
         $group = new Group();
+        $group->setCreateBy($this->getUser());
         $form = $this->createForm(GroupType::class, $group);
         $form->handleRequest($request);
 
