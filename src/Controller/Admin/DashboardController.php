@@ -55,4 +55,5 @@ class DashboardController extends AbstractDashboardController
         yield MenuItem::linkToRoute('Accueil', 'fa fa-home', 'home_home');
 
     }
+
 }

@@ -72,6 +72,12 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\ManyToMany(targetEntity: Group::class, mappedBy: 'users')]
     private Collection $groupe;
 
+    #[ORM\Column()]
+    private ?bool $isActive = true;
+
+    #[ORM\Column(type: Types::DATETIME_IMMUTABLE, nullable: true)]
+    private ?\DateTimeImmutable $banExpirationDate = null;
+
 
     public function __construct()
     {
@@ -308,6 +314,30 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         if ($this->groupe->removeElement($groupe)) {
             $groupe->removeUser($this);
         }
+
+        return $this;
+    }
+
+    public function isIsActive(): ?bool
+    {
+        return $this->isActive;
+    }
+
+    public function setIsActive(bool $isActive): static
+    {
+        $this->isActive = $isActive;
+
+        return $this;
+    }
+
+    public function getBanExpirationDate(): ?\DateTimeImmutable
+    {
+        return $this->banExpirationDate;
+    }
+
+    public function setBanExpirationDate(?\DateTimeImmutable $banExpirationDate): static
+    {
+        $this->banExpirationDate = $banExpirationDate;
 
         return $this;
     }

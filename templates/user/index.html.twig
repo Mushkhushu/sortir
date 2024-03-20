@@ -41,6 +41,32 @@
                 {% endfor %}
             </div>
 
+            <div class="row row-cols-1 row-cols-sm-2 row-cols-lg-4">
+                <h1>Banned Users</h1>
+                {% for user in bannedUsers %}
+                    <div class="col mb-4">
+                        <div class="card">
+                            <div class="card-body">
+                                <h5 class="card-title">{{ user.username }}</h5>
+                                <p class="card-text"> {{ user.isActive ? 'Active' : 'Banned' }}</p>
+                                <p class="card-text">{{ user.banexpirationDate ? user.banexpirationDate|date('Y-m-d H:i:s') : ''}}</p>
+                                <a href="{{ path('user/show', {'id': user.id}) }}" class="btn btn-primary btn-sm">Show</a>
+                                {% if app.user and app.user.id == user.id %}
+                                    <a href="{{ path('user/edit', {'id': user.id}) }}" class="btn btn-success btn-sm">Edit</a>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                {% else %}
+                    <div class="col">
+                        <div class="card">
+                            <div class="card-body">
+                                <p class="card-text">No banned users for now</p>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
             <a href="{{ path('user/new') }}" class="btn btn-success">Create New</a>
             <a href="{{ path('group/new') }}" class="btn btn-success">Create Private Group </a>
         </div>

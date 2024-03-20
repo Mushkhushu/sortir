@@ -8,6 +8,7 @@ use App\Entity\User;
 use App\Form\EditPasswordType;
 use App\Form\UserType;
 use App\Repository\UserRepository;
+use App\Services\BanService;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Bundle\SecurityBundle\Security;
@@ -33,10 +34,20 @@ class UserController extends AbstractController
     }
 
     #[Route('', name: 'index', methods: ['GET'])]
-    public function index(UserRepository $userRepository): Response
+    public function index(UserRepository $userRepository, BanService $banService): Response
     {
+        $users = $userRepository->findAll();
+        $bannedUsers = [];
+        foreach ($users as $user) {
+            if ($user->isIsActive() === false) {
+                $bannedUsers[] = $user;
+            }
+        }
+
+        //dd($bannedUsers);
         return $this->render('user/index.html.twig', [
-            'users' => $userRepository->findAll(),
+            'users' => $users,
+            'bannedUsers' => $bannedUsers,
         ]);
     }
 
@@ -181,8 +192,6 @@ class UserController extends AbstractController
         $this->addFlash('success', 'utilisateur supprimé avec succès !');
         return $this->redirectToRoute('user/index', [], Response::HTTP_SEE_OTHER);
     }
-
-
 
 }
 
