@@ -36,11 +36,14 @@ class UserController extends AbstractController
     #[Route('', name: 'index', methods: ['GET'])]
     public function index(UserRepository $userRepository, BanService $banService): Response
     {
-        $users = $userRepository->findAll();
+        $usersFromRepo = $userRepository->findAll();
         $bannedUsers = [];
-        foreach ($users as $user) {
+        $users = [];
+        foreach ($usersFromRepo as $user) {
             if ($user->isIsActive() === false) {
                 $bannedUsers[] = $user;
+            } else  {
+                $users[] = $user;
             }
         }
 
