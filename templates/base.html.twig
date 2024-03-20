@@ -27,8 +27,10 @@
             </a>
             <ul class="dropdown-menu text-small shadow" aria-labelledby="dropdownUser3">
                 <li><a class="dropdown-item" href="{{  url('user/profile') }}">Profile</a></li>
+                {% if is_granted('ROLE_ADMIN') %}
                 <li><a class="dropdown-item" href="{{ url('admin') }}">Page Admin</a></li>
                 <li><a class="dropdown-item" href="{{ url('admin_user_loadcsv') }}">Add people with a .csv</a></li>
+                {% endif %}
                 <li>
                     <hr class="dropdown-divider">
                 </li>
