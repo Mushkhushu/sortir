@@ -50,9 +50,10 @@
                     </tr>
                     <tr>
                         <th>Organisateur</th>
-                        <td><a class="link-success link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover"
-                               href="{{ path('user/show', {'id': sorty.organizator.id}) }}">{{ sorty.organizator.username }}</a></td>
-                        <td>{{ sorty.organizator.username }}</td>
+                        <td>
+                            <a class="link-success link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover"
+                               href="{{ path('user/show', {'id': sorty.organizator.id}) }}">{{ sorty.organizator.username }}</a>
+                        </td>
                     </tr>
                     <tr>
                         <th>Etat</th>
@@ -79,7 +80,8 @@
                 <div class="d-flex justify-content mb-4">
                     <a href="{{ path('sorties/index') }}" class="btn btn-outline-primary">Back to List</a>
                     {% if app.user == sorty.organizator or is_granted('ROLE_ADMIN') %}
-                        <a href="{{ path('sorties/edit', {'id': sorty.id}) }}" class="btn btn-outline-secondary">Edit</a>
+                        <a href="{{ path('sorties/edit', {'id': sorty.id}) }}"
+                           class="btn btn-outline-secondary">Edit</a>
                         <a href="{{ path('etat_cancel', {'id': sorty.id}) }}" class="btn btn-outline-danger">Annuler</a>
                         {{ include('sorties/delete_form.html.twig') }}
                     {% endif %}
@@ -87,20 +89,44 @@
             </div>
         </div>
 
-        <div class="container d-flex flex-column align-items-start">
+        <div class="container d-flex flex-column align-items-center">
             {% if sorty.participants %}
                 <div class="card mb-4 mt-4">
                     <div class="card-body">
                         <h2 class="card-header">Liste des participants</h2>
                         <ul class="list-group list-group-flush">
-                            {% for participant in sorty.participants %}
-                                <li class="list-group-item">
-                                    <a class="link-success link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover"
-                                       href="{{ path('user/show', {'id': participant.id}) }}">{{ participant.username }}</a>
-                                </li>
+                        {% for participant in sorty.participants %}
+                            <li class="list-group-item">Nom :
+                                <a class="link-success link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover"
+                                   href="{{ path('user/show', {'id': participant.id}) }}">{{ participant.username }}</a>
+                                <p>Campus : {{ participant.site.nom }}</p>
+                            </li>
                             {% else %}
                                 <li class="list-group-item">Aucun participant</li>
                             {% endfor %}
+                        </ul>
+                    </div>
+                </div>
+            {% endif %}
+        </div>
+        <div class="container d-flex flex-column align-items-end">
+            {% if sorty.participants %}
+                <div class="card mb-4 mt-4">
+                    <div class="card-body">
+                        <h2 class="card-header">Détails du lieu</h2>
+                        <ul class="list-group list-group-flush">
+                            {% if sorty.lieu is not null %}
+                                <li class="list-group-item">Nom :
+                                    <a class="link-success link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover"
+                                       href="{{ path('app_lieu_show', {'id': sorty.lieu.id}) }}">{{ sorty.lieu.nom }}</a>
+                                </li>
+                                <li class="list-group-item">Rue : {{ sorty.lieu.rue }} </li>
+                                <li class="list-group-item">Ville : {{ sorty.lieu.ville.nom }}</li>
+                                <li class="list-group-item">Longitude : {{ sorty.lieu.longitude }}</li>
+                                <li class="list-group-item">Latitude : {{ sorty.lieu.latitude }}</li>
+                            {% else %}
+                                <li class="list-group-item">Pas d'infos</li>
+                            {% endif %}
                         </ul>
                     </div>
                 </div>
