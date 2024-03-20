@@ -3,48 +3,128 @@
 {% block title %}Lieu{% endblock %}
 
 {% block body %}
-<main class="d-flex">
-    <div class="container">
-        {% for group, messages in app.flashes %}
-            {% for message in messages %}
-                <div class="alert alert-{{ group }}" role="alert">{{ message }}</div>
+    <main class="d-flex">
+        <div class="container">
+            <link rel="stylesheet" href="https://cdn.rawgit.com/openlayers/openlayers.github.io/master/en/v5.3.0/css/ol.css" type="text/css">
+            {% for group, messages in app.flashes %}
+                {% for message in messages %}
+                    <div class="alert alert-{{ group }}" role="alert">{{ message }}</div>
+                {% endfor %}
             {% endfor %}
-        {% endfor %}
-    <h1>Lieu: {{ lieu.nom }}</h1>
+            <h1>Lieu: {{ lieu.nom }}</h1>
 
-    <table class="table">
-        <tbody>
-            <tr>
-                <th>Id</th>
-                <td>{{ lieu.id }}</td>
-            </tr>
-            <tr>
-                <th>Longitude</th>
-                <td>{{ lieu.Longitude }}</td>
-            </tr>
-            <tr>
-                <th>Latitude</th>
-                <td>{{ lieu.latitude }}</td>
-            </tr>
-            <tr>
-                <th>Nom</th>
-                <td>{{ lieu.nom }}</td>
-            </tr>
-            <tr>
-                <th>Rue</th>
-                <td>{{ lieu.rue }}</td>
-            </tr>
-            <tr>
-                <th>Ville</th>
-                <td>{{ lieu.ville.nom }}</td>
-            </tr>
-        </tbody>
-    </table>
-    <div class="d-flex col justify-content-start">
-    <a href="{{ path('app_lieu_index') }}" class="btn btn-outline-primary">back to list</a>
-    <a href="{{ path('app_lieu_edit', {'id': lieu.id}) }}" class="btn btn-outline-secondary">edit</a>
-    {{ include('lieu/_delete_form.html.twig') }}
-    </div>
-    </div>
-</main>
+            <table class="table">
+                <tbody>
+                <tr>
+                    <th>Id</th>
+                    <td>{{ lieu.id }}</td>
+                </tr>
+                <tr>
+                    <th>Longitude</th>
+                    <td>{{ lieu.Longitude }}</td>
+                </tr>
+                <tr>
+                    <th>Latitude</th>
+                    <td>{{ lieu.latitude }}</td>
+                </tr>
+                <tr>
+                    <th>Nom</th>
+                    <td>{{ lieu.nom }}</td>
+                </tr>
+                <tr>
+                    <th>Rue</th>
+                    <td>{{ lieu.rue }}</td>
+                </tr>
+                <tr>
+                    <th>Ville</th>
+                    <td>{{ lieu.ville.nom }}</td>
+                </tr>
+                </tbody>
+            </table>
+            <div class="d-flex col justify-content-start">
+                <a href="{{ path('app_lieu_index') }}" class="btn btn-outline-primary">back to list</a>
+                <a href="{{ path('app_lieu_edit', {'id': lieu.id}) }}" class="btn btn-outline-secondary">edit</a>
+                {{ include('lieu/_delete_form.html.twig') }}
+            </div>
+        </div>
+        <div id="map" style="width: 400px; height: 300px;"></div>
+    </main>
+
+    <script src="https://cdn.rawgit.com/openlayers/openlayers.github.io/master/en/v5.3.0/build/ol.js"></script>
+    <script>
+        var map = new ol.Map({
+            target: 'map',
+            layers: [
+                new ol.layer.Tile({
+                    source: new ol.source.OSM()
+                })
+            ],
+            view: new ol.View({
+                center: ol.proj.fromLonLat([{{ lieu.Longitude }}, {{ lieu.Latitude }}]),
+                zoom: 15
+            })
+        });
+
+        // Ajout un marquer au lieu
+        var marker = new ol.Feature({
+            geometry: new ol.geom.Point(ol.proj.fromLonLat([{{ lieu.Longitude }}, {{ lieu.Latitude }}])),
+
+        });
+
+        var vectorSource = new ol.source.Vector({
+            features: [marker]
+        });
+
+        var vectorLayer = new ol.layer.Vector({
+            source: vectorSource
+        });
+
+        map.addLayer(vectorLayer);
+
+
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(function(position) {
+                var userMarker = new ol.Feature({
+                    geometry: new ol.geom.Point(ol.proj.fromLonLat([position.coords.longitude, position.coords.latitude])),
+                    name : '          ' +
+                        '            ' +
+                        '              ' +
+                        '     VOUS ETES ICI',
+                });
+// personalisation du marker du lieu
+                marker.setStyle(new ol.style.Style({
+                    image: new ol.style.Icon( ({
+                        color: '#8959A8',
+                        crossOrigin: 'anonymous',
+                        src: 'https://openlayers.org/en/v4.6.5/examples/data/dot.png'
+                    }))
+                }));
+
+
+
+                userMarker.setStyle(new ol.style.Style({
+                    image: new ol.style.Icon({
+                        anchor: [0.5, 1],
+                        src: 'https://openlayers.org/en/v4.6.5/examples/data/icon.png',
+                        scale: 1,
+                    }),
+                    text: new ol.style.Text({
+                        text: userMarker.get('name'),
+                        fill: new ol.style.Fill({
+                            color: 'green',
+                        }),
+                        offsetY: -20,
+                    }),
+                }));
+
+                vectorSource.addFeature(userMarker);
+
+                //pour centrer par a utilistaeur
+                // map.getView().setCenter(ol.proj.fromLonLat([position.coords.longitude, position.coords.latitude]));
+            });
+        } else {
+            alert("La géolocalisation n'est pas prise en charge par votre navigateur.");
+        }
+    </script>
+
 {% endblock %}

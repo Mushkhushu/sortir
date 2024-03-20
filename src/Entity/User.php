@@ -72,12 +72,16 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\ManyToMany(targetEntity: Group::class, mappedBy: 'users')]
     private Collection $groupe;
 
+    #[ORM\OneToMany(targetEntity: Group::class, mappedBy: 'createBy', orphanRemoval: true)]
+    private Collection $groupesPrivé;
+
 
     public function __construct()
     {
         $this->createdEvents = new ArrayCollection();
         $this->participatingEvents = new ArrayCollection();
         $this->groupe = new ArrayCollection();
+        $this->groupesPrivé = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -307,6 +311,36 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     {
         if ($this->groupe->removeElement($groupe)) {
             $groupe->removeUser($this);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Group>
+     */
+    public function getGroupesPrivé(): Collection
+    {
+        return $this->groupesPrivé;
+    }
+
+    public function addGroupesPriv(Group $groupesPriv): static
+    {
+        if (!$this->groupesPrivé->contains($groupesPriv)) {
+            $this->groupesPrivé->add($groupesPriv);
+            $groupesPriv->setCreateBy($this);
+        }
+
+        return $this;
+    }
+
+    public function removeGroupesPriv(Group $groupesPriv): static
+    {
+        if ($this->groupesPrivé->removeElement($groupesPriv)) {
+            // set the owning side to null (unless already changed)
+            if ($groupesPriv->getCreateBy() === $this) {
+                $groupesPriv->setCreateBy(null);
+            }
         }
 
         return $this;

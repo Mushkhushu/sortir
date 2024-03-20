@@ -11,6 +11,9 @@
                 {% endfor %}
             {% endfor %}
             <h1>User Index</h1>
+            <a href="{{ path('user/new') }}" class="btn btn-success">Create New</a>
+            <a href="{{ path('group/new') }}" class="btn btn-success">Create Private Group </a>
+            <a href="{{ path('group/index') }}">Liste des Groupes privé</a>
             <div class="row row-cols-1 row-cols-sm-2 row-cols-lg-4">
                 {% for user in users %}
                     <div class="col mb-4">
@@ -41,8 +44,7 @@
                 {% endfor %}
             </div>
 
-            <a href="{{ path('user/new') }}" class="btn btn-success">Create New</a>
-            <a href="{{ path('group/new') }}" class="btn btn-success">Create Private Group </a>
+
         </div>
     </main>
 
