@@ -6,6 +6,11 @@
     <div class="background-overlay"></div>
     <main class="d-flex flex-column">
         <div class="content container">
+            {% for group, messages in app.flashes %}
+                {% for message in messages %}
+                    <div class="alert alert-{{ group }}" role="alert">{{ message }}</div>
+                {% endfor %}
+            {% endfor %}
             <div class="row justify-content-center">
                 <div class="col-lg-8">
                     <div class="card mb-4 mt-4">

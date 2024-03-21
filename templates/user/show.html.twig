@@ -4,60 +4,63 @@
 
 {% block body %}
     <div class="background-overlay"></div>
-<main class="d-flex">
-    <div class="content container">
-    {% for group, messages in app.flashes %}
-        {% for message in messages %}
-            <div class="alert alert-{{ group }}" role="alert">{{ message }}</div>
-        {% endfor %}
-    {% endfor %}
+    <h1 class="row justify-content-center">{{ user.username }} Profile</h1>
+    <main class="d-flex">
+        <div class="content container d-flex flex-column">
+            {% for group, messages in app.flashes %}
+                {% for message in messages %}
+                    <div class="alert alert-{{ group }}" role="alert">{{ message }}</div>
+                {% endfor %}
+            {% endfor %}
 
-    <h1>{{ user.username }} Profile</h1>
-        <table class="table">
-            <tbody>
-            <tr>
-                <th>Username</th>
-                <td>{{ user.username }}</td>
-            </tr>
-            <tr>
-                <th>First Name</th>
-                <td>{% if user.firstName is empty %}aucun prénom renseigné{% else %}{{ user.firstName }}{% endif %}</td>
-            </tr>
-            <tr>
-                <th>Last Name</th>
-                <td>{% if user.lastName is empty %}aucun nom renseigné{% else %}{{ user.lastName }}{% endif %}</td>
-            </tr>
-            <tr>
-                <th>Phone Number</th>
-                <td>{% if user.phoneNumber is empty %}aucun téléphone renseigné{% else %}{{ user.phoneNumber }}{% endif %}</td>
-            </tr>
-            <tr>
-                <th>Email</th>
-                <td>{% if user.mail is empty %}aucun email renseigné{% else %}{{ user.mail }}{% endif %}</td>
-            </tr>
-            <tr>
-                <th>Campus</th>
-                <td>{% if user.site is empty %}aucun campus renseigné{% else %}{{ user.site.nom }}{% endif %}</td>
-            </tr>
-            <tr>
-                <th>Picture</th>
-                <td>
-                    {% if user.picture is empty %}
-                        aucun avatar renseigné
-                    {% else %}
-                        <img src="{{ asset(picture_dir ~ '/' ~ app.user.picture) }}" alt="default-avatar" width="55" height="55"/>
-                    {% endif %}
-                </td>
-            </tr>
-            </tbody>
-        </table>
-        <div class="d-flex justify-content mb-4">
-        <a href="{{ path('user/index') }}" class="btn btn-secondary">Back to List</a>
-        {% if app.user and app.user.id == user.id %}
-        <a href="{{ path('user/edit', {'id': user.id}) }}" class="btn btn-secondary">Edit</a>
-        {{ include('user/delete_form.html.twig') }}
-        {% endif %}
+        <div class="card mb-4 mt-4">
+            <table class="table">
+                <tbody>
+                <tr>
+                    <th>Username</th>
+                    <td>{{ user.username }}</td>
+                </tr>
+                <tr>
+                    <th>First Name</th>
+                    <td>{% if user.firstName is empty %}aucun prénom renseigné{% else %}{{ user.firstName }}{% endif %}</td>
+                </tr>
+                <tr>
+                    <th>Last Name</th>
+                    <td>{% if user.lastName is empty %}aucun nom renseigné{% else %}{{ user.lastName }}{% endif %}</td>
+                </tr>
+                <tr>
+                    <th>Phone Number</th>
+                    <td>{% if user.phoneNumber is empty %}aucun téléphone renseigné{% else %}{{ user.phoneNumber }}{% endif %}</td>
+                </tr>
+                <tr>
+                    <th>Email</th>
+                    <td>{% if user.mail is empty %}aucun email renseigné{% else %}{{ user.mail }}{% endif %}</td>
+                </tr>
+                <tr>
+                    <th>Campus</th>
+                    <td>{% if user.site is empty %}aucun campus renseigné{% else %}{{ user.site.nom }}{% endif %}</td>
+                </tr>
+                <tr>
+                    <th>Picture</th>
+                    <td>
+                        {% if user.picture is empty %}
+                            aucun avatar renseigné
+                        {% else %}
+                            <img src="{{ asset(picture_dir ~ '/' ~ app.user.picture) }}" alt="default-avatar" width="55"
+                                 height="55"/>
+                        {% endif %}
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+            <div class="d-flex justify-content mb-4">
+                <a href="{{ path('user/index') }}" class="btn btn-secondary">Back to List</a>
+                {% if app.user and app.user.id == user.id %}
+                    <a href="{{ path('user/edit', {'id': user.id}) }}" class="btn btn-secondary">Edit</a>
+                    {{ include('user/delete_form.html.twig') }}
+                {% endif %}
+            </div>
         </div>
-    </div>
-</main>
+        </div>
+    </main>
 {% endblock %}

@@ -1,4 +1,26 @@
 {{ form_start(form) }}
-    {{ form_widget(form) }}
-    <button class="btn">{{ button_label|default('Save') }}</button>
+<div class="mb-3">
+    {{ form_label(form.name, 'Nom :', {'label_attr': {'class': 'form-label'}}) }}
+    {{ form_widget(form.name, {'attr': {'class': 'form-control'}}) }}
+    {% set errors = form_errors(form.name) %}
+    {% if errors %}
+        <div class="text-danger">
+            {{ errors|striptags }}
+        </div>
+    {% endif %}
+</div>
+<div class="mb-3">
+    {{ form_label(form.users, 'Users :', {'label_attr': {'class': 'form-label'}}) }}
+    {{ form_widget(form.users, {'attr': {'class': 'form-control'}}) }}
+    {% set errors = form_errors(form.users) %}
+    {% if errors %}
+        <div class="text-danger">
+            {{ errors|striptags }}
+        </div>
+    {% endif %}
+</div>
+<div class="d-flex justify-content-between">
+    <a href="{{ path('group/index') }}" class="btn btn-danger">Retour à la liste</a>
+    {{ form_row(form.submit) }}
+</div>
 {{ form_end(form) }}

@@ -4,13 +4,20 @@
 
 {% block body %}
     <div class="background-overlay"></div>
-    <div class="content">
-    <h1>Edit Group</h1>
-
-    {{ include('group/_form.html.twig', {'button_label': 'Update'}) }}
-
-    <a href="{{ path('group/index') }}">back to list</a>
-
-    {{ include('group/_delete_form.html.twig') }}
-    </div>
+    <main class="d-flex">
+        <div class="content container">
+            {% for group, messages in app.flashes %}
+                {% for message in messages %}
+                    <div class="alert alert-{{ group }}" role="alert">{{ message }}</div>
+                {% endfor %}
+            {% endfor %}
+            <h1>Edit the Group {{ group.name }}</h1>
+            <div class="row">
+                <div class="col-md-6">
+                        {{ include('group/_form.html.twig', {'button_label': 'Update'}) }}
+                        {{ include('group/_delete_form.html.twig', {'style': 'btn btn-danger'}) }}
+                </div>
+            </div>
+        </div>
+    </main>
 {% endblock %}
