@@ -3,16 +3,19 @@
 {% block title %}Lieu{% endblock %}
 
 {% block body %}
+    <div class="background-overlay"></div>
     <main class="d-flex">
-        <div class="container">
-            <link rel="stylesheet" href="https://cdn.rawgit.com/openlayers/openlayers.github.io/master/en/v5.3.0/css/ol.css" type="text/css">
+        <div class="content container">
+            <link rel="stylesheet"
+                  href="https://cdn.rawgit.com/openlayers/openlayers.github.io/master/en/v5.3.0/css/ol.css"
+                  type="text/css">
             {% for group, messages in app.flashes %}
                 {% for message in messages %}
                     <div class="alert alert-{{ group }}" role="alert">{{ message }}</div>
                 {% endfor %}
             {% endfor %}
-            <h1>Lieu: {{ lieu.nom }}</h1>
-
+            <h1 class="row justify-content-center">Lieu: {{ lieu.nom }}</h1>
+            <div class="container mt-3">
             <table class="table">
                 <tbody>
                 <tr>
@@ -41,13 +44,16 @@
                 </tr>
                 </tbody>
             </table>
+            </div>
             <div class="d-flex col justify-content-start">
-                <a href="{{ path('app_lieu_index') }}" class="btn btn-outline-primary">back to list</a>
-                <a href="{{ path('app_lieu_edit', {'id': lieu.id}) }}" class="btn btn-outline-secondary">edit</a>
+                <a href="{{ path('app_lieu_index') }}" class="btn btn-primary">back to list</a>
+                <a href="{{ path('app_lieu_edit', {'id': lieu.id}) }}" class="btn btn-secondary">edit</a>
                 {{ include('lieu/_delete_form.html.twig') }}
             </div>
         </div>
+        <div class="container mt-3">
         <div id="map" style="width: 400px; height: 300px;"></div>
+        </div>
     </main>
 
     <script src="https://cdn.rawgit.com/openlayers/openlayers.github.io/master/en/v5.3.0/build/ol.js"></script>
@@ -83,23 +89,22 @@
 
 
         if (navigator.geolocation) {
-            navigator.geolocation.getCurrentPosition(function(position) {
+            navigator.geolocation.getCurrentPosition(function (position) {
                 var userMarker = new ol.Feature({
                     geometry: new ol.geom.Point(ol.proj.fromLonLat([position.coords.longitude, position.coords.latitude])),
-                    name : '          ' +
+                    name: '          ' +
                         '            ' +
                         '              ' +
                         '     VOUS ETES ICI',
                 });
 // personalisation du marker du lieu
                 marker.setStyle(new ol.style.Style({
-                    image: new ol.style.Icon( ({
+                    image: new ol.style.Icon(({
                         color: '#8959A8',
                         crossOrigin: 'anonymous',
                         src: 'https://openlayers.org/en/v4.6.5/examples/data/dot.png'
                     }))
                 }));
-
 
 
                 userMarker.setStyle(new ol.style.Style({

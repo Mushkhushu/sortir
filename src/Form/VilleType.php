@@ -17,7 +17,7 @@ class VilleType extends AbstractType
             ->add('codePostal')
             ->add('submit', SubmitType::class, [
                 'attr' => [
-                    'class' => 'btn btn-outline-success'
+                    'class' => 'btn btn-success'
                 ]
             ])
         ;

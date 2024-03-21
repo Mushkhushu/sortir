@@ -3,8 +3,9 @@
 {% block title %}Log in!{% endblock %}
 
 {% block body %}
+    <div class="background-overlay"></div>
     <main class="d-flex">
-        <div class="container">
+        <div class="content container">
             {% for group, messages in app.flashes %}
                 {% for message in messages %}
                     <div class="alert alert-{{ group }}" role="alert">{{ message }}</div>

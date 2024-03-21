@@ -3,8 +3,9 @@
 {% block title %}New Ville{% endblock %}
 
 {% block body %}
+    <div class="background-overlay"></div>
 <main class="d-flex">
-    <div class="container">
+    <div class="content container">
         {% for group, messages in app.flashes %}
             {% for message in messages %}
                 <div class="alert alert-{{ group }}" role="alert">{{ message }}</div>
@@ -36,7 +37,7 @@
                 </div>
                 <div class="d-flex justify-content-between">
                     {{ form_row(form.submit, {'label': 'Create Ville', 'attr': {'class': 'btn btn-primary'}}) }}
-                    <a  class="btn btn-outline-secondary" href="{{ path('app_ville_index') }}">back to list</a>
+                    <a  class="btn btn-secondary" href="{{ path('app_ville_index') }}">back to list</a>
                 </div>
                 {{ form_end(form) }}
             </div>

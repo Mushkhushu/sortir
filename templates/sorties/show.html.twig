@@ -3,10 +3,10 @@
 {% block title %}Sorties{% endblock %}
 
 {% block body %}
+    <div class="background-overlay"></div>
     <h1 class="row justify-content-center">Sortie {{ sorty.nom }}</h1>
     <main class="d-flex">
-
-        <div class="container d-flex flex-column">
+        <div class="content container d-flex flex-column">
             {% for group, messages in app.flashes %}
                 {% for message in messages %}
                     <div class="alert alert-{{ group }}" role="alert">{{ message }}</div>
@@ -72,17 +72,17 @@
                         <td>{{ sorty.note }}</td>
                     </tr>
                     <tr>
-                        <th>DateLimte</th>
+                        <th>Date Limite</th>
                         <td>{{ sorty.dateLimite ? sorty.dateLimite|date('Y-m-d') : '' }}</td>
                     </tr>
                     </tbody>
                 </table>
                 <div class="d-flex justify-content mb-4">
-                    <a href="{{ path('sorties/index') }}" class="btn btn-outline-primary">Back to List</a>
+                    <a href="{{ path('sorties/index') }}" class="btn btn-primary">Back to List</a>
                     {% if app.user == sorty.organizator or is_granted('ROLE_ADMIN') %}
                         <a href="{{ path('sorties/edit', {'id': sorty.id}) }}"
-                           class="btn btn-outline-secondary">Edit</a>
-                        <a href="{{ path('etat_cancel', {'id': sorty.id}) }}" class="btn btn-outline-danger">Annuler</a>
+                           class="btn btn-secondary">Edit</a>
+                        <a href="{{ path('etat_cancel', {'id': sorty.id}) }}" class="btn btn-danger">Annuler</a>
                         {{ include('sorties/delete_form.html.twig') }}
                     {% endif %}
                 </div>

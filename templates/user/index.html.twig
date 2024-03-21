@@ -3,30 +3,36 @@
 {% block title %}User index{% endblock %}
 
 {% block body %}
+    <div class="background-overlay"></div>
     <main class="d-flex">
-        <div class="container">
+        <div class="content container">
             {% for group, messages in app.flashes %}
                 {% for message in messages %}
                     <div class="alert alert-{{ group }}" role="alert">{{ message }}</div>
                 {% endfor %}
             {% endfor %}
-            <h1>User Index</h1>
-            <a href="{{ path('user/new') }}" class="btn btn-success">Create New</a>
-            <a href="{{ path('group/new') }}" class="btn btn-success">Create Private Group </a>
-            <a href="{{ path('group/index') }}">Liste des Groupes privé</a>
+            <div class="align-content-end mb-3 mt-3">
+                <a href="{{ path('user/new') }}" class="btn btn-success">Create New</a>
+                <a href="{{ path('group/new') }}" class="btn btn-success">Create Private Group </a>
+                <a href="{{ path('group/index') }}" class="btn btn-success">Liste des Groupes privé</a>
+            </div>
+            <h1 class="row justify-content-center">Liste des Utilisateurs</h1>
+
             <div class="row row-cols-1 row-cols-sm-2 row-cols-lg-4">
                 {% for user in users %}
                     <div class="col mb-4">
                         <div class="card">
                             {% if user.picture is not empty %}
-                                <img src="{{ asset(picture_dir ~ '/'  ~ user.picture) }}" alt="#" width="55" height="55" class="rounded-circle"/>
+                                <img src="{{ asset(picture_dir ~ '/'  ~ user.picture) }}" alt="#" width="55" height="55"
+                                     class="rounded-circle"/>
                             {% else %}
-                                <img src="{{ asset('../assets/images/default-avatar.png') }}" alt="default-avatar" width="55" height="55" class="rounded-circle"/>
+                                <img src="{{ asset('../assets/images/default-avatar.png') }}" alt="default-avatar"
+                                     width="55" height="55" class="rounded-circle"/>
                             {% endif %}
                             <div class="card-body">
                                 <h5 class="card-title">{{ user.username }}</h5>
-                                <p class="card-text">{{ user.firstName }} {{ user.lastName }}</p>
-                                <a href="{{ path('user/show', {'id': user.id}) }}" class="btn btn-primary btn-sm">Show</a>
+                                <a href="{{ path('user/show', {'id': user.id}) }}"
+                                   class="btn btn-primary btn-sm">Show</a>
                                 {% if app.user and app.user.id == user.id %}
                                     <a href="{{ path('user/edit', {'id': user.id}) }}" class="btn btn-success btn-sm">Edit</a>
                                 {% endif %}
@@ -43,17 +49,17 @@
                     </div>
                 {% endfor %}
             </div>
-
+            <h1 class="row justify-content-center">Liste des bannis</h1>
             <div class="row row-cols-1 row-cols-sm-2 row-cols-lg-4">
-                <h1>Banned Users</h1>
                 {% for user in bannedUsers %}
                     <div class="col mb-4">
                         <div class="card">
                             <div class="card-body">
                                 <h5 class="card-title">{{ user.username }}</h5>
                                 <p class="card-text"> {{ user.isActive ? 'Active' : 'Banned' }}</p>
-                                <p class="card-text">{{ user.banexpirationDate ? user.banexpirationDate|date('Y-m-d H:i:s') : ''}}</p>
-                                <a href="{{ path('user/show', {'id': user.id}) }}" class="btn btn-primary btn-sm">Show</a>
+                                <p class="card-text">{{ user.banexpirationDate ? user.banexpirationDate|date('Y-m-d H:i:s') : '' }}</p>
+                                <a href="{{ path('user/show', {'id': user.id}) }}"
+                                   class="btn btn-primary btn-sm">Show</a>
                                 {% if app.user and app.user.id == user.id %}
                                     <a href="{{ path('user/edit', {'id': user.id}) }}" class="btn btn-success btn-sm">Edit</a>
                                 {% endif %}
@@ -70,9 +76,6 @@
                     </div>
                 {% endfor %}
             </div>
-            <a href="{{ path('user/new') }}" class="btn btn-success">Create New</a>
-            <a href="{{ path('group/new') }}" class="btn btn-success">Create Private Group </a>
-
         </div>
     </main>
 

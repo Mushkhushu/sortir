@@ -24,7 +24,7 @@ class LieuType extends AbstractType
             ])
             ->add('submit', SubmitType::class, [
                 'attr' => [
-                    'class' => 'btn btn-outline-success'
+                    'class' => 'btn btn-success'
                 ]
             ])
         ;

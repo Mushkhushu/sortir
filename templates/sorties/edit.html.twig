@@ -3,8 +3,9 @@
 {% block title %}Edit Sorties{% endblock %}
 
 {% block body %}
+    <div class="background-overlay"></div>
     <main class="d-flex">
-        <div class="container">
+        <div class="content container">
             {% for group, messages in app.flashes %}
                 {% for message in messages %}
                     <div class="alert alert-{{ group }}" role="alert">{{ message }}</div>
@@ -94,7 +95,7 @@
                             {% endif %}
                         </div>
                         <div class="mb-3">
-                        <a href="{{ path('sorties/index') }}" class="btn btn-outline-primary">Back to List</a>
+                        <a href="{{ path('sorties/index') }}" class="btn btn-primary">Back to List</a>
                         {{ form_row(form.submit, {'label': 'Edit', 'attr': {'class': 'btn btn-primary'}}) }}
                         {{ include('sorties/delete_form.html.twig') }}
                         </div>

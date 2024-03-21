@@ -1,0 +1,32 @@
+body {
+    background-image: url('../images/background.jpg'); /* Chemin vers votre image de fond */
+    background-size: cover; /* Ajuste la taille de l'image pour couvrir tout le contenu */
+    background-repeat: no-repeat; /* Empêche la répétition de l'image de fond */
+    background-attachment: fixed; /* Fixe l'image de fond pour qu'elle reste en place lors du défilement */
+    background-color: rgba(255, 255, 255, 0.5); /* Couleur de fond avec une transparence de 50% (blanc dans cet exemple) */
+}
+.background-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(255, 255, 255, 0.5); /* Couleur de fond semi-transparente */
+    z-index: -1; /* Assure que cette div reste en arrière-plan */
+}
+
+.content {
+    position: relative;
+    z-index: 1; /* Assure que le contenu reste au-dessus de la div de surimpression */
+}
+
+/* Dégradé pour le header */
+
+.header-gradient {
+    background: linear-gradient(to right, #8b2513, #FFD700); /* Dégradé du rouge brique (#8B4513) vers le jaune doré (#FFD700) */
+}
+
+/* Dégradé pour le footer */
+.footer-gradient {
+    background: linear-gradient(to right, #8b2513, #FFD700); /* Dégradé du rouge brique (#8B4513) vers le jaune doré (#FFD700) */
+}

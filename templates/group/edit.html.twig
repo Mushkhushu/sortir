@@ -3,6 +3,8 @@
 {% block title %}Edit Group{% endblock %}
 
 {% block body %}
+    <div class="background-overlay"></div>
+    <div class="content">
     <h1>Edit Group</h1>
 
     {{ include('group/_form.html.twig', {'button_label': 'Update'}) }}
@@ -10,4 +12,5 @@
     <a href="{{ path('group/index') }}">back to list</a>
 
     {{ include('group/_delete_form.html.twig') }}
+    </div>
 {% endblock %}

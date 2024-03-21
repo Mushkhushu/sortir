@@ -3,6 +3,8 @@
 {% block title %}Group{% endblock %}
 
 {% block body %}
+<div class="background-overlay"></div>
+<div class="content">
     <h1>Group</h1>
 
     <table class="table">
@@ -37,5 +39,5 @@
 
     <a href="{{ path('group/edit', {'id': group.id}) }}">edit</a>
 
-
+</div>
 {% endblock %}

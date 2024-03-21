@@ -3,26 +3,35 @@
 {% block title %}
     sortir
 {% endblock %}
+ {% block styles %}
+     <link rel="stylesheet" href="{{ asset('../assets/styles/app.css') }}">
+ {% endblock %}
 
 {% block body %}
     <main class="d-flex">
+        <div class="background-overlay"></div>
         <div class="container">
             <section class="content">
-                <h1 class="mt-5">sortir - Home</h1>
-
+                <h1 class="mt-5">Sortir - Accueil</h1>
                 <br>
                 <br>
                 <p>Commencez à explorer et à planifier vos aventures dès maintenant !</p>
                 <div class="row">
                     <div class="col-md-6">
-
                         <div class="text-block mb-4">
-                            <p>Nous sommes ravis de vous accueillir sur notre site dédié à simplifier et à enrichir votre expérience lors de la planification de vos sorties et de vos escapades.</p>
+                            <p>Nous sommes ravis de vous accueillir sur notre site dédié à simplifier et à enrichir
+                                votre expérience lors de la planification de vos sorties et de vos escapades.</p>
                             <br>
-                            <p>Explorez notre gamme de fonctionnalités intuitives conçues pour vous aider à organiser vos sorties de manière efficace et sans tracas. Planifiez vos escapades en un clin d'œil grâce à notre calendrier interactif, où vous pouvez visualiser et gérer tous vos événements à venir en un seul endroit pratique.</p>
+                            <p>Explorez notre gamme de fonctionnalités intuitives conçues pour vous aider à organiser
+                                vos sorties de manière efficace et sans tracas. Planifiez vos escapades en un clin d'œil
+                                grâce à notre calendrier interactif, où vous pouvez visualiser et gérer tous vos
+                                événements à venir en un seul endroit pratique.</p>
                         </div>
                         <div class="text-block mb-4">
-                            <p>Découvrez de nouvelles activités et événements passionnants à proximité.Rejoignez notre communauté dynamique de passionnés de sorties et partagez vos expériences, recommandations et photos avec d'autres membres. Connectez-vous avec des personnes partageant les mêmes intérêts et créez des souvenirs inoubliables ensemble.</p>
+                            <p>Découvrez de nouvelles activités et événements passionnants à proximité.Rejoignez notre
+                                communauté dynamique de passionnés de sorties et partagez vos expériences,
+                                recommandations et photos avec d'autres membres. Connectez-vous avec des personnes
+                                partageant les mêmes intérêts et créez des souvenirs inoubliables ensemble.</p>
                         </div>
                     </div>
                     <div class="col-md-6">

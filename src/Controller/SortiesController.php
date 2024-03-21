@@ -5,7 +5,9 @@ namespace App\Controller;
 
 
 use App\Entity\Etat;
+use App\Entity\Lieu;
 use App\Entity\Sorties;
+use App\Form\LieuType;
 use App\Form\RechercheType;
 use App\Form\SortiesType;
 use App\Repository\SortiesRepository;
@@ -55,6 +57,8 @@ class SortiesController extends AbstractController
     public function new(Security $security, Request $request, EntityManagerInterface $entityManager): Response
     {
         $sorty = new Sorties();
+        $lieu= new Lieu();
+        $formLieu = $this->createForm(LieuType::class, $lieu);
         $form = $this->createForm(SortiesType::class, $sorty, ['display_participants' => false]);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
@@ -65,12 +69,13 @@ class SortiesController extends AbstractController
             $sorty->setLieu($lieu);
             $entityManager->persist($sorty);
             $entityManager->flush();
+            $this->addFlash('success', 'Nouvelle sortie ajoutée avec succès !');
             return $this->redirectToRoute('sorties/index', [], Response::HTTP_SEE_OTHER);
         }
-        $this->addFlash('success', 'Nouvelle sortie ajoutée avec succès !');
         return $this->render('sorties/new.html.twig', [
             'sorty' => $sorty,
             'form' => $form,
+            'formLieu' => $formLieu
         ]);
     }
 

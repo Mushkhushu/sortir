@@ -3,14 +3,15 @@
 {% block title %}New Lieu{% endblock %}
 
 {% block body %}
+    <div class="background-overlay"></div>
     <main class="d-flex">
-        <div class="container">
+        <div class="content container">
             {% for group, messages in app.flashes %}
                 {% for message in messages %}
                     <div class="alert alert-{{ group }}" role="alert">{{ message }}</div>
                 {% endfor %}
             {% endfor %}
-            <h1>Create new Lieu</h1>
+            <h1 class="row justify-content-center">Create new Lieu</h1>
             <div class="row">
                 <div class="col-md-6">
                     {{ form_start(form) }}
@@ -46,7 +47,7 @@
                     </div>
                     <div class="d-flex justify-content-between">
                         {{ form_row(form.submit, {'label': 'Create New', 'attr': {'class': 'btn btn-primary'}}) }}
-                        <a class="btn btn-outline-secondary" href="{{ path('app_lieu_index') }}">back to list</a>
+                        <a class="btn btn-secondary" href="{{ path('app_lieu_index') }}">back to list</a>
                     </div>
                     {{ form_end(form) }}
                 </div>

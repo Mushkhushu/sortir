@@ -3,8 +3,9 @@
 {% block title %}Edit{% endblock %}
 
 {% block body %}
+    <div class="background-overlay"></div>
     <main class="d-flex">
-        <div class="container">
+        <div class="content container">
             {% for group, messages in app.flashes %}
                 {% for message in messages %}
                     <div class="alert alert-{{ group }}" role="alert">{{ message }}</div>
@@ -79,9 +80,9 @@
                         {% endif %}
                     </div>
                     <div class="d-flex justify-content-between">
-                        <a href="{{ path('user/index') }}" class="btn btn-outline-danger">Retour à la liste</a>
+                        <a href="{{ path('user/index') }}" class="btn btn-danger">Retour à la liste</a>
                         {% if app.user and app.user.id == user.id %}
-                        <a href="{{ path('user/change_password') }}" class="btn btn-outline-secondary">Modifier votre mot de passe</a>
+                        <a href="{{ path('user/change_password') }}" class="btn btn-secondary">Modifier votre mot de passe</a>
                         {{ form_row(form.submit, {'label': 'Modifier votre profil'}) }}
                         {% endif %}
                     </div>
