@@ -11,7 +11,7 @@
     {% endblock %}
 </head>
 <body class="d-flex flex-column min-vh-100">
-<nav class="navbar navbar navbar-expand-lg" style="background-image: url({{ asset('../assets/images/brique.png') }});">
+<nav class="navbar navbar navbar-dark navbar-expand-lg" style="background-image: url({{ asset('../assets/images/brique.png') }});">
     {% if is_granted('IS_AUTHENTICATED') %}
         <div class="dropdown border-top">
             <a href="#"
@@ -46,14 +46,13 @@
         </button>
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
-                <li class="nav-item"><a class="nav-link" href="{{ url('user/index') }}">Liste des Users</a></li>
-
-                <li class="nav-item"><a class="nav-link" href="{{ url('sorties/index') }}">Liste des sorties</a></li>
+                <li class="nav-item"><a class="nav-link text-light" href="{{ url('user/index') }}">Liste des Users</a></li>
+                <li class="nav-item"><a class="nav-link text-light" href="{{ url('sorties/index') }}">Liste des sorties</a></li>
                 {% if is_granted('IS_AUTHENTICATED') %}
-                    <li class="nav-item"><a class="nav-link" href="{{ url('sorties/new') }}">Créer une sortie</a></li>
+                    <li class="nav-item"><a class="nav-link text-light" href="{{ url('sorties/new') }}">Créer une sortie</a></li>
                 {% endif %}
-                <li class="nav-item"><a href="{{ path('app_ville_new') }}" class="nav-link">Ajouter une nouvelle ville</a></li>
-                <li class="nav-item"><a href="{{ path('app_lieu_new') }}" class="nav-link">Ajouter un nouveau lieu</a></li>
+                <li class="nav-item"><a href="{{ path('app_ville_new') }}" class="nav-link text-light">Ajouter une nouvelle ville</a></li>
+                <li class="nav-item"><a href="{{ path('app_lieu_new') }}" class="nav-link text-light">Ajouter un nouveau lieu</a></li>
             </ul>
         </div>
     </div>
