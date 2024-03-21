@@ -30,3 +30,9 @@ body {
 .footer-gradient {
     background: linear-gradient(to right, #8b2513, #FFD700); /* Dégradé du rouge brique (#8B4513) vers le jaune doré (#FFD700) */
 }
+
+.text-block p {
+    font-weight: bold; /* Rend le texte en gras */
+    font-size: 18px; /* Ajuste la taille de la police selon vos préférences */
+    color: #333; /* Couleur du texte */
+}
