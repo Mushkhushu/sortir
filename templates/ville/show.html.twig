@@ -6,8 +6,7 @@
     <div class="background-overlay"></div>
     <h1 class="row justify-content-center">Ville: {{ ville.nom }}</h1>
     <main class="d-flex">
-        <div class="content container d-flex flex-column"
-        ">
+        <div class="content container d-flex flex-column">
         {% for group, messages in app.flashes %}
             {% for message in messages %}
                 <div class="alert alert-{{ group }}" role="alert">{{ message }}</div>
