@@ -51,8 +51,9 @@
                     <tr>
                         <th>Organisateur</th>
                         <td>
-                            <a class="link-success link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover"
-                               href="{{ path('user/show', {'id': sorty.organizator.id}) }}">{{ sorty.organizator.username }}</a>
+                            <a class="link link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover"
+                               href="{{ path('user/show', {'id': sorty.organizator.id}) }}" style="color: mediumpurple;">{{ sorty.organizator.username }}</a>
+
                         </td>
                     </tr>
                     <tr>
@@ -97,9 +98,13 @@
                         <ul class="list-group list-group-flush">
                         {% for participant in sorty.participants %}
                             <li class="list-group-item">Nom :
-                                <a class="link-success link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover"
-                                   href="{{ path('user/show', {'id': participant.id}) }}">{{ participant.username }}</a>
-                                <p>Campus : {{ participant.site.nom }}</p>
+                                <a class="link link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover"
+                                   href="{{ path('user/show', {'id': participant.id}) }}" style="color: mediumpurple;">{{ participant.username }}</a>
+                                <br>
+                                Campus : <a href="https://www.eni-ecole.fr/ecole/campus-physiques/campus-de-rennes/" style="color: mediumpurple;"> {{ participant.site.nom }}</a>
+
+
+
                             </li>
                             {% else %}
                                 <li class="list-group-item">Aucun participant</li>
@@ -117,8 +122,8 @@
                         <ul class="list-group list-group-flush">
                             {% if sorty.lieu is not null %}
                                 <li class="list-group-item">Nom :
-                                    <a class="link-success link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover"
-                                       href="{{ path('app_lieu_show', {'id': sorty.lieu.id}) }}">{{ sorty.lieu.nom }}</a>
+                                    <a class="link link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover"
+                                       href="{{ path('app_lieu_show', {'id': sorty.lieu.id}) }}" style="color: mediumpurple;">{{ sorty.lieu.nom }}</a>
                                 </li>
                                 <li class="list-group-item">Rue : {{ sorty.lieu.rue }} </li>
                                 <li class="list-group-item">Ville : {{ sorty.lieu.ville.nom }}</li>
