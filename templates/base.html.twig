@@ -54,9 +54,6 @@
                 {% endif %}
                 <li class="nav-item"><a href="{{ path('app_ville_new') }}" class="nav-link">Ajouter une nouvelle ville</a></li>
                 <li class="nav-item"><a href="{{ path('app_lieu_new') }}" class="nav-link">Ajouter un nouveau lieu</a></li>
-                {% if is_granted('ROLE_ADMIN') %}
-                    <li class="nav-item"><a href="#" class="nav-link">Ajouter un site (TODO)</a></li>
-                {% endif %}
             </ul>
         </div>
     </div>
