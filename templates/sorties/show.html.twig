@@ -79,7 +79,7 @@
                     </tbody>
                 </table>
                 <div class="d-flex justify-content mb-4">
-                    <a href="{{ path('sorties/index') }}" class="btn btn-primary">Back to List</a>
+                    <a href="{{ path('sorties/index') }}" class="btn offset-md-4 btn-primary">Back to List</a>
                     {% if app.user == sorty.organizator or is_granted('ROLE_ADMIN') %}
                         <a href="{{ path('sorties/edit', {'id': sorty.id}) }}"
                            class="btn btn-secondary">Edit</a>
