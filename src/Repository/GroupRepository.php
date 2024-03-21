@@ -3,6 +3,7 @@
 namespace App\Repository;
 
 use App\Entity\Group;
+use App\Entity\User;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -21,20 +22,25 @@ class GroupRepository extends ServiceEntityRepository
         parent::__construct($registry, Group::class);
     }
 
-//    /**
-//     * @return Group[] Returns an array of Group objects
-//     */
-//    public function findByExampleField($value): array
-//    {
-//        return $this->createQueryBuilder('g')
-//            ->andWhere('g.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->orderBy('g.id', 'ASC')
-//            ->setMaxResults(10)
-//            ->getQuery()
-//            ->getResult()
-//        ;
-//    }
+
+    public function findByIdForGroup(User $user): array
+    {
+        $qb = $this->createQueryBuilder('g');
+
+        $qb->innerJoin('g.users', 'p')
+            ->andWhere('p.id = :userId');
+
+        // Ajouter une condition pour récupérer les groupes créés par l'utilisateur
+        $qb->orWhere('g.createBy = :userId');
+
+        // Définir le paramètre :userId
+        $qb->setParameter('userId', $user->getId());
+
+        // Récupérer les résultats
+        return $qb->getQuery()->getResult();
+
+        ;
+    }
 
 //    public function findOneBySomeField($value): ?Group
 //    {

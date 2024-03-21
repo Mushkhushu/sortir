@@ -24,5 +24,21 @@ class UserCrudController extends AbstractCrudController
     }
 
 
-
+    public function configureFields(string $pageName): iterable
+    {
+        return [
+            IdField::new('id'),
+            TextField::new('username'),
+            TextField::new('firstName'),
+            TextField::new('lastName'),
+            TextField::new('phoneNumber'),
+            TextField::new('mail'),
+            AvatarField::new('picture')->setLabel('Avatar'),
+            BooleanField::new('isActive', 'actif/inactif'),
+            ChoiceField::new('roles')->setLabel('Roles')->setChoices([
+                'User' => 'ROLE_USER',
+                'Admin' => 'ROLE_ADMIN',
+            ])->allowMultipleChoices(),
+        ];
+    }
 }
