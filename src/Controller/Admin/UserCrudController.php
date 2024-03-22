@@ -11,6 +11,7 @@ use EasyCorp\Bundle\EasyAdminBundle\Field\AvatarField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\BooleanField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\ChoiceField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\IdField;
+use EasyCorp\Bundle\EasyAdminBundle\Field\ImageField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextEditorField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
 
@@ -34,7 +35,7 @@ class UserCrudController extends AbstractCrudController
             TextField::new('mail'),
             TextEditorField::new('password')->onlyOnForms(),
             AssociationField::new('site')->setLabel('Site'),
-            AvatarField::new('picture')->setLabel('Avatar'),
+            ImageField::new('picture')->setLabel('Avatar')->setBasePath('/uploads')->setUploadDir('public/uploads'),
             BooleanField::new('isActive', 'actif/inactif'),
             ChoiceField::new('roles')->setLabel('Roles')->setChoices([
                 'User' => 'ROLE_USER',
