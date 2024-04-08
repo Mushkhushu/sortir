@@ -4,7 +4,7 @@ namespace App\Controller\Admin;
 
 use App\Entity\Lieu;
 use App\Entity\Site;
-use App\Entity\Sorties;
+use App\Entity\Sortie;
 use App\Entity\User;
 use App\Entity\Ville;
 use App\Form\UserCSVType;
@@ -36,7 +36,7 @@ class DashboardController extends AbstractDashboardController
     {
         yield MenuItem::linkToDashboard('Dashboard', 'fa fa-home');
         yield MenuItem::linkToCrud('Villes', 'fas fa-list', Ville::class);
-        yield MenuItem::linkToCrud('Sorties', 'fas fa-list', Sorties::class);
+        yield MenuItem::linkToCrud('Sorties', 'fas fa-list', Sortie::class);
         yield MenuItem::linkToCrud('Lieus', 'fas fa-list', Lieu::class);
         yield MenuItem::linkToCrud('Users', 'fas fa-list', User::class);
 

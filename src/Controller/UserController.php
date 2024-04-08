@@ -2,30 +2,29 @@
 
 namespace App\Controller;
 
-use App\Entity\Sorties;
 use App\Entity\User;
-
 use App\Form\EditPasswordType;
 use App\Form\UserType;
 use App\Repository\UserRepository;
 use App\Services\BanService;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Component\String\Slugger\SluggerInterface;
 
 #[Route(path: 'user/', name: 'user/')]
 class UserController extends AbstractController
 {
-    public function getUsersInfos(Security $security): Response
+    public function getUsersInfos(): Response
     {
-        $user = $security->getUser();
+        /** @var User $user */
+        $user = $this->getUser();
         $userName = $user?->getUsername();
 
         return $this->render('base.html.twig', [
@@ -40,7 +39,7 @@ class UserController extends AbstractController
         $bannedUsers = [];
         $users = [];
         foreach ($usersFromRepo as $user) {
-            if ($user->isIsActive() === false) {
+            if ($user->isActive() === false) {
                 $bannedUsers[] = $user;
             } else  {
                 $users[] = $user;
@@ -54,6 +53,7 @@ class UserController extends AbstractController
         ]);
     }
 
+    // Normalement il n'y a que les admins qui peuvent créer des users
     #[Route('new', name: 'new', methods: ['GET', 'POST'])]
     public function new(Request $request, EntityManagerInterface $entityManager): Response
     {
@@ -74,28 +74,29 @@ class UserController extends AbstractController
         ]);
     }
 
-    #[Route('show{id}', name: 'show', methods: ['GET'])]
-    public function show(int $id, EntityManagerInterface $entityManager): Response
+    #[Route('show/{id}', name: 'show', methods: ['GET'])]
+    public function show(User $user): Response
     {
-        $user = $entityManager->getRepository(User::class)->find($id);
         return $this->render('user/show.html.twig', [
             'user' => $user,
         ]);
     }
 
     #[Route('profile', name: 'profile', methods: ['GET'])]
-    public function profile(Security $security): Response
+    public function profile(): Response
     {
-        $user = $security->getUser();
+        /** @var User $user */
+        $user = $this->getUser();
         return $this->render('user/show.html.twig', [
             'user' => $user,
         ]);
     }
 
     #[Route('edit', name: 'edit', methods: ['GET', 'POST'])]
-    public function edit(Security $security, Request $request, EntityManagerInterface $entityManager, SluggerInterface $slugger): Response
+    public function edit(Request $request, EntityManagerInterface $entityManager, SluggerInterface $slugger): Response
     {
-        $user = $security->getUser();
+        /** @var User $user */
+        $user = $this->getUser();
         $form = $this->createForm(UserType::class, $user);
         $form->handleRequest($request);
 
@@ -146,9 +147,10 @@ class UserController extends AbstractController
     }
 
     #[Route('change_password', name: 'change_password')]
-    public function changePassword(Request $request, UserPasswordHasherInterface $passwordHasher, EntityManagerInterface $entityManager, Security $security): Response
+    public function changePassword(Request $request, UserPasswordHasherInterface $passwordHasher, EntityManagerInterface $entityManager): Response
     {
-        $user = $security->getUser();
+        /** @var User $user */
+        $user = $this->getUser();
 
         // Vérifier si l'utilisateur est authentifié
         if (!$user instanceof PasswordAuthenticatedUserInterface) {
@@ -185,9 +187,13 @@ class UserController extends AbstractController
         ]);
     }
 
+    // un utilisateur est pas sensé pouvoir supprimer son compte y'a que les admins qui le peuvent
     #[Route('delete', name: 'delete', methods: ['POST'])]
-    public function delete(Request $request, User $user, EntityManagerInterface $entityManager): Response
+    public function delete(Request $request, EntityManagerInterface $entityManager): Response
     {
+        /** @var User $user */
+        $user = $this->getUser();
+
         if ($this->isCsrfTokenValid('delete' . $user->getId(), $request->request->get('_token'))) {
             $entityManager->remove($user);
             $entityManager->flush();

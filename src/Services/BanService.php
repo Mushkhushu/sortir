@@ -9,16 +9,14 @@ use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInt
 
 class BanService
 {
-    public function __construct(EntityManagerInterface $entityManager, TokenStorageInterface $tokenStorage)
+    public function __construct(private EntityManagerInterface $entityManager, private TokenStorageInterface $tokenStorage)
     {
-        $this->entityManager = $entityManager;
-        $this->tokenStorage = $tokenStorage;
     }
 
     //bannir un user
     public function banUser(User $user): void
     {
-        $user->setIsActive(false);
+        $user->setActive(false);
         //le bannir pour 5 jours
         $banExpirationDate = new DateTimeImmutable('+5 days');
         $user->setBanExpirationDate($banExpirationDate);
@@ -33,7 +31,7 @@ class BanService
     //annuler le bannissement d'un user
     public function unbanUser(User $user): void
     {
-        $user->setIsActive(true);
+        $user->setActive(true);
         $user->setBanExpirationDate(null);
         $this->entityManager->persist($user);
         $this->entityManager->flush();
@@ -44,11 +42,11 @@ class BanService
     {
         $now = new DateTimeImmutable();
         //si le user est toujours en ban
-        if (!$user->isIsActive() && $user->getBanExpirationDate() >= $now) {
+        if (!$user->isActive() && $user->getBanExpirationDate() >= $now) {
             return true;
         }
         //si le user n'est plus en ban (il faudra le déban)
-        elseif (!$user->isIsActive() && $user->getBanExpirationDate() <= $now) {
+        elseif (!$user->isActive() && $user->getBanExpirationDate() <= $now) {
             $this->unbanUser($user);
             return false;
         }

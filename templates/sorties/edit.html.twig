@@ -15,8 +15,9 @@
 
             <div class="row">
                 <div class="col-md-6">
-                    <form method="post">
-                        {{ form_start(form) }}
+                {# J'ai vu que pour tous les form vous aviez créé une balise form en  plus d'utiliser le form start. #}
+                {# Sauf que le form start s'occupe de créer la balise form pour vous donc c'est inutile voir créer des erreurs supplémentaire. #}
+                    {{ form_start(form) }}
 
                         <div class="mb-3">
                             {{ form_label(form.nom, 'Nom:', {'label_attr': {'class': 'form-label'}}) }}
@@ -95,18 +96,15 @@
                             {% endif %}
                         </div>
                         <div class="mb-3">
-                        <a href="{{ path('sorties/index') }}" class="btn btn-primary">Back to List</a>
-                        {{ form_row(form.submit, {'label': 'Edit', 'attr': {'class': 'btn btn-primary'}}) }}
-                        {{ include('sorties/delete_form.html.twig') }}
+                            {{ form_row(form.submit, {'label': 'Edit', 'attr': {'class': 'btn btn-primary'}}) }}
                         </div>
                         {{ form_end(form) }}
-                    </form>
+                        <div class="mb-3">
+                            <a href="{{ path('sorties/index') }}" class="btn btn-primary">Back to List</a>
+                            {{ include('sorties/delete_form.html.twig') }}
+                        </div>
                 </div>
             </div>
-
-
-
-
         </div>
     </main>
 {% endblock %}

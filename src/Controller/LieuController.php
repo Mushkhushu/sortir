@@ -18,21 +18,28 @@ use Symfony\Component\Routing\Attribute\Route;
 class LieuController extends AbstractController
 {
     #[Route('/', name: 'app_lieu_index', methods: ['GET'])]
-    public function index(EntityManagerInterface $entityManager,LieuRepository $lieuRepository,MapBoxHelper $mapBoxHelper): Response
+    public function index(EntityManagerInterface $entityManager,LieuRepository $lieuRepository, MapBoxHelper $mapBoxHelper): Response
     {
-        foreach ($lieuRepository->findAll() as $lieu) {
+        $hasChanged = false;
+        $lieux = $lieuRepository->findAll();
+        foreach ($lieux as $lieu) {
             $coordinates= $mapBoxHelper->getAddressCoordinates($lieu->getRue(), $lieu->getVille()->getCodePostal(), $lieu->getVille()->getNom());
-            $lieu->setLatitude($coordinates['lat']);
-            $lieu->setLongitude($coordinates['lng']);
-            $entityManager->persist($lieu);
-            $entityManager->flush();
+            if(!empty($coordinates)) {
+                //hydrate les coordonnées reçues dans l'entité
+                $lieu->setLatitude($coordinates['lat']);
+                $lieu->setLongitude($coordinates['lng']);
+                $entityManager->persist($lieu);
+                $hasChanged = true;
+            }
         }
-        //hydrate les coordonnées reçues dans l'entité
-
+        if ($hasChanged)
+            $entityManager->flush();
+        // On évite de faire de multiple requête en BDD au max.
         return $this->render('lieu/index.html.twig', [
-            'lieus' => $lieuRepository->findAll(),
+            'lieus' => $lieux,
         ]);
     }
+
     #[Route('/lieu/new', name: 'app_lieu_new', methods: ['GET', 'POST'])]
     public function new(MapBoxHelper $mapBoxHelper, Request $request, EntityManagerInterface $entityManager): Response
     {
@@ -46,8 +53,10 @@ class LieuController extends AbstractController
             $rue = $form->get('rue')->getData();
             $lieu->setRue($rue);
             $coordinates= $mapBoxHelper->getAddressCoordinates($lieu->getRue(), $lieu->getVille()->getCodePostal(), $lieu->getVille()->getNom());
-            $lieu->setLatitude($coordinates['lat']);
-            $lieu->setLongitude($coordinates['lng']);
+            if (!empty($coordinates)) {
+                $lieu->setLatitude($coordinates['lat']);
+                $lieu->setLongitude($coordinates['lng']);
+            }
             // Enregistrer le lieu en base de données
             $entityManager->persist($lieu);
             $entityManager->flush();

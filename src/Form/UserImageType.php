@@ -10,23 +10,23 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
 
 class UserImageType extends AbstractType
 {
-public function buildView(FormView $view, FormInterface $form, array $options)
-{
-$user = $form->getParent()->getData();
-$view->vars['image_url'] = $user->getPicture();
-}
+    public function buildView(FormView $view, FormInterface $form, array $options)
+    {
+        $user = $form->getParent()->getData();
+        $view->vars['image_url'] = $user->getPicture();
+    }
 
-public function configureOptions(OptionsResolver $resolver)
-{
-$resolver->setDefaults([
-'label' => false,
-'compound' => true,
-'mapped' => false,
-]);
-}
+    public function configureOptions(OptionsResolver $resolver)
+    {
+        $resolver->setDefaults([
+            'label' => false,
+            'compound' => true,
+            'mapped' => false,
+        ]);
+    }
 
-public function getParent()
-{
-return TextType::class;
-}
+    public function getParent()
+    {
+        return TextType::class;
+    }
 }
