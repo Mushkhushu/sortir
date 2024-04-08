@@ -9,6 +9,7 @@
     "ext-iconv": "*",
     "doctrine/dbal": "^3",
     "doctrine/doctrine-bundle": "^2.11",
+    "doctrine/doctrine-fixtures-bundle": "*",
     "doctrine/doctrine-migrations-bundle": "^3.3",
     "doctrine/orm": "^3.1",
     "easycorp/easyadmin-bundle": "^4.9",
@@ -94,8 +95,9 @@
   },
   "extra": {
     "symfony": {
-      "allow-contrib": false,
-      "require": "6.4.*"
+      "allow-contrib": true,
+      "require": "6.4.*",
+      "docker": true
     }
   },
   "require-dev": {
@@ -106,6 +108,7 @@
     "symfony/maker-bundle": "^1.0",
     "symfony/phpunit-bridge": "^7.0",
     "symfony/stopwatch": "6.4.*",
-    "symfony/web-profiler-bundle": "6.4.*"
+    "symfony/web-profiler-bundle": "6.4.*",
+    "zenstruck/foundry": "*"
   }
 }

@@ -2,7 +2,7 @@
 
 namespace App\Controller\Admin;
 
-use App\Entity\Sorties;
+use App\Entity\Sortie;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
 use EasyCorp\Bundle\EasyAdminBundle\Field\IdField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextEditorField;
@@ -12,7 +12,7 @@ class SortiesCrudController extends AbstractCrudController
 {
     public static function getEntityFqcn(): string
     {
-        return Sorties::class;
+        return Sortie::class;
     }
 
     /*

@@ -16,7 +16,9 @@ class UserChecker implements UserCheckerInterface
             return;
         }
 
-        if (!$user->isIsActive()) {
+        // On ne devrait pas empecher un user banni de se co car il doit toujours pouvoir modifier ses propres données
+        // mais ne doit plus avoir accès à rien d'autre
+        if (!$user->isActive()) {
             // the message passed to this exception is meant to be displayed to the user
             throw new CustomUserMessageAccountStatusException('T\'as pas le droit T\'ES BANNI DU SITE.');
         }
@@ -29,7 +31,7 @@ class UserChecker implements UserCheckerInterface
         }
 
         // user account is expired, the user may be notified
-        if (!$user->isIsActive()) {
+        if (!$user->isActive()) {
             // the message passed to this exception is meant to be displayed to the user
             throw new CustomUserMessageAccountStatusException('Your account is disabled.');
         }

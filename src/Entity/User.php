@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use App\Repository\UserRepository;
+use DateTimeImmutable;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
@@ -13,16 +14,20 @@ use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
-#[ORM\Table(name: '`users`')]
+#[ORM\Table(name: '`user`')]
 #[ORM\UniqueConstraint(name: 'UNIQ_IDENTIFIER_USERNAME', fields: ['username'])]
 #[UniqueEntity(fields: ['username'], message: 'Ce pseudo est déjà pris', errorPath: 'pseudo')]
 #[UniqueEntity(fields: ['mail'], message: 'Ce mail est déjà pris', errorPath: 'mail')]
 class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
+    const PWD_MIN_LGTH = 12;
+    const PWD_MAX_LGTH = 4096;
+
     #[ORM\Id]
     #[ORM\GeneratedValue(strategy: 'AUTO')]
     #[ORM\Column(name: 'id', type: Types::INTEGER, nullable: false, options: ['unsigned' => true])]
     private ?int $id = null;
+
     #[Assert\Length(max: 50, maxMessage: "Le pseudo doit faire moins de {{ limit }} caractères.")]
     #[Assert\Length(min: 3, minMessage: "Le pseudo doit faire plus de {{ limit }} caractères.")]
     #[ORM\Column(name: 'username', type: Types::STRING, length: 50, unique: true, nullable: true)]
@@ -37,36 +42,50 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     /**
      * @var string The hashed password
      */
+    #[Assert\Length(
+        min: self::PWD_MIN_LGTH,
+        minMessage: "Votre mot de passe doit être au minimum de {{ limit }} caractères",
+        max: self::PWD_MAX_LGTH,
+    )]
+    #[Assert\PasswordStrength]
+    #[Assert\NotCompromisedPassword]
     #[ORM\Column]
     private ?string $password = null;
+
+    // J'ai juste regroupé les assert ensembles, c'est important de bien ranger le code
+    // Genre tous les Asserts au dessus du ORM\Column ou en dessous mais il faut faire partout pareil
+    // Si on change à chaque endroit de façon de faire se sera plus dur de relire le code plus tard
     #[Assert\Length(min: 3, minMessage: "Le Prenom doit faire plus de {{ limit }} caractères.")]
-    #[ORM\Column(name: 'first_name', type: Types::STRING, length: 50, nullable: true)]
     #[Assert\Length(max: 50, maxMessage: "Le prenom doit faire moins de {{ limit }} caractères.")]
+    #[ORM\Column(name: 'first_name', type: Types::STRING, length: 50, nullable: true)]
     private ?string $firstName = null;
-    #[Assert\Length(min: 3, minMessage: "Le Nom doit faire plus de {{ limit }} caractères.")]
+
+    // ici on peut regrouper en un seul assert si on veut rien d'obligatoir.
+    #[Assert\Length(
+        min: 3,
+        minMessage: "Le Nom doit faire plus de {{ limit }} caractères.",
+        max: 50,
+        maxMessage: "Le nom doit faire moins de {{ limit }} caractères."
+    )]
     #[ORM\Column(name: 'last_name', type: Types::STRING, length: 50, nullable: true)]
-    #[Assert\Length(max: 50, maxMessage: "Le nom doit faire moins de {{ limit }} caractères.")]
     private ?string $lastName = null;
 
-
-    #[ORM\Column(length: 50, nullable: true)]
+    #[Assert\NotBlank]
+    #[Assert\Length(exactly: 12)]
+    #[ORM\Column(length: 12, nullable: true)]
     private ?string $phoneNumber = null;
 
-    #[ORM\Column(type: Types::STRING, length: 180, unique: true)]
     #[Assert\NotBlank(message: 'Veuillez renseigner votre adresse mail.')]
     #[Assert\Email(message: 'Veuillez renseigner une adresse mail valide')]
+    #[ORM\Column(type: Types::STRING, length: 180, unique: true)]
     private ?string $mail = null;
 
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $picture = null;
 
-    #[ORM\OneToMany(targetEntity: Sorties::class, mappedBy: 'organizator')]
-    private Collection $createdEvents;
-
-    #[ORM\ManyToMany(targetEntity: Sorties::class, inversedBy: 'participants')]
-    private Collection $participatingEvents;
-
-    #[ORM\ManyToOne(inversedBy: 'etudiants')]
+    #[Assert\NotNull]
+    #[Assert\Type(type: Site::class)]
+    #[ORM\ManyToOne]
     private ?Site $site = null;
 
     #[ORM\ManyToMany(targetEntity: Group::class, mappedBy: 'users')]
@@ -75,17 +94,14 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\OneToMany(targetEntity: Group::class, mappedBy: 'createBy', orphanRemoval: true)]
     private Collection $groupesPrivé;
 
-    #[ORM\Column()]
-    private ?bool $isActive = true;
+    #[ORM\Column(options: ["default" => true])]
+    private ?bool $active = null;
 
     #[ORM\Column(type: Types::DATETIME_IMMUTABLE, nullable: true)]
     private ?\DateTimeImmutable $banExpirationDate = null;
 
-
     public function __construct()
     {
-        $this->createdEvents = new ArrayCollection();
-        $this->participatingEvents = new ArrayCollection();
         $this->groupe = new ArrayCollection();
         $this->groupesPrivé = new ArrayCollection();
     }
@@ -225,60 +241,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
-    /**
-     * @return Collection<int, Sorties>
-     */
-    public function getCreatedEvents(): Collection
-    {
-        return $this->createdEvents;
-    }
-
-    public function addCreatedEvent(Sorties $createdEvent): static
-    {
-        if (!$this->createdEvents->contains($createdEvent)) {
-            $this->createdEvents->add($createdEvent);
-            $createdEvent->setOrganizator($this);
-        }
-
-        return $this;
-    }
-
-    public function removeCreatedEvent(Sorties $createdEvent): static
-    {
-        if ($this->createdEvents->removeElement($createdEvent)) {
-            // set the owning side to null (unless already changed)
-            if ($createdEvent->getOrganizator() === $this) {
-                $createdEvent->setOrganizator(null);
-            }
-        }
-
-        return $this;
-    }
-
-    /**
-     * @return Collection<int, Sorties>
-     */
-    public function getParticipatingEvents(): Collection
-    {
-        return $this->participatingEvents;
-    }
-
-    public function addParticipatingEvent(Sorties $participatingEvent): static
-    {
-        if (!$this->participatingEvents->contains($participatingEvent)) {
-            $this->participatingEvents->add($participatingEvent);
-        }
-
-        return $this;
-    }
-
-    public function removeParticipatingEvent(Sorties $participatingEvent): static
-    {
-        $this->participatingEvents->removeElement($participatingEvent);
-
-        return $this;
-    }
-
     public function setUser(mixed $user)
     {
     }
@@ -352,29 +314,27 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
-    public function isIsActive(): ?bool
+    public function isActive(): ?bool
     {
-        return $this->isActive;
+        return $this->active;
     }
 
-    public function setIsActive(bool $isActive): static
+    public function setActive(bool $isActive): static
     {
-        $this->isActive = $isActive;
+        $this->active = $isActive;
 
         return $this;
     }
 
-    public function getBanExpirationDate(): ?\DateTimeImmutable
+    public function getBanExpirationDate(): ?DateTimeImmutable
     {
         return $this->banExpirationDate;
     }
 
-    public function setBanExpirationDate(?\DateTimeImmutable $banExpirationDate): static
+    public function setBanExpirationDate(?DateTimeImmutable $banExpirationDate): static
     {
         $this->banExpirationDate = $banExpirationDate;
 
         return $this;
     }
-
-
 }
